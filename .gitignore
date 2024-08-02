@@ -1,0 +1,23 @@
+# api
+prakruti-parv-api/node_modules/
+
+# app
+prakruti-parv-app/node_modules/
+
+prakruti-parv-app/.pnp
+prakruti-parv-app/.pnp.js
+
+prakruti-parv-app/coverage
+
+prakruti-parv-app/build
+
+
+prakruti-parv-app/.DS_Store
+prakruti-parv-app/.env.local
+prakruti-parv-app/.env.development.local
+prakruti-parv-app/.env.test.local
+prakruti-parv-app/.env.production.local
+
+prakruti-parv-app/npm-debug.log*
+prakruti-parv-app/yarn-debug.log*
+prakruti-parv-app/yarn-error.log*
