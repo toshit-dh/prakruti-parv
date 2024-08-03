@@ -1,32 +1,18 @@
-// SplashScreen.js
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { setUserDetails, setUserAuthenticated } from '../redux/slice/UserSlice' 
+import React from 'react';
+import styled from 'styled-components';
 
-export default function  SplashScreen ({setLoading}) {
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    const verifyUser = async () => {
-      try {
-        // const response = await fetch('https://your-api.com/verify');
-        // const data = await response.json();
-        if (true) {
-          dispatch(setUserAuthenticated(true));
-          dispatch(setUserDetails({name: "Toshit"}))
-          
-        } else {
-          dispatch(setUserAuthenticated(false));
-        }
-      } catch (error) {
-        console.error('Error verifying user:', error);
-        dispatch(setUserAuthenticated(false));
-      } 
-    };
-    verifyUser();
-  }, [dispatch]);
+export default function SplashScreen() {
+  return (
+    <Container>
+      
+    </Container>
+  );
+}
 
-  return <div onClick={()=>setLoading(false)}>Loading...</div>;
-};
-
+const Container = styled.div`
+  height: 100vh;
+  width: 100vw;
+  background-color: #115F20;
+`;
 
