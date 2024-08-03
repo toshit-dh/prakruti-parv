@@ -58,6 +58,7 @@ body {
       cursor: pointer;
       width: 100%;
     }
+
     
     .image-container {
       width: 50%;
@@ -72,7 +73,7 @@ body {
     }
     input::placeholder{
   
-      color:white;
+      color:black;
       font-weight:bold
     }
     .input-icon {
@@ -91,6 +92,7 @@ body {
       border: none;
       outline: none;
       padding: 10px;
+      background-color: #fff;
       flex: 1;
     }
     

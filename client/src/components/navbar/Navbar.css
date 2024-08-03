@@ -59,7 +59,7 @@ body {
     margin-right: 25px;
 }
 
-.navEducateButton, .navDonateButton {
+.navEducateButton, .navDonateButton, .navLoginButton {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -78,6 +78,11 @@ body {
 .navDonateButton {
     background-color: var(--primary-color);
     color: white;
+}
+
+.navLoginButton{
+    background-color: gray;
+    color: yellow;
 }
 
 .navIcon {

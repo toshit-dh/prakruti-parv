@@ -40,15 +40,16 @@ exports.signup = async (req, res) => {
 // Login
 exports.login = async (req, res) => {
     const { username, password } = req.body;
-  
+    console.log(password);
+    
     try {
       const user = await User.findOne({ username });
-      if (!user) return res.status(400).json(new APIResponse(null, 'Invalid username or password').toJson());
+      if (!user) return res.status(401).json(new APIResponse(null, 'Invalid username or password').toJson());
 
       const isMatch = await bcrypt.compare(password, user.password);
-      if (!isMatch) return res.status(400).json(new APIResponse(null, 'Invalid username or password').toJson());
+      if (!isMatch) return res.status(402).json(new APIResponse(null, 'Invalid username or password').toJson());
 
-      if (!user.isVerified) return res.status(400).json(new APIResponse(null, 'Please verify your email before logging in').toJson());
+      if (!user.isVerified) return res.status(403).json(new APIResponse(null, 'Please verify your email before logging in').toJson());
       
   
       const token = jwt.sign(

@@ -1,11 +1,14 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
-import { FaHome, FaBolt, FaUserGraduate, FaDonate, FaTimes, FaBars } from 'react-icons/fa';
-import { NavLink } from 'react-router-dom';
+import { FaHome, FaBolt, FaUserGraduate, FaDonate, FaTimes, FaBars,FaUser } from 'react-icons/fa';
+import { NavLink ,useNavigate} from 'react-router-dom';
 import logo from '../../assets/logo.png';
+import {useSelector} from 'react-redux'
 import './Navbar.css';
 
 const Navbar = () => {
+  const navigate = useNavigate()
+  const user = useSelector((state)=>state.user)
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -27,16 +30,6 @@ const Navbar = () => {
           })}
         >
           Home
-        </NavLink>
-        <NavLink
-          to="/myprofile"
-          className="navLink"
-          style={({ isActive }) => ({
-            borderBottom: isActive ? "4px solid var(--primary-color)" : 'none',
-            paddingBottom: '8px',
-          })}
-        >
-          My-Profile
         </NavLink>
         <NavLink
           to="/identify"
@@ -68,8 +61,27 @@ const Navbar = () => {
         >
           Animal-Tracking
         </NavLink>
+        {
+          user.isAuthenticated && <NavLink
+          to="/myprofile"
+          className="navLink"
+          style={({ isActive }) => ({
+            borderBottom: isActive ? "4px solid var(--primary-color)" : 'none',
+            paddingBottom: '8px',
+          })}
+        >
+          My-Profile
+        </NavLink>
+        }
       </div>
       <div className="navButtons">
+      {
+        !user.isAuthenticated && <button className="navLoginButton" onClick={()=>{
+          navigate('/login')
+        }}>
+            <FaUser className="navIcon" /> Login
+          </button>
+      }
         <button className="navEducateButton">
           <FaUserGraduate className="navIcon" /> Learn
         </button>
