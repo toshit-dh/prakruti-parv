@@ -1,20 +1,26 @@
 const express = require('express')
 const cors = require('cors')
+const cp = require('cookie-parser')
+const morgan = require('morgan')
 const mongoose = require("mongoose")
 const app = express()
-const port = 3000
+const port = 8080
 
 require('dotenv').config()
 
+const userRoutes = require('./routes/UserRoutes')
+
 app.use(cors())
-app.use(express.json());
+app.use(cp())
+app.use(morgan('dev'))
+app.use(express.json())
 
 app.get('/', (_, res) => {
     res.send('WELCOME TO PRAKRUTI PARV- WILDLIFE CONSERVATION APP')
 })
 
+app.use('/api/users',userRoutes)
 
-const DB_URL = 
 mongoose
   .connect(
    process.env.DB_URL

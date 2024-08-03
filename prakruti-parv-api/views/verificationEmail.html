@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email Verification</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f7f9fc;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      color: #2d72d9;
+      margin-bottom: 20px;
+    }
+    p {
+      font-size: 16px;
+      line-height: 1.5;
+    }
+    a.button {
+      display: inline-block;
+      font-size: 16px;
+      color: #ffffff;
+      background-color: #2d72d9;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 5px;
+      margin-top: 20px;
+    }
+    a.button:hover {
+      background-color: #1e60b3;
+    }
+    footer {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #888888;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Email Verification</h1>
+    <p>Hi there,</p>
+    <p>Thank you for registering with us! Please verify your email address by clicking the button below:</p>
+    <a href="{{verificationUrl}}" class="button">Verify Email</a>
+    <footer>
+      <p>If you did not create an account with us, please ignore this email.</p>
+      <p>Best regards,<br>The Team</p>
+    </footer>
+  </div>
+</body>
+</html>
