@@ -19,7 +19,6 @@ const Navbar = () => {
       </div>
       <div className={`navLinks ${isOpen ? 'showMenu' : ''}`}>
         <NavLink
-          exact
           to="/"
           className="navLink"
           style={({ isActive }) => ({
@@ -28,6 +27,16 @@ const Navbar = () => {
           })}
         >
           Home
+        </NavLink>
+        <NavLink
+          to="/myprofile"
+          className="navLink"
+          style={({ isActive }) => ({
+            borderBottom: isActive ? "4px solid var(--primary-color)" : 'none',
+            paddingBottom: '8px',
+          })}
+        >
+          My-Profile
         </NavLink>
         <NavLink
           to="/identify"
@@ -59,20 +68,10 @@ const Navbar = () => {
         >
           Animal-Tracking
         </NavLink>
-        <NavLink
-          to="/myprofile"
-          className="navLink"
-          style={({ isActive }) => ({
-            borderBottom: isActive ? "4px solid var(--primary-color)" : 'none',
-            paddingBottom: '8px',
-          })}
-        >
-          My-profile
-        </NavLink>
       </div>
       <div className="navButtons">
         <button className="navEducateButton">
-          <FaUserGraduate className="navIcon" /> Educate
+          <FaUserGraduate className="navIcon" /> Learn
         </button>
         <button className="navDonateButton">
           <FaDonate className="navIcon" /> Donate
@@ -91,7 +90,6 @@ const Navbar = () => {
         <NavLink
           to="/identify"
           className="navLinkMobile"
-          
         >
           Identify
         </NavLink>
@@ -108,7 +106,7 @@ const Navbar = () => {
           Animal Tracking
         </NavLink>
         <button className="navEducateButtonMobile">
-          <FaUserGraduate className="navIcon" /> Educate
+          <FaUserGraduate className="navIcon" /> Learn
         </button>
         <button className="navDonateButtonMobile">
           <FaDonate className="navIcon" /> Donate
