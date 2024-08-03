@@ -1,0 +1,82 @@
+.homeContainer {
+    position: relative;
+    margin-top: 30px; 
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  .videoContainer {
+    position: relative;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .backgroundVideo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .textOverlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    z-index: 1;
+  }
+  
+  .mainTitle {
+    font-size: 7rem;
+    font-weight: bold;
+    margin: 0;
+    color:#2aec2a;
+  }
+  
+  .tagline {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+    color: #fbfcf8; 
+    white-space: nowrap; 
+    overflow: hidden; 
+    display: inline-block;
+  }
+
+  @keyframes typing {
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
+  }
+  
+  @keyframes blink {
+    0% {
+      border-right: 2px solid transparent;
+    }
+    100% {
+      border-right: 2px solid #aff2c8; 
+    }
+  }
+  .tagline {
+    display: inline-block;
+    border-right: 2px solid transparent;
+    animation: typing 4s steps(30, end), blink 0.75s step-end infinite;
+    animation-iteration-count: infinite;
+  }
+
+  @media (max-width: 768px) {
+    .mainTitle {
+      font-size: 3rem; 
+    }
+    
+    .tagline {
+      font-size: 1.2rem; 
+    }
+  }
