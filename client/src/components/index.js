@@ -1,7 +1,10 @@
-import Register from "./register/Regsiter";
-import Login from "./login/Login";
-import Navbar from "./navbar/Navbar";
-import Home from "./home/Home";
+import Register from "../components/register/Regsiter";
+import Login from "../components/login/Login";
+import Navbar from "../components/navbar/Navbar";
+import Home from "../components/home/Home"
+import AnimalTracking from "./animal-tracking/AnimalTracking";
 import Education from "./education/Education";
 
-export { Register, Login, Navbar,Home,Education };
+
+export { Register, Login, Navbar,Home,Education,AnimalTracking };
+

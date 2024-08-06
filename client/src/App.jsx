@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
 import React from 'react'
-import './App.css'
-import { Register,Login,Home,Education } from './components/index'
+import { Register,Login,Home,Education,AnimalTracking } from './components/index'
 import {BrowserRouter,Routes,Route} from 'react-router-dom'
+import ProtectedRoute from './utils/ProtectedRoute'
 
 function App() {
 
@@ -14,6 +14,7 @@ function App() {
           <Route path='/login' element={<Login/>}/>
           <Route  path='/' element={<Home/>}/>
           <Route path='/education' element={<Education/>}/>
+          <Route path='/' element={<Home/>}/>
         </Routes>
     </BrowserRouter>
   )

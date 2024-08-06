@@ -12,7 +12,6 @@ import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import wiki from 'wikipedia';
 import { ToastContainer,toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { createCanvas, loadImage } from 'canvas';
 import { jsPDF } from 'jspdf';
 import axios from 'axios';
 
@@ -135,7 +134,6 @@ const Education = () => {
     const textStartY = imageBottomY + 20;
     const margin = 15;
     const pageHeight = doc.internal.pageSize.height;
-    const contentMargin = 10;
     const lineHeight = 10;
     let currentY = textStartY;
     
@@ -227,6 +225,7 @@ const Education = () => {
         <div className="educationSearchBarContainer">
           <input
             type="text"
+            className="speciesSearchbar"
             placeholder="Enter species name..."
             value={species}
             onChange={(e) => setSpecies(e.target.value)}

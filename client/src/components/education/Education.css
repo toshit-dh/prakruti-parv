@@ -145,6 +145,9 @@
     align-items: center;
     
   }
+  .speciesSearchBar{
+    color:white;
+  }
   
   .educationInfoImage {
     flex: 40%;

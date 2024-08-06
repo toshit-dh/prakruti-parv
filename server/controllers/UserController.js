@@ -40,15 +40,16 @@ exports.signup = async (req, res) => {
 // Login
 exports.login = async (req, res) => {
     const { username, password } = req.body;
-  
+    console.log(password);
+    
     try {
       const user = await User.findOne({ username });
-      if (!user) return res.status(400).json(new APIResponse(null, 'Invalid username or password').toJson());
+      if (!user) return res.status(401).json(new APIResponse(null, 'Invalid username or password').toJson());
 
       const isMatch = await bcrypt.compare(password, user.password);
-      if (!isMatch) return res.status(400).json(new APIResponse(null, 'Invalid username or password').toJson());
+      if (!isMatch) return res.status(402).json(new APIResponse(null, 'Invalid username or password').toJson());
 
-      if (!user.isVerified) return res.status(400).json(new APIResponse(null, 'Please verify your email before logging in').toJson());
+      if (!user.isVerified) return res.status(403).json(new APIResponse(null, 'Please verify your email before logging in').toJson());
       
   
       const token = jwt.sign(
@@ -93,3 +94,20 @@ exports.login = async (req, res) => {
   }
   };
   
+  //verify token
+  exports.verifyToken = (req, res) => {
+    try {
+      const token = req.cookies.token
+
+      if (!token) return res.status(401).json(new APIResponse(null, 'No token provided').toJson());
+
+      jwt.verify(token, JWT_SECRET, (err, decoded) => {
+        if (err) return res.status(401).json(new APIResponse(null, 'Invalid token').toJson());
+  
+        res.status(200).json(new APIResponse(decoded, 'Token verified successfully').toJson());
+      });
+    } catch (error) {
+      console.error('Token verification error:', error);
+      res.status(500).json(new APIResponse(null, 'Internal server error').toJson());
+    }
+  }

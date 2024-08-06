@@ -10,7 +10,10 @@ require('dotenv').config()
 
 const userRoutes = require('./routes/UserRoutes')
 
-app.use(cors())
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true
+}))
 app.use(cp())
 app.use(morgan('dev'))
 app.use(express.json())
