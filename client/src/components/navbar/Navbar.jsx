@@ -1,16 +1,21 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { FaHome, FaBolt, FaUserGraduate, FaDonate, FaTimes, FaBars } from 'react-icons/fa';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import './Navbar.css';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate=useNavigate();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+  const handleEducate=()=>{
+
+    navigate('/education');
+  }
 
   return (
     <nav className="navContainer">
@@ -19,7 +24,7 @@ const Navbar = () => {
       </div>
       <div className={`navLinks ${isOpen ? 'showMenu' : ''}`}>
         <NavLink
-          exact
+          exact="true"
           to="/"
           className="navLink"
           style={({ isActive }) => ({
@@ -71,7 +76,7 @@ const Navbar = () => {
         </NavLink>
       </div>
       <div className="navButtons">
-        <button className="navEducateButton">
+        <button className="navEducateButton" onClick={handleEducate}>
           <FaUserGraduate className="navIcon" /> Educate
         </button>
         <button className="navDonateButton">
@@ -107,7 +112,7 @@ const Navbar = () => {
         >
           Animal Tracking
         </NavLink>
-        <button className="navEducateButtonMobile">
+        <button className="navEducateButtonMobile" onClick={handleEducate}>
           <FaUserGraduate className="navIcon" /> Educate
         </button>
         <button className="navDonateButtonMobile">

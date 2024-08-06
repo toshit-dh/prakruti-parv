@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useRef } from 'react';
 import './Home.css';
 import Navbar from '../navbar/Navbar'; 
 import videofile from '../../assets/nature-video.mp4';
@@ -7,6 +7,7 @@ import birdChirping from '../../assets/birds-chirping.mp3';
 
 const Home = () => {
   const [scrollY, setScrollY] = useState(0);
+  const audioRef = useRef(null);
   
 
   useEffect(() => {
@@ -16,8 +17,14 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    const audio = new Audio(birdChirping);
-    audio.play();
+    audioRef.current = new Audio(birdChirping);
+    audioRef.current.play();
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
+    };
   }, []);
 
   return (
