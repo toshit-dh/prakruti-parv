@@ -145,7 +145,10 @@
     align-items: center;
     
   }
-  .speciesSearchBar{
+  .speciesSearchbar{
+    color:white;
+  }
+  .speciesSearchbar::placeholder{
     color:white;
   }
   
