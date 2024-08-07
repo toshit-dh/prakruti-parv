@@ -70,7 +70,7 @@ const Register = () => {
       const response = await axios.post(SIGNUP_ROUTE, formData);
       if (response.status === 201) {
         toast.success('Registration successful!');
-        navigate('/login');
+        navigate('/welcome');
       } else {
         toast.error(response.data.message || 'Registration failed.');
       }

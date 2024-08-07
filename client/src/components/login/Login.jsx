@@ -48,7 +48,7 @@ const Login = () => {
       
       if (response.status === 200) {
         toast.success('Login successful!', toastOptions);
-        navigate('/');
+        navigate('/welcome');
       } else {
         toast.error(response.data.message || 'Login failed.', toastOptions);
       }
