@@ -12,7 +12,7 @@ const initialState = {
 
 export const fetchUser = createAsyncThunk(
   'user/fetchUser',
-  async (userId, { rejectWithValue }) => {
+  async (_,{ rejectWithValue }) => {
     try {
       const response = await axios.get(TOKEN_ROUTE,{
         withCredentials: true
@@ -29,12 +29,7 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setUserDetails: (state, action) => {
-      state.user = action.payload;
-    },
-    setUserAuthenticated: (state, action) => {
-      state.isAuthenticated = action.payload;
-    },
+    
   },
   extraReducers: (builder) => {
     builder
@@ -54,6 +49,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { setUserDetails, setUserAuthenticated } = userSlice.actions;
+
 
 export default userSlice.reducer;

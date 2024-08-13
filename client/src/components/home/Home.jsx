@@ -7,18 +7,22 @@ import videofile from '../../assets/nature-video.mp4';
 import birdChirping from '../../assets/birds-chirping.mp3';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchUser } from '../../redux/slice/UserSlice';
-
+import { useNavigate } from 'react-router-dom';
 const Home = () => {
   const [scrollY, setScrollY] = useState(0);
   const audioRef = useRef(null);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const location = useLocation();
+  const navigate = useNavigate()
+  useEffect(() => {
+    dispatch(fetchUser())   
+    if(!user.isAuthenticated) dispatch(fetchUser())
+    console.log(user);
+     
+  }, [dispatch]); 
 
   
-  useEffect(() => {
-    dispatch(fetchUser());
-  }, [dispatch]);
 
   useEffect(() => {
     audioRef.current = new Audio(birdChirping);
