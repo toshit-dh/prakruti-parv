@@ -17,9 +17,7 @@ const Home = () => {
   const navigate = useNavigate()
   useEffect(() => {
     dispatch(fetchUser())   
-    if(!user.isAuthenticated) dispatch(fetchUser())
-    console.log(user);
-     
+    if(!user.isAuthenticated) navigate('/login')
   }, [dispatch]); 
 
   
