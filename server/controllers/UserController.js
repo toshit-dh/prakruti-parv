@@ -7,7 +7,7 @@ const APIResponse = require('../utils/APIResponse')
 
 const JWT_SECRET = process.env.JWT_SECRET 
 
-// Signup
+
 exports.signup = async (req, res) => {
     const { username,email, password } = req.body;
   
@@ -37,7 +37,6 @@ exports.signup = async (req, res) => {
   };
   
 
-// Login
 exports.login = async (req, res) => {
     const { username, password } = req.body;
     console.log(password);

@@ -5,7 +5,8 @@ import Home from "../components/home/Home"
 import AnimalTracking from "./animal-tracking/AnimalTracking";
 import Education from "./education/Education";
 import Welcome from "./welcome/Welcome";
+import IdentifySpecies from "./identifyspecies/IdentifySpecies";
 
 
-export { Register, Login, Navbar,Home,Education,AnimalTracking,Welcome };
+export { Register, Login, Navbar,Home,Education,AnimalTracking,Welcome,IdentifySpecies };
 

@@ -49,7 +49,7 @@ const Home = () => {
         </video>
         <div className="textOverlay">
           <h1 className="mainTitle">Prakruti Parv</h1>
-          <p className="tagline">Wild Wonders Await</p>
+          <p className="tagline">Wild Wonders Await!!!</p>
         </div>
       </div>
     </div>
