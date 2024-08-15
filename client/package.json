@@ -26,6 +26,7 @@
     "react-toastify": "^10.0.5",
     "swiper": "^11.1.9",
     "wikijs": "^6.4.1",
+    "wikipedia": "^2.1.2",
     "wikipedia-api": "^0.0.3"
   },
   "devDependencies": {

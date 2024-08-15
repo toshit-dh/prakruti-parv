@@ -39,8 +39,6 @@ exports.signup = async (req, res) => {
 
 exports.login = async (req, res) => {
     const { username, password } = req.body;
-    console.log(password);
-    
     try {
       const user = await User.findOne({ username });
       if (!user) return res.status(401).json(new APIResponse(null, 'Invalid username or password').toJson());
@@ -54,13 +52,12 @@ exports.login = async (req, res) => {
       const token = jwt.sign(
         { userId: user._id, role: user.role },
         JWT_SECRET,
-        { expiresIn: '30d' } 
+        { expiresIn: '1h' } 
       );
   
       res.cookie('token', token, {
         httpOnly: true, 
         secure: process.env.NODE_ENV === 'production', 
-        maxAge: 30 * 24 * 60 * 60 * 1000 
       });
   
       res.status(200).json(new APIResponse(null, 'Login successful').toJson());
