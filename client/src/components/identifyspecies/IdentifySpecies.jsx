@@ -9,6 +9,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import loadingGif from '../../assets/loading.gif'
+import { IDENTIFY_ROUTE } from '../../utils/Routes';
 
 const IdentifySpecies = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -58,7 +59,7 @@ const IdentifySpecies = () => {
     formData.append('image', selectedFile);
 
     try {
-      const response = await axios.post('http://localhost:8081/identify', formData, {
+      const response = await axios.post(IDENTIFY_ROUTE, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
