@@ -8,23 +8,28 @@ import birdChirping from '../../assets/birds-chirping.mp3';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchUser } from '../../redux/slice/UserSlice';
 import { useNavigate } from 'react-router-dom';
+
 const Home = () => {
   const [scrollY, setScrollY] = useState(0);
+  const [isAudioPlaying, setIsAudioPlaying] = useState(true); // State to track audio play status
   const audioRef = useRef(null);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const location = useLocation();
-  const navigate = useNavigate()
-  useEffect(() => {
-    dispatch(fetchUser())   
-    if(!user.isAuthenticated) navigate('/login')
-  }, [dispatch]); 
+  const navigate = useNavigate();
 
-  
+  useEffect(() => {
+    dispatch(fetchUser());
+    if (!user.isAuthenticated) navigate('/login');
+  }, [dispatch, user.isAuthenticated, navigate]);
 
   useEffect(() => {
     audioRef.current = new Audio(birdChirping);
-    audioRef.current.play();
+    if (isAudioPlaying) {
+      audioRef.current.play();
+    } else {
+      audioRef.current.pause();
+    }
 
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', handleScroll);
@@ -36,7 +41,16 @@ const Home = () => {
       }
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [location]);
+  }, [location, isAudioPlaying]);
+
+  const handleVideoClick = () => {
+    if (isAudioPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play();
+    }
+    setIsAudioPlaying(!isAudioPlaying);
+  };
 
   return (
     <div className="homeContainer">
@@ -45,7 +59,7 @@ const Home = () => {
         className="videoContainer"
         style={{ filter: `blur(${Math.min(scrollY / 100, 10)}px)` }}
       >
-        <video autoPlay muted loop className="backgroundVideo">
+        <video autoPlay muted loop className="backgroundVideo" onClick={handleVideoClick}>
           <source src={videofile} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
