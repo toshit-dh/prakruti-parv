@@ -17,6 +17,7 @@ export const fetchUser = createAsyncThunk(
       const response = await axios.get(TOKEN_ROUTE,{
         withCredentials: true
       }); 
+
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -24,7 +25,7 @@ export const fetchUser = createAsyncThunk(
   }
 );
 
-// Create slice
+
 const userSlice = createSlice({
   name: 'user',
   initialState,

@@ -75,7 +75,8 @@ const Register = () => {
         toast.error(response.data.message || 'Registration failed.');
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || 'An error occurred.');
+      console.log(error);
+      toast.error(error.message || 'An error occurred.');
     }
   };
 
