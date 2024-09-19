@@ -74,7 +74,7 @@ const Education = () => {
         
     } catch (error) {
         
-        toast.error('Some error occured!!!',toastOptions);
+        toast.error(error.message,toastOptions);
         
     }
     finally{

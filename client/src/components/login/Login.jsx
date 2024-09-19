@@ -9,8 +9,11 @@ import { motion } from 'framer-motion';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import {LOGIN_ROUTE} from '../../utils/Routes'
+import { useDispatch } from 'react-redux';
+import { fetchUser } from '../../redux/slice/UserSlice'; 
 
 const Login = () => {
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -47,8 +50,11 @@ const Login = () => {
       console.log(response);
       
       if (response.status === 200) {
-        toast.success('Login successful!', toastOptions);
-        navigate('/welcome');
+        toast.success('Login successful!!', toastOptions);
+        
+        dispatch(fetchUser());
+        setTimeout(()=>{navigate('/welcome')}, 3000);
+        
       } else {
         toast.error(response.data.message || 'Login failed.', toastOptions);
       }

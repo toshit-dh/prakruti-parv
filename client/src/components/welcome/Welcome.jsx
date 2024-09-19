@@ -17,12 +17,12 @@ const Welcome = () => {
       setIsLoaded(true);
     }, 1000); 
     const navigationTimer = setTimeout(() => {
-      navigate('/'); 
-    }, 5000);
+       navigate('/'); 
+    }, 6000);
 
     return () => {
       clearTimeout(timer);
-      clearTimeout(navigationTimer); 
+      clearTimeout(navigationTimer);  
     };
   }, []);
 

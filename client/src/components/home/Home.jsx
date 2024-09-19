@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const [scrollY, setScrollY] = useState(0);
-  const [isAudioPlaying, setIsAudioPlaying] = useState(true); // State to track audio play status
+  const [isAudioPlaying, setIsAudioPlaying] = useState(true); 
   const audioRef = useRef(null);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
@@ -19,7 +19,6 @@ const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(fetchUser());
     if (!user.isAuthenticated) navigate('/login');
   }, [dispatch, user.isAuthenticated, navigate]);
 
