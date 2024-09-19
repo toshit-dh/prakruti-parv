@@ -90,8 +90,8 @@ exports.login = async (req, res) => {
   }
   };
   
-  //verify token
-  exports.verifyToken = (req, res) => {
+
+  exports.verifyToken = (req, res,next) => {
     try {
       const token = req.cookies.token
 
@@ -99,7 +99,6 @@ exports.login = async (req, res) => {
 
       jwt.verify(token, JWT_SECRET, (err, decoded) => {
         if (err) return res.status(401).json(new APIResponse(null, 'Invalid token').toJson());
-  
         res.status(200).json(new APIResponse(decoded, 'Token verified successfully').toJson());
       });
     } catch (error) {

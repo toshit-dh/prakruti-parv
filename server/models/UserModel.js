@@ -31,6 +31,10 @@ const userSchema = new Schema({
     enum: ['user', 'admin', 'conservationist', 'photographer', 'learner'],
     default: 'user'
   },
+  badges: {
+    type: Number,
+    default: 0
+  },
   createdAt: {
     type: Date,
     default: Date.now

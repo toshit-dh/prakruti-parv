@@ -65,14 +65,14 @@ const Navbar = () => {
           Animal-Tracking
         </NavLink>
         <NavLink
-          to="/myprofile"
+          to="/profile"
           className="navLink"
           style={({ isActive }) => ({
             borderBottom: isActive ? "4px solid var(--primary-color)" : 'none',
             paddingBottom: '8px',
           })}
         >
-          My-profile
+          My-Profile
         </NavLink>
       </div>
       <div className="navButtons">
