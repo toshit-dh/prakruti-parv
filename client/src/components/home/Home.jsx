@@ -6,7 +6,6 @@ import Navbar from '../../components/navbar/Navbar';
 import videofile from '../../assets/nature-video.mp4';
 import birdChirping from '../../assets/birds-chirping.mp3';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchUser } from '../../redux/slice/UserSlice';
 import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
@@ -50,6 +49,7 @@ const Home = () => {
     }
     setIsAudioPlaying(!isAudioPlaying);
   };
+
 
   return (
     <div className="homeContainer">

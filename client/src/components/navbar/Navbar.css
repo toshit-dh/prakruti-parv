@@ -1,170 +1,177 @@
 body {
-    margin: 0; 
-    padding-top: 50px; 
-    overflow-y: auto; 
+  margin: 0;
+  padding-top: 50px;
+  overflow-y: auto;
 }
 
 .navContainer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: black;
-    border-bottom: 3px solid rgb(229, 226, 226);
-    box-shadow: 0 2px 2px var(--secondary-color);
-    z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: black;
+  border-bottom: 3px solid rgb(229, 226, 226);
+  box-shadow: 0 2px 2px var(--secondary-color);
+  z-index: 1000;
 }
 
-.navLogo img {
+.navLogo {
+    display: flex;
+    flex-direction: row;
+    img {
     height: 90px;
     filter: brightness(2);
+  }
 }
-
 .navLinks {
-    display: flex;
-    gap: 4rem;
-    flex-grow: 1;
-    justify-content: center;
+  display: flex;
+  gap: 4rem;
+  flex-grow: 1;
+  justify-content: center;
 }
 
 .navLink {
-    color: white;
-    text-decoration: none;
-    font-size: 1.2rem;
-    transition: color 0.3s ease;
-    position: relative;
+  color: white;
+  text-decoration: none;
+  font-size: 1.2rem;
+  transition: color 0.3s ease;
+  position: relative;
 }
 
-.navLink:hover, .navLink.activeNavLink {
-    color: var(--ternary-color);
+.navLink:hover,
+.navLink.activeNavLink {
+  color: var(--ternary-color);
 }
 
 .navLink.activeNavLink::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -5px;
-    height: 10px;
-    background-color: green;
-    border-radius: 2px;
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -5px;
+  height: 10px;
+  background-color: green;
+  border-radius: 2px;
 }
 
 .navButtons {
-    display: flex;
-    gap: 1rem;
-    margin-right: 25px;
+  display: flex;
+  gap: 1rem;
+  margin-right: 25px;
 }
 
-.navEducateButton, .navDonateButton, .navLoginButton {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 25px;
-    font-size: 1rem;
-    cursor: pointer;
+.navEducateButton,
+.navDonateButton,
+.navLoginButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 25px;
+  font-size: 1rem;
+  cursor: pointer;
 }
 
 .navEducateButton {
-    background-color: white;
-    color: black;
+  background-color: white;
+  color: black;
 }
 
 .navDonateButton {
-    background-color: var(--primary-color);
-    color: white;
+  background-color: var(--primary-color);
+  color: white;
 }
 
-.navLoginButton{
-    background-color: gray;
-    color: yellow;
+.navLoginButton {
+  background-color: gray;
+  color: yellow;
 }
 
 .navIcon {
-    font-size: 1.2rem;
+  font-size: 1.2rem;
 }
 
 .navHamburger {
-    display: none;
-    font-size: 1.8rem;
-    color: white;
-    cursor: pointer;
+  display: none;
+  font-size: 1.8rem;
+  color: white;
+  cursor: pointer;
 }
 
 .navLinksMobile {
-    display: none;
-    flex-direction: column;
-    position: absolute;
-    top: 90px;
-    right: 0;
-    width: 100%;
-    padding: 1rem;
-    gap: 1rem;
-    background-color: black;
-    border-bottom: 2px solid var(--secondary-color);
-    text-align: center;
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  top: 90px;
+  right: 0;
+  width: 100%;
+  padding: 1rem;
+  gap: 1rem;
+  background-color: black;
+  border-bottom: 2px solid var(--secondary-color);
+  text-align: center;
 }
 
 .navLinksMobile.showMenu {
-    display: flex;
+  display: flex;
 }
 
 .navLinkMobile {
-    color: white;
-    text-decoration: none;
-    font-size: 1.2rem;
+  color: white;
+  text-decoration: none;
+  font-size: 1.2rem;
 }
 
 .navLinkMobile.activeNavLinkMobile::after {
-    content: '';
-    display: block;
-    width: 100%;
-    height: 3px;
-    background-color: green;
-    margin-top: 5px;
-    border-radius: 2px;
+  content: "";
+  display: block;
+  width: 100%;
+  height: 3px;
+  background-color: green;
+  margin-top: 5px;
+  border-radius: 2px;
 }
 
-.navEducateButtonMobile, .navDonateButtonMobile {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 25px;
-    font-size: 1rem;
-    cursor: pointer;
-    width: 100%;
+.navEducateButtonMobile,
+.navDonateButtonMobile {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 25px;
+  font-size: 1rem;
+  cursor: pointer;
+  width: 100%;
 }
 
 .navEducateButtonMobile {
-    background-color: white;
-    color: black;
-    margin-left: 15px;
+  background-color: white;
+  color: black;
+  margin-left: 15px;
 }
 
 .navDonateButtonMobile {
-    background-color: var(--primary-color);
-    color: white;
-    margin-left: 15px;
+  background-color: var(--primary-color);
+  color: white;
+  margin-left: 15px;
 }
 
 @media (max-width: 768px) {
-    .navLinks {
-        display: none;
-    }
+  .navLinks {
+    display: none;
+  }
 
-    .navButtons {
-        display: none;
-    }
+  .navButtons {
+    display: none;
+  }
 
-    .navHamburger {
-        display: flex;
-        margin-right: 40px;
-    }
+  .navHamburger {
+    display: flex;
+    margin-right: 40px;
+  }
 }

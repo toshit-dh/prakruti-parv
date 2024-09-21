@@ -1,0 +1,68 @@
+/* ViewProject.css */
+.content{
+    height: 100%;
+    width: 100vw;
+    background-color: #d3f9d8;
+    padding-top: 50px;
+}
+.navbar {
+    height: 60px;
+    background-color: #3f51b5;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    color: white;
+}
+
+.filterBar {
+    background-color: #d3f9d8;
+    padding: 20px;
+    border: 8px ;
+    margin-top: 50px; 
+    display: flex;
+    flex-direction: row; /* Horizontal layout */
+    gap: 15px; 
+}
+
+.filterBar > * {
+    flex: 1; /* Make each child take equal space */
+    min-width: 0; /* Prevent overflow */
+}
+
+
+.projectList {
+    padding: 0px 5px 5px 0;
+    margin-top: 20px;
+}
+
+.projectItem {
+    background-color: #c8e6c9; /* Light green background */
+    border: 1px solid #388e3c; /* Dark green border */
+    border-radius: 8px;
+    padding: 15px;
+    margin: 10px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.gridContainer {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* Six equal columns */
+    gap: 10px; /* Space between items */
+    border: 1px solid #388e3c; /* Column lines */
+    padding: 10px;
+}
+
+.gridItem {
+    border-right: 1px solid #388e3c; /* Column lines */
+    padding: 5px;
+}
+
+.gridItem:last-child {
+    border-right: none; /* Remove last column line */
+}
+
+.projectTitle {
+    font-weight: bold; /* Bold title */
+    font-size: 1.2em;
+    color: #2e7d32; /* Darker green */
+}

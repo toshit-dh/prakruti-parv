@@ -1,0 +1,21 @@
+.customDrawer {
+    height: 100vh;
+    align-items: center;
+    width: 250px; /* Set your desired width here */
+    background-color: black; /* Set background color to black */
+    color: white; /* Optional: Set text color to white for contrast */
+  }
+  
+  /* Optional: Style for ListItemText if you want it to be white */
+  .customDrawer .MuiListItemText-primary {
+    color: white; /* Change text color for primary text */
+  }
+
+  .drawerIcon {
+    color: green;
+  }
+  .listItem:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: green;
+  }

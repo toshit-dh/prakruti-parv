@@ -1,77 +1,66 @@
-/* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
-import { FaHome, FaBolt, FaUserGraduate, FaDonate, FaTimes, FaBars } from 'react-icons/fa';
-import { NavLink, useNavigate } from 'react-router-dom';
-import logo from '../../assets/logo.png';
-import './Navbar.css';
+// Navbar.js
+import React, { useState } from "react";
+import { FaUserGraduate, FaDonate, FaTimes, FaBars } from "react-icons/fa";
+import { NavLink, useNavigate } from "react-router-dom";
+import logo from "../../assets/logo.png";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu"; // Use MUI's MenuIcon
+import CustomDrawer from "./CustomDrawer"; // Import the new Drawer component
+import "./Navbar.css";
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const navigate=useNavigate();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false); // Added state for menu
+  const navigate = useNavigate();
+
+  const toggleDrawer = (open) => (event) => {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+    setIsDrawerOpen(open);
+  };
 
   const toggleMenu = () => {
-    setIsOpen(!isOpen);
+    setIsOpen(!isOpen); // Toggle the menu state
   };
-  const handleEducate=()=>{
 
-    navigate('/education');
-  }
+  const handleEducate = () => {
+    navigate("/education");
+  };
 
   return (
     <nav className="navContainer">
       <div className="navLogo">
         <img src={logo} alt="logo" width={160} height={80} />
-      </div>
-      <div className={`navLinks ${isOpen ? 'showMenu' : ''}`}>
-        <NavLink
-          exact="true"
-          to="/"
-          className="navLink"
-          style={({ isActive }) => ({
-            borderBottom: isActive ? "4px solid var(--primary-color)" : 'none',
-            paddingBottom: '8px', 
-          })}
+        <IconButton
+          onClick={toggleDrawer(true)}
+          edge="start"
+          sx={{ color: "white" }}
+          aria-label="menu"
+          className="drawerIcon"
         >
+          <MenuIcon />
+        </IconButton>
+        <CustomDrawer isOpen={isDrawerOpen} toggleDrawer={toggleDrawer} />
+      </div>
+
+      <div className={`navLinks ${isOpen ? "showMenu" : ""}`}>
+        <NavLink to="/" className="navLink" activeClassName="active">
           Home
         </NavLink>
-        <NavLink
-          to="/identify"
-          className="navLink"
-          style={({ isActive }) => ({
-            borderBottom: isActive ? "4px solid var(--primary-color)" : 'none',
-            paddingBottom: '8px',
-          })}
-        >
+        <NavLink to="/identify" className="navLink" activeClassName="active">
           Identify-Species
         </NavLink>
-        <NavLink
-          to="/poaching-detection"
-          className="navLink"
-          style={({ isActive }) => ({
-            borderBottom: isActive ? "4px solid var(--primary-color)" : 'none',
-            paddingBottom: '8px',
-          })}
-        >
+        <NavLink to="/poaching-detection" className="navLink" activeClassName="active">
           Poaching-Detection
         </NavLink>
-        <NavLink
-          to="/animal-tracking"
-          className="navLink"
-          style={({ isActive }) => ({
-            borderBottom: isActive ? "4px solid var(--primary-color)" : 'none',
-            paddingBottom: '8px',
-          })}
-        >
+        <NavLink to="/animal-tracking" className="navLink" activeClassName="active">
           Animal-Tracking
         </NavLink>
-        <NavLink
-          to="/profile"
-          className="navLink"
-          style={({ isActive }) => ({
-            borderBottom: isActive ? "4px solid var(--primary-color)" : 'none',
-            paddingBottom: '8px',
-          })}
-        >
+        <NavLink to="/profile" className="navLink" activeClassName="active">
           My-Profile
         </NavLink>
       </div>
@@ -85,39 +74,6 @@ const Navbar = () => {
       </div>
       <div className="navHamburger" onClick={toggleMenu}>
         {isOpen ? <FaTimes /> : <FaBars />}
-      </div>
-      <div className={`navLinksMobile ${isOpen ? 'showMenu' : ''}`}>
-        <NavLink
-          to="/"
-          className="navLinkMobile"
-        >
-          Home
-        </NavLink>
-        <NavLink
-          to="/identify"
-          className="navLinkMobile"
-          
-        >
-          Identify
-        </NavLink>
-        <NavLink
-          to="/poaching-detection"
-          className="navLinkMobile"
-        >
-          Poaching Detection
-        </NavLink>
-        <NavLink
-          to="/animal-tracking"
-          className="navLinkMobile"
-        >
-          Animal Tracking
-        </NavLink>
-        <button className="navEducateButtonMobile" onClick={handleEducate}>
-          <FaUserGraduate className="navIcon" /> Educate
-        </button>
-        <button className="navDonateButtonMobile">
-          <FaDonate className="navIcon" /> Donate
-        </button>
       </div>
     </nav>
   );
