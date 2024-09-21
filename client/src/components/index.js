@@ -7,6 +7,6 @@ import Education from "./education/Education";
 import Welcome from "./welcome/Welcome";
 import IdentifySpecies from "./identifyspecies/IdentifySpecies";
 import Profile from "./myprofile/Profile";
-
-export { Register, Login, Navbar,Home,Education,AnimalTracking,Welcome,IdentifySpecies,Profile };
+import AddProject from "./myprofile/AddProject/AddProject";
+export { Register, Login, Navbar,Home,Education,AnimalTracking,Welcome,IdentifySpecies,Profile,AddProject };
 

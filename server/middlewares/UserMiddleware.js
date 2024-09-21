@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken')
+const JWT_SECRET = process.env.JWT_SECRET 
 const APIResponse = require('../utils/APIResponse')
 exports.verifyToken = (req, res,next) => {
   try {
@@ -9,7 +10,6 @@ exports.verifyToken = (req, res,next) => {
     jwt.verify(token, JWT_SECRET, (err, decoded) => {
       if (err) return res.status(401).json(new APIResponse(null, 'Invalid token').toJson());
       req.user = decoded
-      res.status(200).json(new APIResponse(decoded, 'Token verified successfully').toJson());
       next()
     });
   } catch (error) {

@@ -9,7 +9,7 @@ const port = 8080
 require('dotenv').config()
 
 const userRoutes = require('./routes/UserRoutes')
-
+const projectRoutes = require('./routes/ProjectRoutes')
 app.use(cors({
   origin: "http://localhost:5173",
   credentials: true
@@ -23,6 +23,7 @@ app.get('/', (_, res) => {
 })
 
 app.use('/api/users',userRoutes)
+app.use('/api/projects',projectRoutes)
 
 mongoose
   .connect(

@@ -8,7 +8,8 @@ exports.createProject = async (req, res) => {
   try {
     const { title, description, goalAmount, endDate, type, location } = req.body; // Added location
     const creator = req.user.userId; 
-
+    console.log(req.body,creator);
+    
     const newProject = new Project({
       title,
       description,
