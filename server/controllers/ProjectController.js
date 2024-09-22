@@ -6,7 +6,7 @@ const fs = require('fs');
 // Create a new project
 exports.createProject = async (req, res) => {
   try {
-    const { title, description, goalAmount, endDate, type, location } = req.body; // Added location
+    const { title, description, goalAmount, endDate, type, location } = req.body; 
     const creator = req.user.userId; 
     console.log(req.body,creator);
     
@@ -16,7 +16,7 @@ exports.createProject = async (req, res) => {
       goalAmount,
       endDate,
       type,
-      location, // Added location
+      location, 
       creator,
     });
 

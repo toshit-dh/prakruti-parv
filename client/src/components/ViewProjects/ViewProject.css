@@ -44,6 +44,12 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
+.projectItem:hover {
+    cursor: pointer;
+    transform: scale(1.02); /* Slightly scale up */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Increase shadow */
+}
+
 .gridContainer {
     display: grid;
     grid-template-columns: repeat(6, 1fr); /* Six equal columns */

@@ -48,19 +48,27 @@ const Navbar = () => {
       </div>
 
       <div className={`navLinks ${isOpen ? "showMenu" : ""}`}>
-        <NavLink to="/" className="navLink" activeClassName="active">
+        <NavLink to="/" className="navLink" activeclassName="active">
           Home
         </NavLink>
-        <NavLink to="/identify" className="navLink" activeClassName="active">
+        <NavLink to="/identify" className="navLink" activeclassName="active">
           Identify-Species
         </NavLink>
-        <NavLink to="/poaching-detection" className="navLink" activeClassName="active">
+        <NavLink
+          to="/poaching-detection"
+          className="navLink"
+          activeclassName="active"
+        >
           Poaching-Detection
         </NavLink>
-        <NavLink to="/animal-tracking" className="navLink" activeClassName="active">
+        <NavLink
+          to="/animal-tracking"
+          className="navLink"
+          activeclassName="active"
+        >
           Animal-Tracking
         </NavLink>
-        <NavLink to="/profile" className="navLink" activeClassName="active">
+        <NavLink to="/profile" className="navLink" activeclassName="active">
           My-Profile
         </NavLink>
       </div>
