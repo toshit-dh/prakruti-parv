@@ -2,8 +2,8 @@ import React from 'react';
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
-
-const ImageCarousel = () => {
+import './Carousel.css'
+const ImageCarousel = ({ images }) => {
   const settings = {
     dots: true,
     infinite: true,
@@ -11,13 +11,13 @@ const ImageCarousel = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
-  const images = []
+
   return (
     <Slider {...settings}>
       {images.length > 0 ? (
-        images.map((image,index) => (
+        images.map((image, index) => (
           <div key={index}>
-            <img src={image} alt="Project Image" style={{ width: '100%', height: 'auto' }} />
+            <img src={`http://localhost:8080${image.url}`} alt="Project Image" className="carousel-image" />
           </div>
         ))
       ) : (
@@ -25,7 +25,6 @@ const ImageCarousel = () => {
       )}
     </Slider>
   );
-  
 };
 
 export default ImageCarousel;

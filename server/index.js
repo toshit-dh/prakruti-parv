@@ -5,6 +5,7 @@ const morgan = require('morgan')
 const mongoose = require("mongoose")
 const app = express()
 const port = 8080
+const path = require('path')
 
 require('dotenv').config()
 
@@ -21,7 +22,7 @@ app.use(express.json())
 app.get('/', (_, res) => {
     res.send('WELCOME TO PRAKRUTI PARV- WILDLIFE CONSERVATION APP')
 })
-
+app.use(express.static(path.join(__dirname,'data/projects/')))
 app.use('/api/users',userRoutes)
 app.use('/api/projects',projectRoutes)
 

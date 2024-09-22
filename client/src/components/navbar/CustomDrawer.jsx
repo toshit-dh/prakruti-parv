@@ -15,7 +15,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import "./CustomDrawer.css";
 
 const CustomDrawer = ({ isOpen, toggleDrawer }) => {
-    const navigate = useNavigate()
+  const navigate = useNavigate();
   const drawerList = () => (
     <div
       role="presentation"
@@ -33,10 +33,13 @@ const CustomDrawer = ({ isOpen, toggleDrawer }) => {
           { text: "Settings", icon: <SettingsIcon className="drawerIcon" /> },
           { text: "Logout", icon: <LogoutIcon className="drawerIcon" /> },
         ].map(({ text, icon }) => (
-          <ListItem 
-          button key={text} 
-          className="listItem"
-          onClick={()=>navigate('/viewProjects')}
+          <ListItem
+            button
+            key={text}
+            className="listItem"
+            onClick={() => {
+              if(text == "Projects") navigate("/viewProjects");
+            }}
           >
             <ListItemIcon>{icon}</ListItemIcon>
             <ListItemText primary={text} />

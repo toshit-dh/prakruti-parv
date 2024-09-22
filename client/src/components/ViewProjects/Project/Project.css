@@ -1,0 +1,108 @@
+html, body {
+    height: 100%;
+    margin: 0; /* Remove default margin */
+    overflow: hidden; /* Prevent scrolling of the body */
+}
+
+.content {
+    height: 100%;
+    overflow-y: auto; /* Enable scrolling if content is taller than the viewport */
+}
+
+.project-card {
+    margin-top: 50px;
+    height: calc(100vh - 150px); /* Take full height minus the margin-top */
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal columns */
+    gap: 20px;
+    background-color: #f5f5f5; /* Main background for card */
+    padding: 20px;
+    border-radius: 10px;
+    overflow-y: auto; /* Allow scrolling if content exceeds available height */
+}
+
+/* First column with 3 rows */
+.column-1 {
+    display: grid;
+    grid-template-rows: 1fr 3fr 1fr; /* 1/5, 3/5, 1/5 proportions */
+    gap: 10px;
+}
+
+.column-1 .row {
+    padding: 15px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold; /* Make the text bold */
+}
+
+/* Different background colors for each row in the first column */
+.column-1 .row:nth-child(1) {
+    background-color: #ffccbc; /* Light coral for the title */
+}
+
+.column-1 .row:nth-child(2) {
+    background-color: #b2dfdb; /* Light teal for the second row */
+}
+
+.column-1 .row:nth-child(3) {
+    background-color: #ffe0b2; /* Light peach for the third row */
+}
+
+/* Specific styling for the 3rd row in the 1st column */
+.column-1 .row-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
+    gap: 10px;
+}
+
+.column-1 .row-3 .sub-column {
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    background-color: #c0c0c0; /* Default background for sub-columns */
+}
+
+/* Second column with 5 equal rows */
+.column-2 {
+    display: grid;
+    grid-template-rows: repeat(5, 1fr); /* 5 equal rows */
+    gap: 10px;
+}
+
+/* Different background colors for each row in the second column */
+.column-2 .row:nth-child(1) {
+    background-color: #e1bee7; /* Light purple for the first row */
+}
+
+.column-2 .row:nth-child(2) {
+    background-color: #ffe57f; /* Light yellow for the second row */
+}
+
+.column-2 .row:nth-child(3) {
+    background-color: #90caf9; /* Light blue for the third row */
+}
+
+.column-2 .row:nth-child(4) {
+    background-color: #ffab91; /* Light salmon for the fourth row */
+}
+
+.column-2 .row:nth-child(5) {
+    background-color: #c5e1a5; /* Light green for the fifth row */
+}
+
+/* Styling for row columns in column 2 */
+.row-col-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal columns */
+    gap: 10px; /* Adjust spacing as needed */
+}
+
+.row-col-2 .sub-column {
+    padding: 15px;
+    border-radius: 5px;
+    text-align: left; /* Align text to the left for readability */
+    background-color: #d0d0d0; /* Default background for sub-columns */
+}
+.row-3-5{
+    width: 750px;
+}
