@@ -1,0 +1,308 @@
+.poachPage {
+    background-image: url('../../assets/poach.jpg') !important;
+    background-size: cover;
+    background-position: center;
+    background-repeat: repeat-y;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .poachPage {
+    padding-top: 50px;
+  }
+  
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-bottom: 60px;
+  }
+  
+  .titleContainer {
+    margin: 50px 0;
+  }
+  
+  .titleContainer h1 {
+    font-size: 3rem;
+    color: var(--ternary-color);
+    margin: 0;
+  }
+  
+  .titleContainer h2 {
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+    margin: 8px 0;
+  }
+
+  
+  .uploadContainer1 {
+    display: flex;
+    justify-content: center;
+    margin: 50px 0;
+  }
+  
+  .uploadBox {
+    transform: translateY(300px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 800px;
+    height: 200px;
+    border: 3px dashed white;
+    border-radius: 10px;
+    background-color: rgba(169, 168, 168, 0.1);
+    cursor: pointer;
+    position: relative;
+  }
+  
+
+  .uploadInput {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+  
+  .uploadIcon {
+    transform: translateY(-35px);
+    opacity: 0.7;
+    font-size: 3rem;
+    color: white;
+  }
+  
+  .uploadBox p {
+    transform: translateY(-55px);
+    opacity: 0.7;
+    margin-top: 10px;
+    font-size: 1.5rem;
+    color: white;
+  }
+  
+  .imagePreviewContainer {
+    margin: 50px 0;
+    text-align: center;
+  }
+  
+
+  .backButton,
+  .identifyButton {
+    margin: 20px 10px 0;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    width: 200px;
+    color: white;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+  }
+  
+  .backButton {
+    background-color: rgb(230, 61, 61);
+  }
+  
+  .identifyButton {
+    background-color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .identifyButton .identifyIcon {
+    margin-right: 8px;
+  }
+  
+  .backButton:hover {
+    background-color: var(--secondary-color);
+  }
+  
+  .identifyButton:hover {
+    background-color: var(--secondary-color);
+  }
+  
+  .buttonGroup {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .infoContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin: 20px auto;
+    width: 70%;
+  }
+  
+  .infoContainer strong{
+  
+    color:black;
+    font-size: 1.3rem;
+    
+  }
+  .infoBox {
+    background: rgba(255, 0, 0, 0.1);
+    padding: 15px;
+    border-radius: 10px;
+    position: relative;
+  }
+  .infoBox:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  }
+  
+  .infoBox p {
+    margin: 5px 0;
+  }
+  
+  .kingdomPhylum, .funFact, .legalConsequences, .pastCrimeExamples {
+    border: 3px solid white;
+  }
+  
+  .kingdomPhylum {
+   background-color: rgb(44, 135, 74);
+    color:white;
+  }
+  
+  @keyframes slideInFromLeft {
+    from {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideInFromRight {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  .slideInFromLeft {
+    animation: slideInFromLeft 4.5s ease-out forwards;
+  }
+  
+  .slideInFromRight {
+    animation: slideInFromRight 4.5s ease-out forwards;
+  }
+  
+  .animalName{
+    font-size: 2rem;
+    color:white;
+  
+  }
+  .funFact {
+    background-color: rgb(19, 120, 19);
+    color:white;
+  }
+  
+  .legalConsequences {
+    background-color: rgb(247, 47, 47);
+    color:white;
+  }
+  
+  .pastCrimeExamples {
+    background-color: rgb(247, 47, 47);
+    color:white;
+  }
+  
+  .loadingContainer {
+    position: fixed; 
+    top: 90px; 
+    left: 0; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; 
+    background-color: rgba(163, 157, 157, 0.8);
+  }
+  
+  .loadingContainer img {
+    filter: grayscale(100%) brightness(0) contrast(1000%)
+  }
+  .loadingContainer p {
+    margin-top: 10px; 
+    font-size: 40px;
+    color: black;
+    text-align: center;
+  }
+  
+  
+  
+  @media (max-width: 768px) {
+    .titleContainer h1 {
+      font-size: 1.8rem;
+    }
+  
+    .titleContainer h2 {
+      font-size: 1.2rem;
+    }
+  
+  
+    .uploadBox {
+      width: 80%;
+      height: auto;
+      padding: 20px 10px;
+      opacity: 0.5;
+    }
+  
+    .uploadIcon {
+      font-size: 2rem;
+    }
+  
+    .uploadBox p {
+      font-size: 1rem;
+    }
+  
+    .imagePreview {
+      max-width: 100%;
+    }
+  
+    .backButton {
+      width: 80%;
+      padding: 10px;
+    }
+  }
+  .videoPreviewContainer {
+    max-width: 400px; /* Set your desired max width */
+    max-height: 380px; /* Set your desired max height */
+}
+
+.videoPreviewContainer video {
+    width: 100%; /* Make video responsive */
+    height: auto; /* Maintain aspect ratio */
+    max-height: 100%; /* Prevent exceeding the container height */
+    object-fit: cover; /* Control the content resizing */
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0; /* Starting opacity */
+    }
+    100% {
+        opacity: 0.8; /* Final opacity */
+    }
+}
+.uploadContainer1 {
+    animation: fadeIn 3s forwards;
+    opacity: 0.8;
+    background-position: center bottom;
+    height: 200px;
+    width: 400px;
+    background-size: cover;
+    background-image: url('../../assets/upload-image.jpg'); /* Path to your background image */
+}
+

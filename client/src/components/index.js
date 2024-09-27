@@ -10,5 +10,6 @@ import Profile from "./myprofile/Profile";
 import Project from "./ViewProjects/Project/Project";
 import AddProject from "./myprofile/AddProject/AddProject";
 import ViewProjects from "./ViewProjects/ViewProjects";
-export { Register, Login, Navbar,Home,Education,AnimalTracking,Welcome,IdentifySpecies,Profile,AddProject,ViewProjects,Project };
+import Poaching from "./poaching/Poaching";
+export { Register, Login, Navbar,Home,Education,AnimalTracking,Welcome,IdentifySpecies,Profile,AddProject,ViewProjects,Project,Poaching };
 

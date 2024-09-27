@@ -1,8 +1,3 @@
-html, body {
-    height: 100%;
-    margin: 0; /* Remove default margin */
-    overflow: hidden; /* Prevent scrolling of the body */
-}
 
 .content {
     height: 100%;
