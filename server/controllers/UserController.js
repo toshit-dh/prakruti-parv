@@ -110,6 +110,10 @@ exports.login = async (req, res) => {
   exports.getProfile= async(req,res) => {
     try {
       const id = req.user.userId
+      console.log(id);
+      
+      console.log(await User.findById(id));
+      
       res.status(200).json(new APIResponse(await User.findById(id)).toJson())
     } catch (e) {
       console.error('Edit Profile Error:', error);
@@ -121,14 +125,10 @@ exports.login = async (req, res) => {
     let uploadedFileId;
     try {
       const id = req.user.userId
-      const { profile } = req.body;
-      if (!profile.firstName || !profile.lastName) return res.status(400).json(new APIResponse(null, 'First name and last name are required').toJson());
+      const profile = req.body;
+      if (!profile.name || !profile.role || !profile.bio) return res.status(400).json(new APIResponse(null, 'First name and last name are required').toJson());
       const user = await User.findById(id);
       if (!user) return res.status(404).json(new APIResponse(null, 'User not found').toJson());
-      if (req.file) {
-        uploadedFileId = req.file.public_id;
-        profile.avatarUrl = req.file.path;
-      } else profile.avatarUrl = "https://res.cloudinary.com/djt5vw5aa/image/upload/v1727512495/user-profiles/default.jpg";
       user.profile = profile;
       const updatedUser = await user.save();
       res.status(200).json(new APIResponse(updatedUser, "Profile Updated Successfully"));

@@ -1,34 +1,228 @@
-body {
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    margin: 0;
-    padding: 0;
-  }
-  .profile {
-    position: relative;
-    /* Other styles for your profile */
-  }
-  
-  .floating-button {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    width: 50px;
-    height: 50px;
-    background-color: #007bff; /* Example background color */
-    color: white;
-    border: none;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  .floating-button:hover {
-    background-color: #0056b3; /* Example hover color */
-  }
-  
+/* Profile.css - Enhanced Dark Theme */
+
+/* Base Styling */
+.profile {
+  margin-top: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #0d0d0d;
+  min-height: 100vh;
+}
+
+.content {
+  width: 100%;
+  max-width: 900px;
+  background: #1c1c1e;
+  padding: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+  border-radius: 12px;
+  color: #e5e5e5;
+}
+
+/* Profile Header */
+.profile-header {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #333;
+}
+
+.avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin-right: 25px;
+  object-fit: cover;
+  border: 3px solid #444;
+}
+
+.user-info h2 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: bold;
+  color: #ffffff;
+}
+.user-info p{
+  padding: 0;
+  margin: 5px;
+}
+.user-info {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.edit {
+  position: absolute;
+  right: 0;
+  top: 0;
+  background-color: transparent;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  width: auto;
+}
+
+.user-info-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.input {
+  background-color: #292929;
+  color: #e5e5e5;
+  padding: 10px;
+  border: 1px solid #444;
+  border-radius: 4px;
+}
+
+.button {
+  display: flex;
+  gap: 10px;
+}
+
+/* Donation Section */
+.donations-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.donation-item {
+  background: #292929;
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.3s ease;
+}
+
+.donation-item:hover {
+  background: #333333;
+}
+
+.donation-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.donation-amount {
+  font-size: 20px;
+  font-weight: bold;
+  color: #4caf50; /* Green color for emphasis */
+}
+
+.donation-project,
+.donation-date {
+  color: #d3d3d3;
+}
+
+/* Favorites Section */
+.favorites-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 15px;
+}
+
+.favorite-item {
+  background: #292929;
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+  transition: background 0.3s ease;
+}
+
+.favorite-item:hover {
+  background: #333333;
+}
+
+.favorite-item p {
+  color: #d3d3d3;
+  margin: 0;
+}
+
+/* Friends Section */
+.friends-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 15px;
+}
+
+.friend-item {
+  background: #292929;
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+  transition: background 0.3s ease;
+}
+
+.friend-item:hover {
+  background: #333333;
+}
+
+.friend-name {
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.user-info-edit {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.input-row label {
+  width: 120px; /* Adjust width as needed */
+  margin-right: 10px; /* Space between label and input */
+  color: #e5e5e5; /* Label color */
+}
+
+.input-row input,
+.input-row select {
+  flex: 1; /* Take up the remaining space */
+  padding: 5px;
+  border: 1px solid #555;
+  border-radius: 4px;
+  background-color: #292929;
+  color: #e5e5e5;
+}
+
+/* Optional styles for save and cancel buttons */
+.save-button,
+.cancel-button {
+  margin: 6px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.save-button {
+  background-color: #4caf50; /* Green for save */
+  color: white;
+}
+
+.no-change{
+  background-color: grey;
+}
+
+.cancel-button {
+  background-color: #f44336; /* Red for cancel */
+  color: white;
+}
+
+.aside{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}

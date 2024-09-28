@@ -3,6 +3,7 @@ const JWT_SECRET = process.env.JWT_SECRET
 const APIResponse = require('../utils/APIResponse')
 exports.verifyToken = (req, res,next) => {
   try {
+    
     const token = req.cookies.token
 
     if (!token) return res.status(401).json(new APIResponse(null, 'No token provided').toJson());
