@@ -81,7 +81,7 @@ const IdentifySpecies = () => {
   return (
     <div className="identifyPage">
       <Navbar />
-      <div className="content">
+      <div className="content2">
         <div className="titleContainer">
           <motion.h1
             initial={{ opacity: 0, y: -50 }}

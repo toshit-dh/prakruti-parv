@@ -55,7 +55,7 @@ const FilterBar = () => {
   }, []);
 
   return (
-    <div className="content">
+    <div className="content3">
       <Navbar />
       <div className="filterBar">
         <TextField

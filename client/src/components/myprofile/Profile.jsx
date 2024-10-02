@@ -4,36 +4,24 @@ import "./Profile.css";
 import { FaEdit } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from 'axios';
+import axios from "axios";
 import { EDIT_PROFILE_ROUTE } from "../../utils/Routes";
-
-// Dummy user data for fallback
-const dummyUser = {
-  name: "John Doe",
-  username: "john_doe",
-  profile: {
-    bio: "This is a dummy bio.",
-    avatarUrl: "https://example.com/dummy-avatar.png"
-  },
-  role: "conservationist",
-  badges: 5,
-  email: "john@example.com"
-};
 
 export default function Profile() {
   const [user, setUser] = useState(null);
   const [isEdit, setIsEdit] = useState(false);
-  const [avatar, setAvatar] = useState(dummyUser.profile.avatarUrl);
+  const [avatar, setAvatar] = useState(null);
   const [isChanged, setIsChanged] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(EDIT_PROFILE_ROUTE, {
-          withCredentials: true
+        const {data} = await axios.get(EDIT_PROFILE_ROUTE, {
+          withCredentials: true,
         });
-        setUser(response.data);
-        setAvatar(response.data?.profile?.avatarUrl || dummyUser.profile.avatarUrl);
+        console.log(data.data);
+        setUser({...data.data.profile,username: data.data.username,role: data.data.role,badges: data.data.badges,email: data.data.email});
+        setAvatar(`https://res.cloudinary.com/djt5vw5aa/image/upload/v1727512495/user-profiles/${data.data._id ? data.data._id : 'default'}.jpg`);
       } catch (e) {
         console.error(e);
         toast.error(e.message);
@@ -43,28 +31,16 @@ export default function Profile() {
     fetchUserData();
   }, []);
 
-  useEffect(() => {
-    if (user) {
-      const hasChanges =
-        user.name !== dummyUser.name ||
-        user.username !== dummyUser.username ||
-        user.profile?.bio !== dummyUser.profile.bio ||
-        user.role !== dummyUser.role ||
-        user.email !== dummyUser.email ||
-        avatar !== dummyUser.profile.avatarUrl;
-
-      setIsChanged(hasChanges);
-    }
-  }, [user, avatar]);
-
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file && (file.type === "image/jpeg" || file.type === "image/png")) {
-      setAvatar(URL.createObjectURL(file));
+      const objectUrl = URL.createObjectURL(file);
+      setAvatar(objectUrl);
       setUser((prevUser) => ({
         ...prevUser,
-        profile: { ...prevUser.profile, avatarUrl: URL.createObjectURL(file) },
+        profile: { ...prevUser.profile, avatarUrl: objectUrl },
       }));
+      setIsChanged(true);
     } else {
       toast.error("Please upload an image in .jpg or .png format.");
     }
@@ -74,24 +50,20 @@ export default function Profile() {
     const { id, value } = e.target;
     setUser((prevUser) => ({
       ...prevUser,
-      ...(id === "name" && { name: value }),
-      ...(id === "bio" && { profile: { ...prevUser.profile, bio: value } }),
-      ...(id === "role" && { role: value }),
+      [id]: value,
     }));
+    setIsChanged(true);
   };
 
   const handleSave = async () => {
     const formData = new FormData();
     formData.append("name", user.name);
-    formData.append("bio", user.profile?.bio || "");
+    formData.append("bio", user.bio || "");
     formData.append("role", user.role);
-
-    // Append the actual file object if changed
-    const fileInput = document.getElementById('image-upload');
+    const fileInput = document.getElementById("image-upload");
     if (fileInput.files.length > 0) {
       formData.append("image", fileInput.files[0]);
     }
-
     try {
       const response = await axios.post(EDIT_PROFILE_ROUTE, formData, {
         withCredentials: true,
@@ -101,24 +73,28 @@ export default function Profile() {
       });
       console.log(response);
       toast.success("Profile updated successfully!");
+      setIsEdit(false);
+      setIsChanged(false);
     } catch (e) {
-      console.error('Error response:', e.response ? e.response.data : e.message);
+      console.error(
+        "Error response:",
+        e.response ? e.response.data : e.message
+      );
       toast.error(`Error updating profile: ${e.message}`);
     }
   };
 
   const handleCancel = () => {
-    setUser(dummyUser);
-    setAvatar(dummyUser.profile.avatarUrl);
     setIsEdit(false);
-    if (avatar && avatar.startsWith('blob:')) {
+    setIsChanged(false);
+    // Optionally reset the avatar to the original one
+    if (user && user.profile.avatarUrl) {
+      setAvatar(user.profile.avatarUrl);
+    }
+    if (avatar && avatar.startsWith("blob:")) {
       URL.revokeObjectURL(avatar);
     }
   };
-
-  if (!user) {
-    return <p>Loading user data...</p>; // Fallback UI while loading
-  }
 
   return (
     <div className="profile">
@@ -139,17 +115,19 @@ export default function Profile() {
           </div>
           {!isEdit ? (
             <div className="user-info">
-              <>
-                <h2>{user.name}</h2>
-                <p>@{user.username}</p>
-                <p>{user.profile.bio}</p>
-                <p>Role: {user.role}</p>
-                <p>Badges: {user.badges}</p>
-                <p>Email: {user.email}</p>
-                <button className="edit" onClick={() => setIsEdit(true)}>
-                  <FaEdit />
-                </button>
-              </>
+              {user && (
+                <>
+                  <h2>{user.name}</h2>
+                  <p>@{user.username}</p>
+                  <p>{user.bio}</p>
+                  <p>Role: {user.role}</p>
+                  <p>Badges: {user.badges}</p>
+                  <p>Email: {user.email}</p>
+                  <button className="edit" onClick={() => setIsEdit(true)}>
+                    <FaEdit />
+                  </button>
+                </>
+              )}
             </div>
           ) : (
             <div className="user-info-edit">
@@ -170,7 +148,7 @@ export default function Profile() {
                   id="bio"
                   type="text"
                   placeholder="Bio"
-                  value={user.profile.bio}
+                  value={user.bio}
                   onChange={handleChange}
                   required
                 />
@@ -185,7 +163,7 @@ export default function Profile() {
               </div>
               <div className="button">
                 <button
-                  className={`save-button ${!isChanged ? 'no-change' : ''}`}
+                  className={`save-button ${!isChanged ? "no-change" : ""}`}
                   onClick={handleSave}
                   disabled={!isChanged}
                 >

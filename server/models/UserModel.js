@@ -65,7 +65,6 @@ const userSchema = new Schema({
       name: { type: String, default: "" },
       bio: { type: String, default: "" },
       avatarUrl: { type: String, default: "" },
-      contactEmail: { type: String, default: "" },
     },
     default: {},
   },

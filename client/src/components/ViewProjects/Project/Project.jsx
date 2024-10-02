@@ -26,7 +26,7 @@ export default function Project() {
   }, [id]); // Pass id as a dependency here
 
   return (
-    <div className="content">
+    <div className="content4">
       <Navbar />
       <div className="project-card">
         {project && (
