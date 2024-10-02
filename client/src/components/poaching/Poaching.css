@@ -8,7 +8,11 @@
   }
   
   .poachPage {
-    padding-top: 50px;
+    padding-top: 150px;
+  }
+  .tag{
+    color:rgb(34, 97, 0);
+    font-size:60px;
   }
   
   .content5 {
@@ -25,13 +29,15 @@
   
   .titleContainer h1 {
     font-size: 3rem;
-    color: var(--ternary-color);
+    /*color: var(--ternary-color);*/
+    color:white;
     margin: 0;
   }
   
   .titleContainer h2 {
     font-size: 1.5rem;
-    color: var(--secondary-color);
+    /*color: var(--secondary-color);*/
+    color:white;
     margin: 8px 0;
   }
 
@@ -70,14 +76,15 @@
   
   .uploadIcon {
     transform: translateY(-35px);
-    opacity: 0.7;
+    opacity: 0.9;
     font-size: 3rem;
     color: white;
+    padding-top: 80px;
   }
   
   .uploadBox p {
     transform: translateY(-55px);
-    opacity: 0.7;
+    opacity: 0.9;
     margin-top: 10px;
     font-size: 1.5rem;
     color: white;
@@ -159,14 +166,6 @@
     margin: 5px 0;
   }
   
-  .kingdomPhylum, .funFact, .legalConsequences, .pastCrimeExamples {
-    border: 3px solid white;
-  }
-  
-  .kingdomPhylum {
-   background-color: rgb(44, 135, 74);
-    color:white;
-  }
   
   @keyframes slideInFromLeft {
     from {
@@ -203,20 +202,7 @@
     color:white;
   
   }
-  .funFact {
-    background-color: rgb(19, 120, 19);
-    color:white;
-  }
-  
-  .legalConsequences {
-    background-color: rgb(247, 47, 47);
-    color:white;
-  }
-  
-  .pastCrimeExamples {
-    background-color: rgb(247, 47, 47);
-    color:white;
-  }
+
   
   .loadingContainer {
     position: fixed; 
@@ -277,23 +263,23 @@
     }
   }
   .videoPreviewContainer {
-    max-width: 400px; /* Set your desired max width */
-    max-height: 380px; /* Set your desired max height */
+    max-width: 400px; 
+    max-height: 380px; 
 }
 
 .videoPreviewContainer video {
-    width: 100%; /* Make video responsive */
-    height: auto; /* Maintain aspect ratio */
-    max-height: 100%; /* Prevent exceeding the container height */
-    object-fit: cover; /* Control the content resizing */
+    width: 100%; 
+    height: auto; 
+    max-height: 100%; 
+    object-fit: cover; 
 }
 
 @keyframes fadeIn {
     0% {
-        opacity: 0; /* Starting opacity */
+        opacity: 0;
     }
     100% {
-        opacity: 0.8; /* Final opacity */
+        opacity: 0.8; 
     }
 }
 .uploadContainer1 {
@@ -303,6 +289,46 @@
     height: 200px;
     width: 400px;
     background-size: cover;
-    background-image: url('../../assets/upload-image.jpg'); /* Path to your background image */
+    background-image: url('../../assets/upload-image.jpg'); 
 }
 
+.resultContainer {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #f0f4f8;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.detected {
+  color: #d32f2f;
+}
+
+.detected h3 {
+  display: flex;
+  align-items: center;
+}
+
+.detected h3::before {
+  content: "🛑";
+  margin-right: 10px;
+}
+
+.not-detected {
+  color: #388e3c; 
+}
+
+.not-detected h3 {
+  display: flex;
+  align-items: center;
+}
+
+.not-detected h3::before {
+  content: "✅";
+  margin-right: 10px;
+}
+
+.details ul {
+  list-style-type: disc;
+  margin-left: 20px;
+}

@@ -14,7 +14,7 @@ const Poaching = () => {
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [videoUploaded, setVideoUploaded] = useState(false); 
   const [selectedFile, setSelectedFile] = useState(null);
-  const [animalInfo, setPoachInfo] = useState({});
+  const [poachInfo, setPoachInfo] = useState({});
   const [loading, setLoading] = useState(false); 
 
   const toastOptions = {
@@ -71,7 +71,7 @@ const Poaching = () => {
         toast.error(result.error, toastOptions);
       }
     } catch (error) {
-      toast.error('An error occurred. Please try again.', toastOptions);
+      toast.error(error.message, toastOptions);
     } finally {
       setLoading(false); 
     }
@@ -87,14 +87,14 @@ const Poaching = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: 'easeOut' }}
           >
-            Unyielding Vigilance Against the Silent Slaughter of Earth's Majestic Creatures
+            Introducing the Guardian of the Wild: GarduaDrishti
           </motion.h1>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: 'easeOut', delay: 0.5 }}
           >
-            Identify Poaching Here
+            <span className='tag'>Detect the Danger!!!</span>
           </motion.h2>
         </div>
 
@@ -156,6 +156,29 @@ const Poaching = () => {
           </div>
         )}
       </div>
+      {poachInfo && Object.keys(poachInfo).length > 0 && (
+          <div className="resultContainer">
+            {poachInfo.poaching_detected ? (
+              <div className="detected">
+                <h3>🛑 Poaching Detected</h3>
+                <div className="details">
+                  <h4>Detection Details:</h4>
+                  <ul>
+                    <li>Total Frames Processed: {poachInfo.details.total_frames_processed}</li>
+                    <li>Number of &apos;Yes&apos; Frames: {poachInfo.details.yes_frames}</li>
+                    <li>Number of &apos;No&apos; Frames: {poachInfo.details.no_frames}</li>
+                    <li>Frames with Poaching Detected: {poachInfo.details.yes_frame_indices.join(', ')}</li>
+                  </ul>
+                </div>
+              </div>
+            ) : (
+              <div className="not-detected">
+                <h3>✅ No Poaching Detected</h3>
+                <p>{poachInfo.details}</p>
+              </div>
+            )}
+          </div>
+        )}
       <ToastContainer />
       <style>{`
         .Toastify__toast {

@@ -10,7 +10,7 @@ from torch import nn
 import torchvision.models as models
 from PIL import Image
 import re
-
+import cv2
 
 load_dotenv()
 
@@ -79,6 +79,26 @@ Past Crime Examples:
 13. Past Crime Example 2: Provide another past example of any country where individuals were prosecuted or penalized for killing or harming this animal by law. If the year is available, include it in the response.If year is not available,leave it ..dont include it in repsonse by doing[Year]It looks bad.
 """
 
+resnet_big_weights=models.ResNet101_Weights.DEFAULT
+class GarudaDrishti(nn.Module):
+    def __init__(self,num_classes,resnet_weights):
+        super().__init__()
+        self.model=models.resnet101(weights=resnet_weights)
+        self.model.fc=nn.Linear(in_features=self.model.fc.in_features,out_features=1)
+        
+    def forward(self,X:torch.Tensor):
+        return self.model(X)
+    
+garuda_drishti_model=GarudaDrishti(num_classes=1,resnet_weights=resnet_big_weights).to(device)
+garuda_drishti_model.load_state_dict(torch.load('garuda_drishtiV1.pth'))
+poaching_class_list=['no','yes']
+poach_transforms_=transforms.Compose([
+    transforms.Resize((224, 224)),  
+    #transforms.RandomResizedCrop(size=224, scale=(0.8, 1.0)),
+    transforms.ToTensor(),  
+    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+])
+
 
 @app.route('/',methods= ['GET'])
 def welcome():
@@ -100,7 +120,7 @@ def identify():
                 image = Image.open(file.stream)
                 model.eval()
                 with torch.inference_mode():
-                    image=transforms_(image).unsqueeze(0).to(device)
+                    image=transforms_(image).unsqueeze(0).to(device) # type: ignore
                     output=model(image)
                     pred_label=torch.argmax(torch.softmax(output,dim=1),dim=1)
                     pred_label=class_list[pred_label]
@@ -143,7 +163,104 @@ def identify():
         else:
             return jsonify({'error': 'No image file found.'}), 400
     
+
+@app.route('/poach', methods=['POST', 'GET'])
+def poach():
+    if request.method == 'GET':
+        return "<h1>Send a POST request with an video file to identify the animal.</h1>" 
+    else:
+        if 'video' not in request.files:
+            return jsonify({'error': 'No video file provided.'}), 400
+        file = request.files['video']
+        if file and file.filename != '':
+            try:
+                upload_folder = 'uploads'
+                os.makedirs(upload_folder, exist_ok=True)
+                video_path = os.path.join(upload_folder, file.filename) # type: ignore
+                file.save(video_path)
+                
+                detection_result = detect_poaching_on_video(
+                    video_path=video_path,
+                    model=garuda_drishti_model,
+                    transform=poach_transforms_,
+                    class_names=poaching_class_list,
+                    device=device,
+                    max_frames=150
+                )
+                
+                os.remove(video_path)
+                
+                if detection_result['poaching_detected']:
+                    return jsonify({
+                        'poaching_detected': True,
+                        'details': detection_result['details']
+                    }), 200
+                else:
+                    return jsonify({
+                        'poaching_detected': False,
+                        'details': 'No poaching activities detected in the uploaded video.'
+                    }), 200
+            except Exception as e:
+                return jsonify({'error': f'An error occurred while processing the video: {str(e)}'}), 500
+        else:
+            return jsonify({'error': 'No video file found.'}), 400
+
+def detect_poaching_on_video(video_path, model, transform, class_names, device, max_frames=150):
+    if not os.path.exists(video_path):
+        print(f"Video file {video_path} does not exist.")
+        return {'poaching_detected': False, 'details': 'Video file does not exist.'}
     
+    cap = cv2.VideoCapture(video_path)
+    yes_list = []
+    no_list = []
     
+    if not cap.isOpened():
+        print(f"Failed to open video file {video_path}.")
+        return {'poaching_detected': False, 'details': 'Failed to open video file.'}
+    
+    frame_count = 0
+    print(f"Starting poaching detection on video: {video_path}")
+    
+    while frame_count < max_frames:
+        ret, frame = cap.read()
+        if not ret:
+            print("End of video reached or failed to read the frame.")
+            break
+        
+        frame_count += 1
+        rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        pil_image = Image.fromarray(rgb_frame).convert("RGB")
+        
+        input_tensor = poach_transforms_(pil_image).unsqueeze(0).to(device) # type: ignore
+        
+        model.eval()
+        with torch.inference_mode():
+            outputs = model(input_tensor)
+            y_label=torch.round(torch.sigmoid(outputs)).int()
+            pred_class = poaching_class_list[y_label] # type: ignore
+        
+        if pred_class.lower() == 'yes':
+            yes_list.append('yes')
+        else:
+            no_list.append('no')
+        
+        print(f"Frame {frame_count}: Predicted Class - {pred_class}")
+    
+    cap.release()
+    print("Poaching detection completed.")
+    print(f"Number of 'yes' frames: {len(yes_list)}")
+    print(f"Number of 'no' frames: {len(no_list)}")
+    
+    poaching_detected = len(yes_list) > 0
+    details = {
+        'total_frames_processed': frame_count,
+        'yes_frames': len(yes_list),
+        'no_frames': len(no_list),
+        'yes_frame_indices': [i+1 for i, frame in enumerate(yes_list)],
+        'no_frame_indices': [i+1 for i, frame in enumerate(no_list)]
+    }
+    
+    return {'poaching_detected': poaching_detected, 'details': details}
+       
 if __name__ == '__main__':
     app.run(port=8081, debug=True)
