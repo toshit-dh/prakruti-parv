@@ -1,51 +1,62 @@
 .carousel {
     position: relative;
-    width: 100%; /* Adjust the width as needed */
-    max-width: 600px; /* Maximum width of the carousel */
-    margin: auto; /* Center the carousel */
-    overflow: hidden; /* Hide overflow for sliding effect */
-    border-radius: 8px; /* Optional: Rounded corners */
+    width: 100%;
+    max-width: 1000px; 
+    margin: auto; 
+    overflow: hidden; 
+    border-radius: 8px; 
+    color:red !important;
 }
 
 .carousel-track {
     display: flex;
-    transition: transform 0.5s ease; /* Smooth transition for sliding effect */
-    will-change: transform; /* Optimizes performance for animations */
+    transition: transform 0.5s ease; 
+    will-change: transform; 
 }
 
 .carousel-item {
-    min-width: 100%; /* Each item takes full width */
-    box-sizing: border-box; /* Include padding and border in the element's total width */
+    min-width: 100%;
+    box-sizing: border-box; 
 }
 
 .carousel-image {
-    width: 100%; /* Make images responsive */
-    height: auto; /* Maintain aspect ratio */
-    border-radius: 8px; /* Optional: Rounded corners */
+    width: 100%; 
+    height: auto;
+    border-radius: 8px; 
 }
 
 .carousel-button {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background-color: black; /* Semi-transparent background */
+    background-color: red !important; 
+    color:red !important;
     border: none;
     cursor: pointer;
     padding: 5px;
-    border-radius: 50%; /* Round buttons */
-    z-index: 10; /* Ensure buttons are above the carousel track */
+    border-radius: 50%;
+    z-index: 10; 
 }
 
-.carousel-button.prev {
-    left: 10px; /* Position for the previous button */
+
+
+.slick-prev:before, .slick-next:before {
+    color: red; 
+    font-size: 30px; 
 }
 
-.carousel-button.next {
-    right: 10px; /* Position for the next button */
+.slick-prev {
+    left: -40px; 
+    z-index: 1;
 }
 
-/* Optional: Hover effect for buttons */
+.slick-next {
+    right: -40px; 
+    z-index:1;
+}
+
+
 .carousel-button:hover {
-    background-color: rgba(255, 255, 255, 1);
+    background-color: red;
     transition: background-color 0.3s;
 }

@@ -164,7 +164,7 @@ const Poaching = () => {
       <PoachingDialog
         isOpen={dialogOpen} 
         poachInfo={poachInfo} 
-        onClose={() => setDialogOpen(false)} // Close dialog function
+        onClose={() => setDialogOpen(false)} 
       />
       <ToastContainer />
       <style>{`

@@ -8,14 +8,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1000; /* Adjust z-index as needed */
+    z-index: 1000; 
   }
   
   .dialogContainer {
     background: white;
     padding: 5px;
     border-radius: 8px;
-    width: 400px; /* Adjust width as needed */
+    width: 600px; 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     position: relative;
   }
@@ -24,9 +24,12 @@
     margin-bottom: 20px;
     background-color: white;
   }
+  .not-detected{
+    color:var(--primary-color);
+  }
   
   .closeButton {
-    background: #ff4757; /* Red background */
+    background: #ff4757; 
     color: white;
     border: none;
     padding: 10px;
@@ -35,6 +38,15 @@
   }
   
   .closeButton:hover {
-    background: #ff6b81; /* Lighter red on hover */
+    background: #ff6b81; 
   }
   
+  .closeButton2{
+
+    background: var(--secondary-color); 
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }

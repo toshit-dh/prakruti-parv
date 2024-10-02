@@ -1,5 +1,7 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import React from 'react';
-import './PoachingDialog.css'; // Create a CSS file for styling
+import './PoachingDialog.css';
 import DetectedFramesCarousel from './DetectedFrameCarousel';
 
 const PoachingDialog = ({ isOpen, poachInfo, onClose }) => {
@@ -12,11 +14,7 @@ const PoachingDialog = ({ isOpen, poachInfo, onClose }) => {
           <div className="detected">
             <h3>🛑 Poaching Detected 🛑</h3>
             <div className="details">
-              <ul>
-                <li>Total Frames Processed: {poachInfo.details.total_frames_processed}</li>
-                <li>Number of &apos;Yes&apos; Frames: {poachInfo.details.yes_frames}</li>
-                <li>Number of &apos;No&apos; Frames: {poachInfo.details.no_frames}</li>
-              </ul>
+                  {poachInfo.details}
             </div>
             <DetectedFramesCarousel detectedFrames={poachInfo.detected_frames} />
           </div>
@@ -26,7 +24,12 @@ const PoachingDialog = ({ isOpen, poachInfo, onClose }) => {
             <p>{poachInfo.details}</p>
           </div>
         )}
-        <button className="closeButton" onClick={onClose}>Close</button>
+        {poachInfo.poaching_detected ?(
+          <button className="closeButton" onClick={onClose}>Close</button>
+        ):(
+           <button className="closeButton2" onClick={onClose}>Close</button>
+        )}
+        
       </div>
     </div>
   );

@@ -203,13 +203,13 @@ def poach():
                         
                     return jsonify({
                         'poaching_detected': True,
-                        'details': 'Poaching activities detected in the uploaded video.',
+                        'details': 'Poaching activities were detected in the uploaded video.',
                         'detected_frames': encoded_frames
                     }), 200
                 else:
                     return jsonify({
                         'poaching_detected': False,
-                        'details': 'No poaching activities detected in the uploaded video.'
+                        'details': 'No poaching activities were detected in the uploaded video.'
                     }), 200
             except Exception as e:
                 return jsonify({'error': f'An error occurred while processing the video: {str(e)}'}), 500
