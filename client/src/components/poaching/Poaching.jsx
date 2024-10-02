@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import loadingGif from '../../assets/load4poach.gif';
 import { IDENTIFY_ROUTE, POACH_ROUTE } from '../../utils/Routes';
+import PoachingDialog from './PoachingDialog';
 
 const Poaching = () => {
   const [selectedVideo, setSelectedVideo] = useState(null);
@@ -16,6 +17,7 @@ const Poaching = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [poachInfo, setPoachInfo] = useState({});
   const [loading, setLoading] = useState(false); 
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const toastOptions = {
     position: 'bottom-left',
@@ -56,25 +58,27 @@ const Poaching = () => {
 
     const formData = new FormData();
     formData.append('video', selectedFile);
-
-    try {
-      const response = await axios.post(POACH_ROUTE, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      console.log(response);
-      const result = response.data;
-      if (response.status === 200) {
-        setPoachInfo(result);
-      } else {
-        toast.error(result.error, toastOptions);
-      }
-    } catch (error) {
-      toast.error(error.message, toastOptions);
-    } finally {
-      setLoading(false); 
-    }
+    setDialogOpen(true)
+    setLoading(false)
+    // try {
+    //   const response = await axios.post(POACH_ROUTE, formData, {
+    //     headers: {
+    //       'Content-Type': 'multipart/form-data',
+    //     },
+    //   });
+    //   console.log(response);
+    //   const result = response.data;
+    //   if (response.status === 200) {
+    //     setDialogOpen(true);
+    //     setPoachInfo(result);
+    //   } else {
+    //     toast.error(result.error, toastOptions);
+    //   }
+    // } catch (error) {
+    //   toast.error(error.message, toastOptions);
+    // } finally {
+    //   setLoading(false); 
+    // }
   };
 
   return (
@@ -156,29 +160,11 @@ const Poaching = () => {
           </div>
         )}
       </div>
-      {poachInfo && Object.keys(poachInfo).length > 0 && (
-          <div className="resultContainer">
-            {poachInfo.poaching_detected ? (
-              <div className="detected">
-                <h3>🛑 Poaching Detected</h3>
-                <div className="details">
-                  <h4>Detection Details:</h4>
-                  <ul>
-                    <li>Total Frames Processed: {poachInfo.details.total_frames_processed}</li>
-                    <li>Number of &apos;Yes&apos; Frames: {poachInfo.details.yes_frames}</li>
-                    <li>Number of &apos;No&apos; Frames: {poachInfo.details.no_frames}</li>
-                    <li>Frames with Poaching Detected: {poachInfo.details.yes_frame_indices.join(', ')}</li>
-                  </ul>
-                </div>
-              </div>
-            ) : (
-              <div className="not-detected">
-                <h3>✅ No Poaching Detected</h3>
-                <p>{poachInfo.details}</p>
-              </div>
-            )}
-          </div>
-        )}
+      <PoachingDialog
+        isOpen={dialogOpen} 
+        poachInfo={poachInfo} 
+        onClose={() => setDialogOpen(false)} 
+      />
       <ToastContainer />
       <style>{`
         .Toastify__toast {

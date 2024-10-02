@@ -1,0 +1,39 @@
+.dialogBackdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000; /* Adjust z-index as needed */
+  }
+  
+  .dialogContainer {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px; /* Adjust width as needed */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+  }
+  
+  .detected, .not-detected {
+    margin-bottom: 20px;
+  }
+  
+  .closeButton {
+    background: #ff4757; /* Red background */
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .closeButton:hover {
+    background: #ff6b81; /* Lighter red on hover */
+  }
+  
