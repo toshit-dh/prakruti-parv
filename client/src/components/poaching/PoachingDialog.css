@@ -13,15 +13,16 @@
   
   .dialogContainer {
     background: white;
-    padding: 20px;
+    padding: 5px;
     border-radius: 8px;
-    width: 300px; /* Adjust width as needed */
+    width: 400px; /* Adjust width as needed */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     position: relative;
   }
   
   .detected, .not-detected {
     margin-bottom: 20px;
+    background-color: white;
   }
   
   .closeButton {

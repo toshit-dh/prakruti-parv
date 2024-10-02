@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import loadingGif from '../../assets/load4poach.gif';
 import { IDENTIFY_ROUTE, POACH_ROUTE } from '../../utils/Routes';
+import PoachingDialog from './PoachingDialog';
 
 const Poaching = () => {
   const [selectedVideo, setSelectedVideo] = useState(null);
@@ -16,6 +17,7 @@ const Poaching = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [poachInfo, setPoachInfo] = useState({});
   const [loading, setLoading] = useState(false); 
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const toastOptions = {
     position: 'bottom-left',
@@ -56,7 +58,7 @@ const Poaching = () => {
 
     const formData = new FormData();
     formData.append('video', selectedFile);
-
+    
     try {
       const response = await axios.post(POACH_ROUTE, formData, {
         headers: {
@@ -67,6 +69,8 @@ const Poaching = () => {
       const result = response.data;
       if (response.status === 200) {
         setPoachInfo(result);
+        setDialogOpen(true)
+        setLoading(false)
         console.log(result)
       } else {
         toast.error(result.error, toastOptions);
@@ -157,23 +161,11 @@ const Poaching = () => {
           </div>
         )}
       </div>
-      {poachInfo && Object.keys(poachInfo).length > 0 && (
-          <div className="resultContainer">
-            {poachInfo.poaching_detected ? (
-              <div className="detected">
-                <h3>🛑 Poaching Detected</h3>
-                <div className="details">
-                    {poachInfo.details}
-                </div>
-              </div>
-            ) : (
-              <div className="not-detected">
-                <h3>✅ No Poaching Detected</h3>
-                <p>{poachInfo.details}</p>
-              </div>
-            )}
-          </div>
-        )}
+      <PoachingDialog
+        isOpen={dialogOpen} 
+        poachInfo={poachInfo} 
+        onClose={() => setDialogOpen(false)} // Close dialog function
+      />
       <ToastContainer />
       <style>{`
         .Toastify__toast {
