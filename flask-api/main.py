@@ -11,6 +11,9 @@ import torchvision.models as models
 from PIL import Image
 import re
 import cv2
+import random
+import base64
+from io import BytesIO
 
 load_dotenv()
 
@@ -179,21 +182,29 @@ def poach():
                 video_path = os.path.join(upload_folder, file.filename) # type: ignore
                 file.save(video_path)
                 
-                detection_result = detect_poaching_on_video(
+                detection_result, detected_frames  = detect_poaching_on_video(
                     video_path=video_path,
                     model=garuda_drishti_model,
                     transform=poach_transforms_,
                     class_names=poaching_class_list,
                     device=device,
-                    max_frames=150
+                    max_frames=300
                 )
                 
                 os.remove(video_path)
                 
-                if detection_result['poaching_detected']:
+                if detection_result['poaching_detected']: # type: ignore
+                    encoded_frames = []
+                    for frame in detected_frames:
+                        buffered = BytesIO()
+                        frame.save(buffered, format="JPEG")
+                        img_str = base64.b64encode(buffered.getvalue()).decode('utf-8')
+                        encoded_frames.append(f"data:image/jpeg;base64,{img_str}")
+                        
                     return jsonify({
                         'poaching_detected': True,
-                        'details': detection_result['details']
+                        'details': 'Poaching activities detected in the uploaded video.',
+                        'detected_frames': encoded_frames
                     }), 200
                 else:
                     return jsonify({
@@ -205,12 +216,13 @@ def poach():
         else:
             return jsonify({'error': 'No video file found.'}), 400
 
-def detect_poaching_on_video(video_path, model, transform, class_names, device, max_frames=150):
+def detect_poaching_on_video(video_path, model, transform, class_names, device, max_frames=300):
     if not os.path.exists(video_path):
         print(f"Video file {video_path} does not exist.")
         return {'poaching_detected': False, 'details': 'Video file does not exist.'}
     
     cap = cv2.VideoCapture(video_path)
+    detected_frames = []
     yes_list = []
     no_list = []
     
@@ -228,39 +240,35 @@ def detect_poaching_on_video(video_path, model, transform, class_names, device, 
             break
         
         frame_count += 1
-        rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        pil_image = Image.fromarray(rgb_frame).convert("RGB")
+        if frame_count % 10 ==0:
+            rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            pil_image = Image.fromarray(rgb_frame).convert("RGB")
+            
+            input_tensor = poach_transforms_(pil_image).unsqueeze(0).to(device) # type: ignore
+            
+            model.eval()
+            with torch.inference_mode():
+                outputs = model(input_tensor)
+                y_label=torch.round(torch.sigmoid(outputs)).int()
+                pred_class = poaching_class_list[y_label] # type: ignore
+            
+            if pred_class.lower() == 'yes':
+                yes_list.append('yes')
+                detected_frames.append(pil_image)
+            else:
+                no_list.append('no')
+            
+            print(f"Frame {frame_count}: Predicted Class - {pred_class}")
         
-        input_tensor = poach_transforms_(pil_image).unsqueeze(0).to(device) # type: ignore
-        
-        model.eval()
-        with torch.inference_mode():
-            outputs = model(input_tensor)
-            y_label=torch.round(torch.sigmoid(outputs)).int()
-            pred_class = poaching_class_list[y_label] # type: ignore
-        
-        if pred_class.lower() == 'yes':
-            yes_list.append('yes')
-        else:
-            no_list.append('no')
-        
-        print(f"Frame {frame_count}: Predicted Class - {pred_class}")
-    
     cap.release()
     print("Poaching detection completed.")
     print(f"Number of 'yes' frames: {len(yes_list)}")
     print(f"Number of 'no' frames: {len(no_list)}")
+    selected_frames = random.sample(detected_frames, min(5, len(detected_frames)))
     
     poaching_detected = len(yes_list) > 0
-    details = {
-        'total_frames_processed': frame_count,
-        'yes_frames': len(yes_list),
-        'no_frames': len(no_list),
-        'yes_frame_indices': [i+1 for i, frame in enumerate(yes_list)],
-        'no_frame_indices': [i+1 for i, frame in enumerate(no_list)]
-    }
     
-    return {'poaching_detected': poaching_detected, 'details': details}
+    return {'poaching_detected': poaching_detected}, selected_frames
        
 if __name__ == '__main__':
     app.run(port=8081, debug=True)

@@ -67,6 +67,7 @@ const Poaching = () => {
       const result = response.data;
       if (response.status === 200) {
         setPoachInfo(result);
+        console.log(result)
       } else {
         toast.error(result.error, toastOptions);
       }
@@ -162,13 +163,7 @@ const Poaching = () => {
               <div className="detected">
                 <h3>🛑 Poaching Detected</h3>
                 <div className="details">
-                  <h4>Detection Details:</h4>
-                  <ul>
-                    <li>Total Frames Processed: {poachInfo.details.total_frames_processed}</li>
-                    <li>Number of &apos;Yes&apos; Frames: {poachInfo.details.yes_frames}</li>
-                    <li>Number of &apos;No&apos; Frames: {poachInfo.details.no_frames}</li>
-                    <li>Frames with Poaching Detected: {poachInfo.details.yes_frame_indices.join(', ')}</li>
-                  </ul>
+                    {poachInfo.details}
                 </div>
               </div>
             ) : (
