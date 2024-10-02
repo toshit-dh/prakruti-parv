@@ -23,7 +23,7 @@ body {
       align-items: center;
       background-color: #fff;
       border-radius: 20px;
-      box-shadow: inset 0 0 80px var(--secondary-color);
+      box-shadow: inset 0 0 100px rgb(85, 176, 28);
       max-width: 1200px;
       width: 100%;
       overflow: hidden;
