@@ -182,7 +182,7 @@
 }
 
 .kingdomPhylum {
- background-color: rgb(44, 135, 74);
+ background-color: rgb(44, 135, 74) !important;
   color:white;
 }
 
@@ -222,17 +222,17 @@
 
 }
 .funFact {
-  background-color: rgb(19, 120, 19);
+  background-color: rgb(19, 120, 19) !important;
   color:white;
 }
 
 .legalConsequences {
-  background-color: rgb(247, 47, 47);
+  background-color: rgb(247, 47, 47) !important;
   color:white;
 }
 
 .pastCrimeExamples {
-  background-color: rgb(247, 47, 47);
+  background-color: rgb(247, 47, 47) !important;
   color:white;
 }
 
