@@ -80,7 +80,7 @@ const Poaching = () => {
   return (
     <div className="poachPage">
       <Navbar />
-      <div className="content">
+      <div className="content5">
         <div className="titleContainer">
           <motion.h1
             initial={{ opacity: 0, y: -50 }}
