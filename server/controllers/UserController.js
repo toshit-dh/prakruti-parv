@@ -67,6 +67,12 @@ exports.login = async (req, res) => {
     }
   };
 
+  exports.logout=async(req,res) => {
+    await User.findByIdAndUpdate(req.user?._id,{$unset:{refreshToken:1}},{new:true}) 
+    return res.status(200).clearCookie('token').json(new APIResponse(null, 'Logout successful').toJson());
+    
+  }
+
   exports.verifyEmail = async (req, res) => {
     const { token } = req.query;
   

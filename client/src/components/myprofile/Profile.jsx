@@ -6,6 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { EDIT_PROFILE_ROUTE } from "../../utils/Routes";
+import  defaultAvatar from '../../assets/default.png' ;
 
 export default function Profile() {
   const [user, setUser] = useState(null);
@@ -87,7 +88,7 @@ export default function Profile() {
   const handleCancel = () => {
     setIsEdit(false);
     setIsChanged(false);
-    // Optionally reset the avatar to the original one
+
     if (user && user.profile.avatarUrl) {
       setAvatar(user.profile.avatarUrl);
     }

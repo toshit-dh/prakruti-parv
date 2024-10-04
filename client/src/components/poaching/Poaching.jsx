@@ -92,7 +92,7 @@ const Poaching = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: 'easeOut' }}
           >
-            Introducing the Guardian of the Wild: GarduaDrishti
+            Introducing the Guardian of the Wild: GarudaDrishti
           </motion.h1>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}

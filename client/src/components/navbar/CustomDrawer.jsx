@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
@@ -12,10 +14,30 @@ import ChatIcon from "@mui/icons-material/Chat";
 import PublicIcon from "@mui/icons-material/Public";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { useDispatch } from "react-redux";
 import "./CustomDrawer.css";
+import { useSelector } from "react-redux";
+import { logoutUser } from "../../redux/slice/UserSlice";
 
 const CustomDrawer = ({ isOpen, toggleDrawer }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { isAuthenticated, status: logoutStatus, error } = useSelector(
+    (state) => state.user
+  );
+
+  const handleLogout = async () => {
+    try {
+      const resultAction = await dispatch(logoutUser());
+      if (logoutUser.fulfilled.match(resultAction)) {
+        navigate("/login"); 
+      } else {
+        console.error('Logout failed:', resultAction.payload);
+      }
+    } catch (err) {
+      console.error('An error occurred during logout:', err);
+    }
+  };
   const drawerList = () => (
     <div
       role="presentation"
@@ -39,6 +61,7 @@ const CustomDrawer = ({ isOpen, toggleDrawer }) => {
             className="listItem"
             onClick={() => {
               if(text == "Projects") navigate("/viewProjects");
+              if(text=='Logout') handleLogout();
             }}
           >
             <ListItemIcon>{icon}</ListItemIcon>

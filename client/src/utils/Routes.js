@@ -5,6 +5,7 @@ const USER = "users"
 
 export const SIGNUP_ROUTE = `${BASE_URL}/${ADD}/${USER}/signup`
 export const LOGIN_ROUTE = `${BASE_URL}/${ADD}/${USER}/login`
+export const LOGOUT_ROUTE = `${BASE_URL}/${ADD}/${USER}/logout`
 export const TOKEN_ROUTE = `${BASE_URL}/${ADD}/${USER}/verify-token`
 export const EDIT_PROFILE_ROUTE = `${BASE_URL}/${ADD}/${USER}/`
 
