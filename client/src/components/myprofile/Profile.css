@@ -13,18 +13,21 @@
 
 .content {
   width: 100%;
-  max-width: 900px;
+  max-width: 1200px; /* Increased width */
   background: #1c1c1e;
   padding: 30px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
   border-radius: 12px;
   color: #e5e5e5;
+  border:2px solid var(--primary-color);
+  box-shadow:  0 0 10px (--ternary-color);
 }
 
 /* Profile Header */
 .profile-header {
   display: flex;
   align-items: center;
+  justify-content: center; /* Center the content */
   border-bottom: 1px solid #333;
 }
 
@@ -42,15 +45,20 @@
   font-size: 26px;
   font-weight: bold;
   color: #ffffff;
+  text-align: center; /* Center text */
 }
-.user-info p{
+
+.user-info p {
   padding: 0;
   margin: 5px;
+  text-align: center; /* Center text */
 }
+
 .user-info {
   position: relative;
   display: flex;
   flex-direction: column;
+  align-items: center; /* Center items */
 }
 
 .edit {
@@ -62,25 +70,6 @@
   border: none;
   cursor: pointer;
   width: auto;
-}
-
-.user-info-edit {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.input {
-  background-color: #292929;
-  color: #e5e5e5;
-  padding: 10px;
-  border: 1px solid #444;
-  border-radius: 4px;
-}
-
-.button {
-  display: flex;
-  gap: 10px;
 }
 
 /* Donation Section */
@@ -211,7 +200,7 @@
   color: white;
 }
 
-.no-change{
+.no-change {
   background-color: grey;
 }
 
@@ -220,9 +209,14 @@
   color: white;
 }
 
-.aside{
+.aside {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  align-items: center;
+}
+
+/* Icon styles */
+.icon {
+  margin-right: 8px;
+  color: #4caf50; /* Color for icons */
 }

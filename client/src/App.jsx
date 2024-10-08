@@ -3,6 +3,7 @@ import React from 'react'
 import { Register,Login,Home,Education,AnimalTracking,Welcome,IdentifySpecies,Profile,AddProject,ViewProjects,Project, Poaching } from './components/index'
 import {BrowserRouter,Routes,Route} from 'react-router-dom'
 import ProtectedRoute from './utils/ProtectedRoute'
+import ProjectForm from './components/add-project-form/ProjectForm'
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
           <Route path='/project/:id' element={<Project/>}/>
           <Route path='/addProject' element={<AddProject/>}/>
           <Route path='/viewProjects' element={<ViewProjects/>}/>
+          <Route path='/animal-tracking' element={<ProjectForm/>}/>
 
         </Routes>
     </BrowserRouter>

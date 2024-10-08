@@ -1,12 +1,13 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import Navbar from "../navbar/Navbar";
 import "./Profile.css";
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaUser, FaEnvelope, FaMedal } from "react-icons/fa"; 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { EDIT_PROFILE_ROUTE } from "../../utils/Routes";
-import  defaultAvatar from '../../assets/default.png' ;
+import defaultAvatar from '../../assets/default.png';
 
 export default function Profile() {
   const [user, setUser] = useState(null);
@@ -17,11 +18,16 @@ export default function Profile() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const {data} = await axios.get(EDIT_PROFILE_ROUTE, {
+        const { data } = await axios.get(EDIT_PROFILE_ROUTE, {
           withCredentials: true,
         });
-        console.log(data.data);
-        setUser({...data.data.profile,username: data.data.username,role: data.data.role,badges: data.data.badges,email: data.data.email});
+        setUser({
+          ...data.data.profile,
+          username: data.data.username,
+          role: data.data.role,
+          badges: data.data.badges,
+          email: data.data.email,
+        });
         setAvatar(`https://res.cloudinary.com/djt5vw5aa/image/upload/v1727512495/user-profiles/${data.data._id ? data.data._id : 'default'}.jpg`);
       } catch (e) {
         console.error(e);
@@ -72,15 +78,11 @@ export default function Profile() {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log(response);
       toast.success("Profile updated successfully!");
       setIsEdit(false);
       setIsChanged(false);
     } catch (e) {
-      console.error(
-        "Error response:",
-        e.response ? e.response.data : e.message
-      );
+      console.error("Error response:", e.response ? e.response.data : e.message);
       toast.error(`Error updating profile: ${e.message}`);
     }
   };
@@ -100,84 +102,76 @@ export default function Profile() {
   return (
     <div className="profile">
       <Navbar />
+      <ToastContainer />
       <div className="content">
-        <ToastContainer />
         <div className="profile-header">
-          <div className="aside">
-            <img src={avatar} alt="Profile" className="avatar" />
-            {isEdit && (
-              <input
-                id="image-upload"
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-              />
-            )}
-          </div>
-          {!isEdit ? (
-            <div className="user-info">
-              {user && (
-                <>
-                  <h2>{user.name}</h2>
-                  <p>@{user.username}</p>
-                  <p>{user.bio}</p>
-                  <p>Role: {user.role}</p>
-                  <p>Badges: {user.badges}</p>
-                  <p>Email: {user.email}</p>
-                  <button className="edit" onClick={() => setIsEdit(true)}>
-                    <FaEdit />
-                  </button>
-                </>
-              )}
-            </div>
-          ) : (
+          <img className="avatar" src={avatar ? avatar : defaultAvatar} alt="Profile" />
+          <div className="user-info">
+            <h2>{user?.username}</h2>
             <div className="user-info-edit">
-              <div className="input-row">
-                <label htmlFor="name">Name: </label>
-                <input
-                  id="name"
-                  type="text"
-                  placeholder="Name"
-                  value={user.name}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="input-row">
-                <label htmlFor="bio">Bio: </label>
-                <input
-                  id="bio"
-                  type="text"
-                  placeholder="Bio"
-                  value={user.bio}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="input-row">
-                <label htmlFor="role">Role: </label>
-                <select id="role" value={user.role} onChange={handleChange}>
-                  <option value="conservationist">Conservationist</option>
-                  <option value="researcher">Researcher</option>
-                  <option value="volunteer">Volunteer</option>
-                </select>
-              </div>
-              <div className="button">
-                <button
-                  className={`save-button ${!isChanged ? "no-change" : ""}`}
-                  onClick={handleSave}
-                  disabled={!isChanged}
-                >
-                  Save
-                </button>
-                <button className="cancel-button" onClick={handleCancel}>
-                  Cancel
-                </button>
-              </div>
+              <button className="edit" onClick={() => setIsEdit(!isEdit)}>
+                <FaEdit />
+              </button>
             </div>
-          )}
+            <p>
+              <FaUser className="icon" />
+              {user?.role}
+            </p>
+            <p>
+              <FaMedal className="icon" />
+              {user?.badges.length ? user.badges.join(", ") : "No badges"}
+            </p>
+            <p>
+              <FaEnvelope className="icon" />
+              {user?.email}
+            </p>
+          </div>
         </div>
+        {isEdit && (
+          <div className="edit-section">
+            <div className="input-row">
+              <label htmlFor="name">Name:</label>
+              <input
+                type="text"
+                id="name"
+                value={user.name || ""}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="input-row">
+              <label htmlFor="bio">Bio:</label>
+              <input
+                type="text"
+                id="bio"
+                value={user.bio || ""}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="input-row">
+              <label htmlFor="image-upload">Profile Image:</label>
+              <input
+                type="file"
+                id="image-upload"
+                onChange={handleImageChange}
+                accept=".jpg,.png"
+              />
+            </div>
+            <div className="button-group">
+              <button
+                className={`save-button ${!isChanged && 'no-change'}`}
+                onClick={handleSave}
+                disabled={!isChanged}
+              >
+                Save
+              </button>
+              <button className="cancel-button" onClick={handleCancel}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
       </div>
+      
     </div>
   );
 }
