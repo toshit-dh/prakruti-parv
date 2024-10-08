@@ -4,6 +4,7 @@ import { Register,Login,Home,Education,AnimalTracking,Welcome,IdentifySpecies,Pr
 import {BrowserRouter,Routes,Route} from 'react-router-dom'
 import ProtectedRoute from './utils/ProtectedRoute'
 import ProjectForm from './components/add-project-form/ProjectForm'
+import ReportTemplate from './components/fund-report-template/ReportTemplate'
 
 function App() {
 
@@ -22,7 +23,7 @@ function App() {
           <Route path='/project/:id' element={<Project/>}/>
           <Route path='/addProject' element={<AddProject/>}/>
           <Route path='/viewProjects' element={<ViewProjects/>}/>
-          <Route path='/animal-tracking' element={<ProjectForm/>}/>
+          <Route path='/animal-tracking' element={<ReportTemplate/>}/>
 
         </Routes>
     </BrowserRouter>
