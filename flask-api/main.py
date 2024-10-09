@@ -1,14 +1,14 @@
 import os
 import google.generativeai as genai
 from dotenv import load_dotenv
-from flask import Flask,request,jsonify
+from flask import Flask,request,jsonify,send_file
 from flask_cors import CORS
 import torch
 import torchvision
 import torchvision.transforms as transforms
 from torch import nn
 import torchvision.models as models
-from PIL import Image
+from PIL import Image,ImageDraw,ImageFont
 import re
 import cv2
 import random
@@ -130,19 +130,19 @@ def identify():
                     #print(pred_label)
                     response=genai_model.generate_content(f' Work as per {input_prompt}.{pred_label} is your given animal').text
                     #print(response)
-                    kingdom = re.search(r'Kingdom:\s*(.*)', response).group(1)
-                    phylum = re.search(r'Phylum:\s*(.*)', response).group(1)
-                    animal_class = re.search(r'Class:\s*(.*)', response).group(1)
-                    order = re.search(r'Order:\s*(.*)', response).group(1)
-                    family = re.search(r'Family:\s*(.*)', response).group(1)
-                    scientific_name = re.search(r'Scientific Name:\s*(.*)', response).group(1)
-                    primary_habitat = re.search(r'Primary Habitat:\s*(.*)', response).group(1)
-                    geographical_range = re.search(r'Geographical Range:\s*(.*)', response).group(1)
-                    fun_fact = re.search(r'Fun Fact:\s*(.*)', response).group(1)
-                    legal_consequence_1 = re.search(r'Legal Consequence 1:\s*(.*)', response).group(1)
-                    legal_consequence_2 = re.search(r'Legal Consequence 2:\s*(.*)', response).group(1)
-                    past_crime_example_1 = re.search(r'Past Crime Example 1:\s*(.*)', response).group(1)
-                    past_crime_example_2 = re.search(r'Past Crime Example 2:\s*(.*)', response).group(1)
+                    kingdom = re.search(r'Kingdom:\s*(.*)', response).group(1) # type: ignore
+                    phylum = re.search(r'Phylum:\s*(.*)', response).group(1)  # type: ignore
+                    animal_class = re.search(r'Class:\s*(.*)', response).group(1) # type: ignore
+                    order = re.search(r'Order:\s*(.*)', response).group(1)   # type: ignore
+                    family = re.search(r'Family:\s*(.*)', response).group(1)   # type: ignore
+                    scientific_name = re.search(r'Scientific Name:\s*(.*)', response).group(1)  # type: ignore
+                    primary_habitat = re.search(r'Primary Habitat:\s*(.*)', response).group(1)   # type: ignore
+                    geographical_range = re.search(r'Geographical Range:\s*(.*)', response).group(1)   # type: ignore
+                    fun_fact = re.search(r'Fun Fact:\s*(.*)', response).group(1)   # type: ignore
+                    legal_consequence_1 = re.search(r'Legal Consequence 1:\s*(.*)', response).group(1)   # type: ignore
+                    legal_consequence_2 = re.search(r'Legal Consequence 2:\s*(.*)', response).group(1)   # type: ignore
+                    past_crime_example_1 = re.search(r'Past Crime Example 1:\s*(.*)', response).group(1)  # type: ignore
+                    past_crime_example_2 = re.search(r'Past Crime Example 2:\s*(.*)', response).group(1)  # type: ignore
 
                     
                     return jsonify({
@@ -197,7 +197,7 @@ def poach():
                     encoded_frames = []
                     for frame in detected_frames:
                         buffered = BytesIO()
-                        frame.save(buffered, format="JPEG")
+                        frame.save(buffered, format="JPEG") #type: ignore
                         img_str = base64.b64encode(buffered.getvalue()).decode('utf-8')
                         encoded_frames.append(f"data:image/jpeg;base64,{img_str}")
                         
@@ -269,6 +269,54 @@ def detect_poaching_on_video(video_path, model, transform, class_names, device, 
     poaching_detected = len(yes_list) > 0
     
     return {'poaching_detected': poaching_detected}, selected_frames
+
+
+def create_certificate(name):
+    try:
+        certificate_image = Image.open("template/prakruti-parv-cetificate-template.png").convert("RGBA")  
+
+        draw = ImageDraw.Draw(certificate_image)       
+        try:
+            font = ImageFont.truetype("font/AlexBrush-Regular.ttf", 170) 
+        except IOError:
+            font = ImageFont.load_default()
+            print("Custom font not found. Using default font.")
+        text_bbox = draw.textbbox((0, 0), name, font=font)
+        text_width = text_bbox[2] - text_bbox[0]
+        text_height = text_bbox[3] - text_bbox[1]
+
        
+        text_position = (
+            (certificate_image.width - text_width) // 2,
+            550  
+        )
+
+        draw.text(text_position, name, font=font, fill="black")  
+        img_io = BytesIO()
+        certificate_image.save(img_io, 'PNG')
+        img_io.seek(0)
+
+        return img_io
+
+    except Exception as e:
+        print(f"Error creating certificate: {e}")
+        return None
+    
+@app.route('/generate-certificate', methods=['GET'])
+def certificate():
+    name = request.args.get('name', None)
+    if not name:
+        return jsonify({'error': 'No name provided. Please provide a name query parameter.'}), 400
+
+    certificate_image = create_certificate(name)
+    if certificate_image:
+        return send_file(
+            certificate_image,
+            mimetype='image/png',
+            as_attachment=True,
+            download_name=f"{name}_certificate.png"
+        )
+    else:
+        return jsonify({'error': 'Failed to create certificate.'}), 500
 if __name__ == '__main__':
     app.run(port=8081, debug=True)
