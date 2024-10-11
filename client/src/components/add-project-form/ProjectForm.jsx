@@ -96,7 +96,7 @@ const ProjectForm = () => {
         />
       </div>
 
-      {/* Legal Document Proof and Target Amount Side by Side */}
+
       <div className="project-form-row">
         <div className="project-input-group">
           <label htmlFor="legalDocumentProof">Legal Document Proof:</label>
