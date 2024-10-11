@@ -29,7 +29,7 @@ const userSchema = new Schema({
   },
   role: {
     type: String,
-    enum: ["user", "admin", "conservationist", "photographer", "learner"],
+    enum: ["user", "admin", "conservationist", "photographer", "learner","Organisation"],
     default: "user",
   },
   badges: {
