@@ -63,7 +63,7 @@ exports.createProject = async (req, res) => {
     });
 
     await newProject.save();
-    res.status(201).json({ message: 'Project created successfully', project: newProject });
+    res.status(200).json({ message: 'Project created successfully', project: newProject });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -277,8 +277,8 @@ exports.getProjectsByOrganization = async (req, res) => {
     if (projects.length === 0) {
       return res.status(200).json({ projects });
     }
-
-    res.status(200).json(projects);
+    console.log("myprojects"+projects);
+    res.status(200).json({projects});
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

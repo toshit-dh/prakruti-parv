@@ -2,8 +2,23 @@
 import React, { useState } from "react";
 import "./ProjectForm.css"; 
 import Navbar from "../navbar/Navbar";
+import axios from "axios"; 
+import { ToastContainer, toast } from "react-toastify"; 
+import 'react-toastify/dist/ReactToastify.css'; 
+import { useNavigate } from "react-router-dom"; 
+import { CREATE_PROJECT_ROUTE } from "../../utils/Routes";
 
 const ProjectForm = () => {
+  const toastOptions = {
+    position: 'bottom-left',
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: 'dark',
+  };
   const [projectData, setProjectData] = useState({
     organizationName: "",
     bannerFile: null, 
@@ -17,6 +32,8 @@ const ProjectForm = () => {
     phoneNumber: "",
     email: "",
   });
+
+  const navigate = useNavigate(); 
 
   const handleChange = (e) => {
     const { id, value, files } = e.target;
@@ -54,17 +71,73 @@ const ProjectForm = () => {
     setProjectData((prev) => ({ ...prev, steps: newSteps }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    console.log(projectData);
+
+    if (new Date(projectData.endDate) <= new Date(projectData.startDate)) {
+      toast.error("End Date must be after Start Date.");
+      return;
+    }
+
+    const start = new Date(projectData.startDate);
+    const end = new Date(projectData.endDate);
+    const durationInDays = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+    const formData = new FormData();
+    formData.append("organizationName", projectData.organizationName);
+    formData.append("contactPhoneNumber", projectData.phoneNumber);
+    formData.append("contactEmail", projectData.email);
+    formData.append("title", projectData.title);
+    formData.append("description", projectData.projectDescription);
+    formData.append("goalAmount", projectData.targetAmount);
+    formData.append("endDate", projectData.endDate);
+    formData.append("location", projectData.location);
+    formData.append("duration", durationInDays);
+    formData.append("steps", JSON.stringify(projectData.steps)); 
+    formData.append("bannerImage", projectData.bannerFile); 
+
+    try {
+      const response = await axios.post(CREATE_PROJECT_ROUTE, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        withCredentials: true, 
+      });
+      console.log(response);
+      if (response.status === 200) {
+        toast.success("Project created successfully!",toastOptions);
+        setTimeout(()=>{
+
+          navigate('/profile')
+        },3000)
+      }
+      setProjectData({
+        organizationName: "",
+        bannerFile: null, 
+        title: "",
+        location: "",
+        projectDescription: "",
+        targetAmount: "", 
+        startDate: "",
+        endDate: "",
+        steps: [{ description: "", status: "Not Started" }],
+        phoneNumber: "",
+        email: "",
+      });
+
+    } catch (error) {
+      console.error("Error creating project:", error);
+      if (error.response && error.response.data && error.response.data.error) {
+        toast.error(`Error: ${error.response.data.error}`,toastOptions);
+      } else {
+        toast.error("An unexpected error occurred. Please try again.",toastOptions);
+      }
+    }
   };
 
   return (
-
     <>
       <Navbar />
-      <form className="project-form" onSubmit={handleSubmit}>
+      <form className="project-form" onSubmit={handleSubmit} encType="multipart/form-data">
         <h2 className="project-form-title">FundRaising Form</h2>
 
         <div className="project-form-row">
@@ -137,6 +210,7 @@ const ProjectForm = () => {
               onChange={handleChange}
               placeholder="Enter target amount"
               required
+              min="1"
             />
           </div>
         </div>
@@ -220,6 +294,8 @@ const ProjectForm = () => {
               onChange={handleChange}
               placeholder="Enter contact phone number"
               required
+              pattern="^\+?[1-9]\d{1,14}$" 
+              title="Please enter a valid phone number."
             />
           </div>
 
@@ -240,9 +316,9 @@ const ProjectForm = () => {
         <button type="submit" className="submit-button">
           Submit
         </button>
-    </form>
+      </form>
+      <ToastContainer /> 
     </>
-    
   );
 };
 

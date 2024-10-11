@@ -53,6 +53,7 @@ export default function Profile() {
       if (userId && user.role.toLowerCase() === "organisation") {
         try {
           const { data } = await axios.get(GET_PROJECT_BY_ORGANIZATION_ROUTE(userId), { withCredentials: true });
+          console.log(data)
           setProjects(data.projects); 
         } catch (error) {
           console.error(error);
@@ -132,6 +133,11 @@ export default function Profile() {
     return filter === PROJECT_STATUSES.ALL || project.status === filter; 
   });
 
+  const handleProjectNavigation=(project_id)=>{
+
+      const projectId=project_id;
+      navigate(`/project/${projectId}`);
+  }
   return (
     <div className="profile">
       <Navbar />
@@ -219,9 +225,13 @@ export default function Profile() {
             <div className="no-projects">No projects match the selected filter.</div>
           ) : (
             filteredProjects.map((project) => (
-              <div key={project.id} className="project-item">
-                <h3>{project.title}</h3>
-                <p>Status: {project.status}</p>
+              <div key={project._id} className="project-item" onClick={()=>handleProjectNavigation(project._id)}>
+                <div className="project-banner" style={{ backgroundImage: `url(${project?.bannerImage})` }}>
+                  <div className="project-overlay">
+                      <h3>{project?.title}</h3>
+                      <p>{project?.description}</p>
+                  </div>
+                </div>
               </div>
             ))
           )}

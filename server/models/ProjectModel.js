@@ -71,10 +71,8 @@ const projectSchema = new mongoose.Schema(
       min: [1, "Duration must be at least 1 day"],
     },
     location: {
-      type: {
         type: String,
         required:true,
-      },
     },
     steps: {
       type: [
