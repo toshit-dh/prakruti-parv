@@ -6,8 +6,9 @@ const ProjectForm = () => {
   const [projectData, setProjectData] = useState({
     organizationName: "",
     bannerFile: null, 
+    title: "",
+    location: "",
     projectDescription: "",
-    legalDocumentProof: null,
     targetAmount: "", 
     startDate: "",
     endDate: "",
@@ -18,7 +19,7 @@ const ProjectForm = () => {
 
   const handleChange = (e) => {
     const { id, value, files } = e.target;
-    if (id === "bannerFile" || id === "legalDocumentProof") {
+    if (id === "bannerFile") {
       setProjectData((prev) => ({
         ...prev,
         [id]: files ? files[0] : prev[id],
@@ -86,6 +87,32 @@ const ProjectForm = () => {
         </div>
       </div>
 
+      <div className="project-form-row">
+        <div className="project-input-group">
+          <label htmlFor="title">Project Title:</label>
+          <input
+            type="text"
+            id="title"
+            value={projectData.title}
+            onChange={handleChange}
+            placeholder="Enter project title"
+            required
+          />
+        </div>
+
+        <div className="project-input-group">
+          <label htmlFor="location">Location:</label>
+          <input
+            type="text"
+            id="location"
+            value={projectData.location}
+            onChange={handleChange}
+            placeholder="Enter project location"
+            required
+          />
+        </div>
+      </div>
+
       <div className="project-input-group">
         <label htmlFor="projectDescription">Project Description:</label>
         <textarea
@@ -96,19 +123,7 @@ const ProjectForm = () => {
         />
       </div>
 
-
       <div className="project-form-row">
-        <div className="project-input-group">
-          <label htmlFor="legalDocumentProof">Legal Document Proof:</label>
-          <input
-            type="file"
-            id="legalDocumentProof"
-            onChange={handleChange}
-            accept=".pdf,.doc,.docx"
-            required
-          />
-        </div>
-
         <div className="project-input-group">
           <label htmlFor="targetAmount">Target Amount:</label>
           <input
@@ -199,6 +214,7 @@ const ProjectForm = () => {
             id="phoneNumber"
             value={projectData.phoneNumber}
             onChange={handleChange}
+            placeholder="Enter contact phone number"
             required
           />
         </div>
@@ -212,6 +228,7 @@ const ProjectForm = () => {
             onChange={handleChange}
             pattern="^[a-zA-Z0-9._%+-]+@gmail\.com$"
             title="Please enter a valid Gmail address."
+            placeholder="Enter contact Gmail address"
             required
           />
         </div>
