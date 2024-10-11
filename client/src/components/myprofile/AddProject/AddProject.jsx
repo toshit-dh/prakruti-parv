@@ -1,6 +1,7 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import axios from 'axios';
-import './AddProject.css'; // Import the CSS file
+import './AddProject.css'; 
 
 const BASE_URL = "http://localhost:8080";
 const PROJECTS_ROUTE = `${BASE_URL}/api/projects`;
@@ -33,7 +34,6 @@ export default function AddProject() {
         withCredentials: true
       });
       alert('Project added successfully');
-      // Reset form
       setTitle('');
       setDescription('');
       setGoalAmount('');

@@ -9,7 +9,7 @@ const JWT_SECRET = process.env.JWT_SECRET
 
 
 exports.signup = async (req, res) => {
-    const { username,email, password } = req.body;
+    const { username,email, password,role } = req.body;
   
     try {
       const existingUser = await User.findOne({ username });
@@ -21,7 +21,8 @@ exports.signup = async (req, res) => {
         username,
         email,
         password: hashedPassword,
-        isVerified: false 
+        role,
+        isVerified: false
       });
   
       const verificationToken = newUser.generateVerificationToken();

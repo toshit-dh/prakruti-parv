@@ -15,17 +15,16 @@ body {
     overflow-y: auto; 
 }
 
-.form-container {
+.register-form-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: #fff;
     border-radius: 20px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 0 150px rgb(85, 176, 28);
     max-width: 1200px;
     width: 100%;
     overflow: hidden;
-    box-shadow: inset 0 0 90px var(--secondary-color);
 }
 
 .register-form {
@@ -37,57 +36,80 @@ body {
     overflow-y: auto; 
 }
 
-.form-header {
+.register-form-header {
     margin-bottom: 20px;
     text-align: center;
 }
-input::placeholder {
-    color: black; 
-}
 
-.form-header h2 {
+.register-header-title {
     color: var(--primary-color);
     font-size: 40px;
 }
 
-.form-group {
+.register-title-icon {
+    margin-right: 10px;
+}
+
+.register-form-group {
     margin-bottom: 20px;
 }
 
-.form-group label {
+.register-form-group label {
     font-size: 18px;
     font-weight: 500;
     color: var(--primary-color);
 }
 
-.checkbox-group {
+.register-checkbox-group {
     display: flex;
     align-items: center;
 }
 
-.checkbox-group input[type='checkbox'] {
+.register-checkbox-group input[type='checkbox'] {
     margin-right: 10px;
 }
 
-button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 100%;
-    border-radius: 8px;
-    border: 1px solid transparent;
-    padding: 0.6em 1.2em;
-    font-size: 1em;
-    font-weight: 500;
-    font-family: inherit;
-    background-color: #1a1a1a;
-    transition: border-color 0.25s;
+.register-checkbox {
+    margin-right: 10px;
 }
 
-.image-container {
+.register-checkbox-label {
+    font-size: 16px;
+    color: #333;
+}
+
+.register-submit-button {
+    background-color: #1a1a1a;
+    color: #fff;
+    border: none;
+    padding: 0.6em 1.2em;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 1em;
+    font-weight: 500;
+    transition: background 0.3s ease, border-color 0.25s;
+}
+
+.register-submit-button:hover {
+    background-color: #333333;
+}
+
+.register-redirect-login {
+    display: block;
+    text-align: center;
+    margin-top: 1rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.register-redirect-login a {
+    color: var(--primary-color); 
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.register-image-container {
     width: 50%;
     height: 100%;
     overflow: hidden;
@@ -101,7 +123,7 @@ button {
     object-fit: cover;
 }
 
-.input-icon {
+.register-input-icon {
     display: flex;
     align-items: center;
     border: 1px solid #ccc;
@@ -110,41 +132,54 @@ button {
     background-color: #f9f9f9;
 }
 
-.input-icon input {
+.register-input-icon input,
+.register-input-icon select {
     background-color: #fff;
     border: none;
     outline: none;
     padding: 10px;
     flex: 1;
-    color: #000; /* Set text color to black */
+    color: #000; 
 }
 
-.input-icon svg {
+.register-input-icon svg {
     margin-right: 10px;
     color: #555;
 }
 
-.redirectLogin {
-    display: block;
-    text-align: center;
-    margin-top: 1rem;
-    font-weight: bold;
+.register-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #555555;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    color: #000000;
+    font-size: 16px;
 }
 
-.redirectLogin a {
-    color: var(--primary-color); 
-    text-decoration: none;
-    font-weight: bold;
+.register-select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #555555;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    color: #000000;
+    font-size: 16px;
+}
+
+.register-input::placeholder,
+.register-select::placeholder {
+    color: #888888;
 }
 
 @media (max-width: 768px) {
-    .form-container {
+    .register-form-container {
         flex-direction: column;
         justify-content: center;
         align-items: center;
     }
 
-    .register-form, .image-container {
+    .register-form, .register-image-container {
         width: 100%;
         margin-right: 0;
     }
@@ -154,13 +189,14 @@ button {
         overflow-y: auto; 
     }
 
-    input::placeholder {
-        color: white;
-        font-weight: bold;
-    }
-
     .register-image {
         width: 100%;
         height: auto;
+    }
+
+    .register-input::placeholder,
+    .register-select::placeholder {
+        color: #ffffff;
+        font-weight: bold;
     }
 }

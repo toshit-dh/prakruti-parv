@@ -40,6 +40,7 @@ body {
     .form-header {
       margin-bottom: 20px;
       text-align: center;
+      font-size:30px;
     }
     
     .form-header h2 {
@@ -60,7 +61,13 @@ body {
       width: 100%;
     }
 
-    
+    .login-password{
+
+      color:black;
+    }
+    .login-username{
+      color:black;
+    }
     .image-container {
       width: 50%;
       height: 100%;
@@ -96,7 +103,10 @@ body {
       background-color: #fff;
       flex: 1;
     }
-    
+    .title-icon{
+
+      font-size: 40px;
+    }
     .input-icon svg {
       margin-right: 10px;
       color: #555;

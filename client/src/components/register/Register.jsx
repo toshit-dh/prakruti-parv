@@ -16,6 +16,7 @@ const Register = () => {
     email: '',
     password: '',
     confirmPassword: '',
+    role: 'User', 
     checkbox: false,
   });
   const navigate = useNavigate();
@@ -29,12 +30,11 @@ const Register = () => {
   };
 
   const validateForm = () => {
-    const { username, email, password, confirmPassword, checkbox } = formData;
-    const usernameRegex = /^[A-Za-z0-9]{4,8}$/;
+    const { username, email, password, confirmPassword, role, organization, checkbox } = formData;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const passwordRegex = /^.{8,16}$/;
 
-    if (!usernameRegex.test(username)) {
+    if (username.length > 25) {
       toast.error('Username must be between 4 and 8 characters long.');
       return false;
     }
@@ -51,6 +51,11 @@ const Register = () => {
 
     if (password !== confirmPassword) {
       toast.error('Passwords do not match.');
+      return false;
+    }
+
+    if (!role) {
+      toast.error('Please select a role.');
       return false;
     }
 
@@ -76,27 +81,27 @@ const Register = () => {
       }
     } catch (error) {
       console.log(error);
-      toast.error(error.message || 'An error occurred.');
+      toast.error(error.response?.data?.message || 'An error occurred.');
     }
   };
 
   return (
     <>
       <section className="register-wrapper">
-        <div className="form-container">
+        <div className="register-form-container">
           <form className="register-form" onSubmit={handleSubmit}>
-            <div className="form-header">
+            <div className="register-form-header">
               <motion.h2
                 initial={{ opacity: 0, scale: 0.5, rotate: -45 }}
                 animate={{ opacity: 1, scale: 1, rotate: 0 }}
                 transition={{ duration: 1, ease: 'easeOut' }}
-                className="header-title"
+                className="register-header-title"
               >
-                <FaTree className="title-icon" /> Register
+                <FaTree className="register-title-icon" /> Register
               </motion.h2>
             </div>
-            <div className="form-group">
-              <div className="input-icon">
+            <div className="register-form-group">
+              <div className="register-input-icon">
                 <FaUser />
                 <input
                   type="text"
@@ -105,11 +110,12 @@ const Register = () => {
                   placeholder="Username"
                   value={formData.username}
                   onChange={handleChange}
+                  className="register-input"
                 />
               </div>
             </div>
-            <div className="form-group">
-              <div className="input-icon">
+            <div className="register-form-group">
+              <div className="register-input-icon">
                 <FaEnvelope />
                 <input
                   type="email"
@@ -118,11 +124,12 @@ const Register = () => {
                   placeholder="Email"
                   value={formData.email}
                   onChange={handleChange}
+                  className="register-input"
                 />
               </div>
             </div>
-            <div className="form-group">
-              <div className="input-icon">
+            <div className="register-form-group">
+              <div className="register-input-icon">
                 <FaLock />
                 <input
                   type="password"
@@ -131,11 +138,12 @@ const Register = () => {
                   placeholder="Password"
                   value={formData.password}
                   onChange={handleChange}
+                  className="register-input"
                 />
               </div>
             </div>
-            <div className="form-group">
-              <div className="input-icon">
+            <div className="register-form-group">
+              <div className="register-input-icon">
                 <FaKey />
                 <input
                   type="password"
@@ -144,25 +152,50 @@ const Register = () => {
                   placeholder="Confirm Password"
                   value={formData.confirmPassword}
                   onChange={handleChange}
+                  className="register-input"
                 />
               </div>
             </div>
-            <div className="form-group checkbox-group">
+
+            <div className="register-form-group">
+              <div className="register-input-icon">
+                <FaUser />
+                <select
+                  id="role"
+                  name="role"
+                  value={formData.role}
+                  onChange={handleChange}
+                  className="register-select"
+                  required
+                >
+                  <option value="User">User</option>
+                  <option value="Admin">Admin</option>
+                  <option value="Organisation">Organisation</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="register-form-group checkbox-group">
               <input
                 type="checkbox"
                 id="checkbox"
                 name="checkbox"
                 checked={formData.checkbox}
                 onChange={handleChange}
+                className="register-checkbox"
               />
-              <label htmlFor="checkbox">I agree to the terms and conditions</label>
+              <label htmlFor="checkbox" className="register-checkbox-label">
+                I agree to the terms and conditions
+              </label>
             </div>
-            <div className="form-group">
-              <button type="submit">Register</button>
-              <span className='redirectLogin'>Already have an account? <a href="/login">Login</a></span>
+            <div className="register-form-group">
+              <button type="submit" className="register-submit-button">Register</button>
+              <span className="register-redirect-login">
+                Already have an account? <a href="/login">Login</a>
+              </span>
             </div>
           </form>
-          <div className="image-container">
+          <div className="register-image-container">
             <img src={registerpic} alt="Register" className="register-image" />
           </div>
         </div>

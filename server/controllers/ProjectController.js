@@ -1,23 +1,65 @@
-const Project = require('../models/ProjectModel'); // Adjust the path as needed
-const User = require('../models/UserModel'); // Assuming User model is needed for contributor details
+const Project = require('../models/ProjectModel');
+const User = require('../models/UserModel'); 
 const path = require('path');
 const fs = require('fs');
 
-// Create a new project
 exports.createProject = async (req, res) => {
   try {
-    const { title, description, goalAmount, endDate, type, location } = req.body; 
+    const { 
+      organizationName, 
+      contactPhoneNumber, 
+      contactEmail, 
+      title, 
+      description, 
+      goalAmount, 
+      endDate, 
+      location, 
+      duration, 
+      steps 
+    } = req.body; 
+
     const creator = req.user.userId; 
-    console.log(req.body,creator);
-    
+
+    if (!req.file) {
+      return res.status(400).json({ error: 'Banner image is required' });
+    }
+
+    const bannerImageUrl = req.file.path; 
+
+    let parsedSteps = [];
+    if (steps) {
+      try {
+        parsedSteps = JSON.parse(steps);
+        if (!Array.isArray(parsedSteps)) {
+          return res.status(400).json({ error: 'Steps must be an array' });
+        }
+        parsedSteps.forEach((step, index) => {
+          if (!step.description) {
+            throw new Error(`Step ${index + 1} description is required`);
+          }
+          if (!["Not Started", "In Progress", "Completed"].includes(step.status)) {
+            throw new Error(`Invalid status for step ${index + 1}`);
+          }
+        });
+      } catch (err) {
+        return res.status(400).json({ error: 'Invalid steps format: ' + err.message });
+      }
+    }
+
     const newProject = new Project({
+      organizationName,
+      organization_id: creator,
+      contactPhoneNumber,
+      contactEmail,
       title,
       description,
+      bannerImage: bannerImageUrl,
       goalAmount,
       endDate,
-      type,
-      location, 
-      creator,
+      location,
+      duration,
+      steps: parsedSteps, 
+      status: 'Active',
     });
 
     await newProject.save();
@@ -27,20 +69,23 @@ exports.createProject = async (req, res) => {
   }
 };
 
-// Get all projects
 exports.getAllProjects = async (req, res) => {
   try {
-    const projects = await Project.find().populate('creator', 'username name').exec();
+    const projects = await Project.find()
+      .populate('organization_id', 'username ') 
+      .exec();
     res.status(200).json(projects);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 
-// Get a single project by ID
+
 exports.getProjectById = async (req, res) => {
   try {
-    const project = await Project.findById(req.params.id).populate('creator', 'username name').exec();
+    const project = await Project.findById(req.params.id)
+      .populate('organization_id', 'username ') 
+      .exec();
     if (!project) {
       return res.status(404).json({ message: 'Project not found' });
     }
@@ -50,10 +95,19 @@ exports.getProjectById = async (req, res) => {
   }
 };
 
-// Update a project by ID
+
 exports.updateProject = async (req, res) => {
   const projectId = req.params.id;
-  const { title, description, mediaPaths, tags, updates, milestones } = req.body; // Added tags, updates, milestones
+  const { 
+    title, 
+    description, 
+    goalAmount, 
+    endDate, 
+    location, 
+    duration, 
+    status, 
+    steps 
+  } = req.body;
 
   try {
     const project = await Project.findById(projectId);
@@ -61,75 +115,122 @@ exports.updateProject = async (req, res) => {
       return res.status(404).json({ message: 'Project not found' });
     }
 
-    // Update project details
+    if (project.organization_id.toString() !== req.user.userId) {
+      return res.status(403).json({ message: 'Unauthorized to update this project' });
+    }
+
     if (title) project.title = title;
     if (description) project.description = description;
-    if (tags) project.tags = tags; // Update tags
-    if (updates) project.updates = updates; // Update updates
-    if (milestones) project.milestones = milestones; // Update milestones
+    if (goalAmount !== undefined) project.goalAmount = goalAmount;
+    if (endDate) project.endDate = endDate;
+    if (location) {
+      project.location = location;
+    }
+    if (duration !== undefined) project.duration = duration;
+    if (status) project.status = status;
 
-    // Handle file deletion
-    if (mediaPaths && Array.isArray(mediaPaths)) {
-      const filesToDelete = mediaPaths.filter(filePath => project.media.includes(filePath));
-      filesToDelete.forEach(filePath => {
-        fs.unlink(path.join('data/projects/', path.basename(filePath)), (err) => {
-          if (err) console.error('Failed to delete file:', filePath);
+    if (steps) {
+      let parsedSteps = [];
+      try {
+        parsedSteps = JSON.parse(steps);
+        if (!Array.isArray(parsedSteps)) {
+          throw new Error('Steps must be an array');
+        }
+        parsedSteps.forEach((step, index) => {
+          if (!step.description) {
+            throw new Error(`Step ${index + 1} description is required`);
+          }
+          if (!["Not Started", "In Progress", "Completed"].includes(step.status)) {
+            throw new Error(`Invalid status for step ${index + 1}`);
+          }
         });
-        // Remove file path from the project media array
-        project.media = project.media.filter(mediaPath => mediaPath !== filePath);
-      });
+      } catch (err) {
+        return res.status(400).json({ error: 'Invalid steps format: ' + err.message });
+      }
+
+      project.steps = parsedSteps;
+    }
+
+    if (req.file) {
+      project.bannerImage = req.file.path;
     }
 
     await project.save();
     res.status(200).json({ message: 'Project updated successfully', project });
   } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Internal server error: ' + error.message });
   }
 };
 
-// Delete a project by ID
 exports.deleteProject = async (req, res) => {
   try {
-    const deletedProject = await Project.findByIdAndDelete(req.params.id).exec();
-    if (!deletedProject) {
+    const project = await Project.findById(req.params.id).exec();
+    if (!project) {
       return res.status(404).json({ message: 'Project not found' });
     }
+    if (project.organization_id.toString() !== req.user.userId) {
+      return res.status(403).json({ message: 'Unauthorized to delete this project' });
+    }
+
+
+    await Project.findByIdAndDelete(req.params.id).exec();
     res.status(200).json({ message: 'Project deleted successfully' });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 
-// Add images or videos to a project
-exports.addImages = async (req, res) => {
+
+exports.addMediaToProject = async (req, res) => {
+  const projectId = req.params.id;
+  const { stepIndex } = req.body; 
   try {
-    const project = await Project.findById(req.params.id).exec();
+    const project = await Project.findById(projectId);
     if (!project) {
       return res.status(404).json({ message: 'Project not found' });
     }
 
-    const { images } = req.body; // Expecting an array of image/video objects
-
-    if (project.images.length + images.length > 25) {
-      return res.status(400).json({ message: 'Cannot add more than 25 images or videos' });
+    if (project.organization_id.toString() !== req.user.userId) {
+      return res.status(403).json({ message: 'Unauthorized to add media to this project' });
     }
 
-    project.images.push(...images);
+
+    const index = parseInt(stepIndex, 10);
+    if (isNaN(index) || index < 0 || index >= project.steps.length) {
+      return res.status(400).json({ message: 'Invalid step index' });
+    }
+
+    if (!req.file) {
+      return res.status(400).json({ message: 'No media file uploaded' });
+    }
+
+    if (project.steps[index].photo) {
+      return res.status(400).json({ message: 'Step already has a photo. Use update instead.' });
+    }
+
+ 
+    const mediaUrl = req.file.path; 
+
+    project.steps[index].photo = mediaUrl;
+
     await project.save();
-    res.status(200).json({ message: 'Images added successfully', project });
+    res.status(200).json({ message: 'Step photo added successfully', project });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(500).json({ error: 'Internal server error: ' + error.message });
   }
 };
 
-// Add a donation to a project
-exports.addDonation = async (req, res) => {
+
+exports.donateToProject = async (req, res) => {
   try {
     const { amount } = req.body;
-    const project = await Project.findById(req.params.id).exec();
+    const projectId = req.params.id;
+    const userId = req.user.userId;
+
+    const project = await Project.findById(projectId).exec();
 
     if (!project) {
-      return res.status(404).json({ message: 'Project not found' });
+      return res.status(404).json({ message: 'Project not found'});
     }
 
     if (amount <= 0) {
@@ -137,9 +238,11 @@ exports.addDonation = async (req, res) => {
     }
 
     project.currentAmount += amount;
+    project.contributors.push({ contributor_id: userId, amount });
+
     await project.save();
 
-    const user = await User.findById(req.user._id).exec();
+    const user = await User.findById(userId).exec();
     if (user) {
       user.donations.push({ amount, date: new Date(), project: project._id });
       await user.save();
@@ -151,67 +254,33 @@ exports.addDonation = async (req, res) => {
   }
 };
 
-// Get projects by type (Tree, Land, Water)
-exports.getProjectsByType = async (req, res) => {
-  try {
-    const { type } = req.params;
-    const projects = await Project.find({ type }).populate('creator', 'username name').exec();
-    res.status(200).json(projects);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
 
-// Get projects by status
 exports.getProjectsByStatus = async (req, res) => {
   try {
     const { status } = req.params;
-    const projects = await Project.find({ status }).populate('creator', 'username name').exec();
+    const projects = await Project.find({ status })
+      .populate('organization_id', 'username name')
+      .exec();
     res.status(200).json(projects);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 
-// Add media to a project
-exports.addMediaToProject = async (req, res) => {
-  const projectId = req.params.id;
-  const files = req.files;
-
+exports.getProjectsByOrganization = async (req, res) => {
   try {
-    if (!files || files.length === 0) {
-      return res.status(400).json({ message: 'No files uploaded' });
+    const organizationId = req.params.organizationId;
+    const projects = await Project.find({ organization_id: organizationId })
+      .populate('organization_id', 'username ')
+      .exec();
+
+    if (projects.length === 0) {
+      return res.status(200).json({ projects });
     }
 
-    const filePaths = files.map(file => `data/projects/${file.filename}`);
-
-    const project = await Project.findById(projectId);
-    if (!project) {
-      return res.status(404).json({ message: 'Project not found' });
-    }
-
-    if (project.media.length + files.length > 25) {
-      // Delete uploaded files if the limit is exceeded
-      files.forEach(file => {
-        fs.unlink(path.join('data/projects/', file.filename), (err) => {
-          if (err) console.error('Failed to delete file:', file.filename);
-        });
-      });
-      return res.status(400).json({ message: 'Cannot add more than 25 media files' });
-    }
-
-    project.media.push(...filePaths);
-    await project.save();
-
-    res.status(200).json({ message: 'Media added successfully', files: filePaths });
+    res.status(200).json(projects);
   } catch (error) {
-    if (files) {
-      files.forEach(file => {
-        fs.unlink(path.join('data/projects/', file.filename), (err) => {
-          if (err) console.error('Failed to delete file:', file.filename);
-        });
-      });
-    }
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(400).json({ error: error.message });
   }
 };
+

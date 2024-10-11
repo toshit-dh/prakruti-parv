@@ -1,13 +1,17 @@
-
-.project-form {
+body{
+  background-color: #000000;
+}
+.project-form {   
     display: flex;
     flex-direction: column;
     background: #ffffff;
     padding: 30px;
     border-radius: 10px;
     color: white;
+    border:white 3px dashed;
     max-width: 1000px; 
     margin: 20px auto;
+    margin: 120px auto 20px auto;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     background-image: url('../../assets/form-img.jpg');
     

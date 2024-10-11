@@ -75,7 +75,7 @@ const Login = () => {
                 transition={{ duration: 1, ease: 'easeOut' }}
               >
                 <FaPaw className="title-icon" />
-                Login
+                   Login
               </motion.h2>
             </div>
             <div className="form-group">
@@ -86,6 +86,7 @@ const Login = () => {
                   id="username"
                   name="username"
                   placeholder="Username"
+                  className="login-username"
                   value={formData.username}
                   onChange={handleChange}
                 />
@@ -98,6 +99,7 @@ const Login = () => {
                   type="password"
                   id="password"
                   name="password"
+                  className="login-password"
                   placeholder="Password"
                   value={formData.password}
                   onChange={handleChange}

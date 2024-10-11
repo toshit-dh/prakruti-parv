@@ -23,7 +23,8 @@ function App() {
           <Route path='/project/:id' element={<Project/>}/>
           <Route path='/addProject' element={<AddProject/>}/>
           <Route path='/viewProjects' element={<ViewProjects/>}/>
-          <Route path='/animal-tracking' element={<ProjectForm/>}/>
+          <Route path='/animal-tracking' element={<ReportTemplate/>}/>
+          <Route path='/add-project' element={<ProjectForm/>}/>
 
         </Routes>
     </BrowserRouter>
