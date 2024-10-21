@@ -1,83 +1,83 @@
 .myproject-info-container {
-    padding: 20px;
-    border: 1px solid #8B4513; 
-    border-radius: 5px;
-    max-width: 800px;
-    margin: 120px auto;
-    margin-bottom:60px;
-    background-color: #F5F5DC; 
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-  }
-  
-  .myproject-info-container h1 {
-    font-size: 28px;
-    margin-bottom: 15px;
-    color: #2E8B57; 
-  }
-  
-  .myproject-actions {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .myproject-button {
-    background-color: #8B4513; 
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    transition: background-color 0.3s;
-  }
-  
-  .myproject-button:hover {
-    background-color: #5A2D0C;
-  }
-  
-  .myproject-details {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-  }
-  
-  .myproject-details p {
-    margin: 10px 0;
-    font-size: 16px;
-    line-height: 1.5;
-    color: #555;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-  
-  .myproject-container {
-    position: relative;
-    height: 80vh;
-    width: 100%;
-    margin-bottom: 30px;
-  }
-  
-  .myproject-map-background {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    height: 100%;
-    width: 80%; 
-    z-index: 1;
-  }
-  
-  .myproject-loading {
-    text-align: center;
-    font-size: 18px;
-    color: #777;
-    margin: 20px;
-  }
+  padding: 20px;
+  border: 1px solid #8B4513; 
+  border-radius: 5px;
+  max-width: 800px;
+  margin: 120px auto;
+  margin-bottom:60px;
+  background-color: #F5F5DC; 
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.myproject-info-container h1 {
+  font-size: 28px;
+  margin-bottom: 15px;
+  color: #2E8B57; 
+}
+
+.myproject-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.myproject-button {
+  background-color: #8B4513; 
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: background-color 0.3s;
+}
+
+.myproject-button:hover {
+  background-color: #5A2D0C;
+}
+
+.myproject-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.myproject-details p {
+  margin: 10px 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #555;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.myproject-container {
+  position: relative;
+  height: 80vh;
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.myproject-map-background {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 100%;
+  width: 80%; 
+  z-index: 1;
+}
+
+.myproject-loading {
+  text-align: center;
+  font-size: 18px;
+  color: #777;
+  margin: 20px;
+}
