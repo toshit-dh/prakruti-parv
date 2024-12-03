@@ -1,4 +1,9 @@
 
+@page {
+    size: A4; 
+    margin: 20mm;
+}
+
 .fund-report-template {
     position: relative; 
     display: flex;
