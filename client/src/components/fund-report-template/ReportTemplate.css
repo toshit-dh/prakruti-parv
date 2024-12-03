@@ -10,7 +10,7 @@
     flex-direction: column;
     width: 800px;
     padding: 30px;
-    padding-bottom: 120px; 
+    padding-bottom: 80px; 
     border: 1px solid #4caf50; 
     border-radius: 10px;
     background-color: #ffffff; 
@@ -45,6 +45,9 @@
 .fund-report-banner-container {
     text-align: center !important;
     margin-bottom: 20px; 
+    img{
+        height: 320px;
+    }
 }
 
 .fund-report-banner {
@@ -178,4 +181,7 @@
     .fund-report-stamp {
         width: 120px;
     }
+}
+.bottom-container{
+    display: flex;
 }

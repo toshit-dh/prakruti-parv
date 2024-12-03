@@ -7,6 +7,7 @@ import axios from "axios";
 import { GET_PROJECT_BY_ID_ROUTE } from "../../utils/Routes";
 import Navbar from "../navbar/Navbar";
 import ProjectMap from "../project-map/ProjectMap";
+import stamp from '../../assets/prakruti-parv-stamp.png'
 import {
   FaTrash,
   FaTimes,
@@ -86,6 +87,7 @@ const Myproject = () => {
       const doc = new jspdf("p", "mm", "a4");
       doc.html(element, {
         callback: (doc) => {
+          doc.addImage(stamp,'PNG', 145, 245, 40, 40)
           doc.save("report.pdf");
         },
         x: 5, 
