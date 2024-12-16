@@ -62,6 +62,7 @@ const CustomDrawer = ({ isOpen, toggleDrawer }) => {
             onClick={() => {
               if(text == "Projects") navigate("/viewProjects");
               if(text=='Logout') handleLogout();
+              if(text=='Settings') navigate("/settings");
             }}
           >
             <ListItemIcon>{icon}</ListItemIcon>

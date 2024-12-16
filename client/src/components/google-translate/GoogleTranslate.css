@@ -1,0 +1,81 @@
+
+  
+  .goog-te-gadget-simple {
+    border-radius: 4px;
+    background-color: var(--primary-color);
+    padding: 5px 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff; 
+    font-weight: bold;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+ 
+  .goog-te-gadget-simple:hover {
+    background-color: var(--primary-color); 
+  }
+  
+  .translate-element select,
+  .translate-element .goog-te-combo {
+    width: auto;
+    min-width: 150px;
+    padding: 5px;
+    font-size: 14px;
+    color: #fff; 
+    background-color: var(--primary-color) !important; 
+    border: 1px solid var(--ternary-color); 
+    border-radius: 4px;
+    appearance: none;
+    margin: 5px;
+    margin-top: 10px;
+  }
+  
+ 
+  .translate-element .goog-te-combo:hover {
+    background-color: var(--secondary-color); 
+  }
+  
+  .VIpgJd-ZVi9od-xl07Ob-lTBxed img,
+  .VIpgJd-ZVi9od-xl07Ob-lTBxed span[style*="border-left"],
+  .VIpgJd-ZVi9od-xl07Ob-lTBxed span[aria-hidden="true"] {
+    display: none !important;
+  }
+  
+
+  .VIpgJd-ZVi9od-xl07Ob-lTBxed {
+    display:none; 
+  }
+
+  table {
+    display:none !important;
+  }
+  .goog-te-combo, .VIpgJd-ZVi9od-ORHb *, .VIpgJd-ZVi9od-SmfZ *, .VIpgJd-ZVi9od-xl07Ob *, .VIpgJd-ZVi9od-vH1Gmf *, .VIpgJd-ZVi9od-l9xktf * {
+    display: none !important;
+}
+
+.VIpgJd-ZVi9od-ORHb {
+    display: none !important;
+}
+
+  #\:2\.container {
+    display: none !important;
+  }
+
+ 
+  @media screen and (max-width: 768px) {
+    .goog-te-gadget-simple {
+      font-size: 12px;
+      padding: 5px;
+    }
+  
+    .translate-element .goog-te-combo {
+      font-size: 12px;
+      padding: 4px;
+    }
+  }
+  

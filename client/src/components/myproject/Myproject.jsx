@@ -1,254 +1,185 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from "react";
-import Navbar from "../navbar/Navbar";
-import './Myproject.css'
-import { FaEdit, FaUser, FaEnvelope, FaMedal, FaPlusCircle } from "react-icons/fa"; 
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import React, { useEffect, useState, useRef } from "react";
+import jspdf from "jspdf";
+import { useParams } from "react-router-dom";
+import "./Myproject.css";
 import axios from "axios";
-import { EDIT_PROFILE_ROUTE, GET_PROJECT_BY_ORGANIZATION_ROUTE } from "../../utils/Routes"; 
-import defaultAvatar from '../../assets/default.png';
-import { useNavigate } from "react-router-dom";
+import { GET_PROJECT_BY_ID_ROUTE } from "../../utils/Routes";
+import Navbar from "../navbar/Navbar";
+import ProjectMap from "../project-map/ProjectMap";
+import stamp from '../../assets/prakruti-parv-stamp.png'
+import {
+  FaTrash,
+  FaTimes,
+  FaEdit,
+  FaPhone,
+  FaMoneyBill,
+  FaBullseye,
+  FaUsers,
+} from "react-icons/fa";
+import { useSpring, animated } from "react-spring";
+import ReportTemplate from "../fund-report-template/ReportTemplate";
 
-const PROJECT_STATUSES = {
-  ALL: "all",
-  ACTIVE: "active",
-  COMPLETED: "completed",
-  PENDING: "pending",
-};
-
-export default function Profile() {
-  const [user, setUser] = useState(null);
-  const [projects, setProjects] = useState([]);
-  const [isEdit, setIsEdit] = useState(false);
-  const [avatar, setAvatar] = useState(null);
-  const [isChanged, setIsChanged] = useState(false);
-  const [filter, setFilter] = useState(PROJECT_STATUSES.ALL); 
-  const [showPopup, setShowPopup] = useState(false);
-  const navigate = useNavigate();
-
+const Myproject = () => {
+  const { projectId } = useParams();
+  const [project, setProject] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [location, setLocation] = useState(null);
+  const [steps, setSteps] = useState([]);
+  const [isReportDialogOpen, setReportDialog] = useState(false);
+  const pdf = new jspdf();
+  const ref = useRef();
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchProject = async () => {
       try {
-        const { data } = await axios.get(EDIT_PROFILE_ROUTE, { withCredentials: true });
-        setUser({
-          ...data.data.profile,
-          username: data.data.username,
-          role: data.data.role,
-          badges: data.data.badges,
-          email: data.data.email,
+        const response = await axios.get(GET_PROJECT_BY_ID_ROUTE(projectId), {
+          withCredentials: true,
         });
-        setAvatar(`https://res.cloudinary.com/djt5vw5aa/image/upload/v1727512495/user-profiles/${data.data._id || 'default'}.jpg`);
+        setProject(response.data);
+
+        const placeName = response.data.location;
+        await fetchCoordinates(placeName);
+
+        setSteps(response.data.steps || []);
       } catch (error) {
-        console.error(error);
-        toast.error("Failed to fetch user data. Please try again.");
-      }
-    };
-    fetchUserData();
-  }, []); 
-
-  useEffect(() => {
-    const fetchProjects = async () => {
-      const userId = user?._id;
-      if (userId && user.role.toLowerCase() === "organisation") {
-        try {
-          const { data } = await axios.get(GET_PROJECT_BY_ORGANIZATION_ROUTE(userId), { withCredentials: true });
-          console.log(data)
-          setProjects(data.projects); 
-        } catch (error) {
-          console.error(error);
-          toast.error("Failed to fetch projects. Please try again.");
-        }
+        console.error("Error fetching project:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    if (user) {
-      fetchProjects();
-    }
-  }, [user]); 
-  
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    if (file && (file.type === "image/jpeg" || file.type === "image/png")) {
-      const objectUrl = URL.createObjectURL(file);
-      setAvatar(objectUrl);
-      setUser((prevUser) => ({
-        ...prevUser,
-        profile: { ...prevUser.profile, avatarUrl: objectUrl },
-      }));
-      setIsChanged(true);
-    } else {
-      toast.error("Please upload an image in .jpg or .png format.");
-    }
-  };
+    fetchProject();
+  }, [projectId]);
 
-  const handleChange = (e) => {
-    const { id, value } = e.target;
-    setUser((prevUser) => ({
-      ...prevUser,
-      [id]: value,
-    }));
-    setIsChanged(true);
-  };
-
-  const handleSave = async () => {
-    const formData = new FormData();
-    formData.append("name", user.name);
-    formData.append("bio", user.bio || "");
-    formData.append("role", user.role);
-
-    const fileInput = document.getElementById("image-upload");
-    if (fileInput.files.length > 0) {
-      formData.append("image", fileInput.files[0]);
-    }
-
+  const fetchCoordinates = async (placeName) => {
     try {
-      await axios.post(EDIT_PROFILE_ROUTE, formData, {
-        withCredentials: true,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      toast.success("Profile updated successfully!");
-      setIsEdit(false);
-      setIsChanged(false);
+      const response = await axios.get(
+        `https://nominatim.openstreetmap.org/search?q=${placeName}&format=json&addressdetails=1`
+      );
+      const data = response.data;
+
+      if (data.length > 0) {
+        const { lat, lon } = data[0];
+        setLocation({ latitude: parseFloat(lat), longitude: parseFloat(lon) });
+      } else {
+        console.error("Location not found");
+      }
     } catch (error) {
-      console.error("Error response:", error.response ? error.response.data : error.message);
-      toast.error(`Error updating profile: ${error.message}`);
+      console.error("Error fetching coordinates:", error);
     }
   };
 
-  const handleCancel = () => {
-    setIsEdit(false);
-    setIsChanged(false);
-    if (user?.profile.avatarUrl) {
-      setAvatar(user.profile.avatarUrl);
-    }
-    if (avatar?.startsWith("blob:")) {
-      URL.revokeObjectURL(avatar);
-    }
+  const handleUpdate = () => {
+    console.log("Update project:", projectId);
   };
 
-  const filteredProjects = projects.filter(project => {
-    return filter === PROJECT_STATUSES.ALL || project.status === filter; 
+  const handleDelete = () => {
+    console.log("Delete project:", projectId);
+  };
+
+  const handleClose = () => {
+    console.log("Close project:", projectId);
+  };
+  const handleDownload = () => {
+    const element = ref.current;
+    if (element) {
+      console.log(element);
+      const doc = new jspdf("p", "mm", "a4");
+      doc.html(element, {
+        callback: (doc) => {
+          doc.addImage(stamp,'PNG', 145, 245, 40, 40)
+          doc.save("report.pdf");
+        },
+        x: 5, 
+        y: 5,
+        width: 180, 
+        windowWidth: 900, 
+        margin: [10, 10, 10, 10],
+      });
+    }
+    setReportDialog(!isReportDialogOpen)
+  };
+  const projectInfoAnimation = useSpring({
+    opacity: loading ? 0 : 1,
+    transform: loading ? "translateY(-20px)" : "translateY(0)",
+    config: { duration: 500 },
   });
 
-  const handleProjectNavigation=(project_id)=>{
-
-      const projectId=project_id;
-      navigate(`/project/${projectId}`);
+  if (loading) {
+    return <div className="myproject-loading">Loading...</div>;
   }
-  return (
-    <div className="profile">
-      <Navbar />
-      <ToastContainer />
-      <div className="content">
-        <div className="profile-header">
-          <img className="avatar" src={avatar || defaultAvatar} alt="Profile" />
-          <div className="user-info">
-            <h2>{user?.username}</h2>
-            <div className="user-info-edit">
-              <button className="edit" onClick={() => setIsEdit(!isEdit)}>
-                <FaEdit />
-              </button>
-            </div>
-            <p><FaUser className="icon" />{user?.role}</p>
-            <p><FaMedal className="icon" />{user?.badges.length ? user.badges.join(", ") : "No badges"}</p>
-            <p><FaEnvelope className="icon" />{user?.email}</p>
-          </div>
-        </div>
-        
-        {isEdit && (
-          <div className="edit-section">
-            <div className="input-row">
-              <label htmlFor="name">Name:</label>
-              <input
-                type="text"
-                id="name"
-                value={user.name || ""}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="input-row">
-              <label htmlFor="bio">Bio:</label>
-              <input
-                type="text"
-                id="bio"
-                value={user.bio || ""}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="input-row">
-              <label htmlFor="image-upload">Profile Image:</label>
-              <input
-                type="file"
-                id="image-upload"
-                onChange={handleImageChange}
-                accept=".jpg,.png"
-              />
-            </div>
-            <div className="button-group">
-              <button
-                className={`save-button ${!isChanged && 'no-change'}`}
-                onClick={handleSave}
-                disabled={!isChanged}
-              >
-                Save
-              </button>
-              <button className="cancel-button" onClick={handleCancel}>
-                Cancel
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
 
-      {user?.role.toLowerCase() === "organisation" && (
-      <div className="projects-section">
-        <h2 className="myprojects">My Projects</h2>
-        
-        {projects.length > 0 && (
-          <div className="filter-buttons">
-            {Object.values(PROJECT_STATUSES).map((status) => (
-              <button key={status} onClick={() => setFilter(status)}>
-                {status.charAt(0).toUpperCase() + status.slice(1)}
-              </button>
-            ))}
+  return (
+    <>
+      <Navbar />
+      <animated.div
+        style={projectInfoAnimation}
+        className="myproject-info-container"
+      >
+        <h1>{project?.title}</h1>
+        <div className="myproject-actions">
+          <button onClick={handleDelete} className="myproject-button">
+            <FaTrash color="red" /> Delete Project
+          </button>
+          <button onClick={handleClose} className="myproject-button">
+            <FaTimes color="orange" /> Close Project
+          </button>
+          <button onClick={handleUpdate} className="myproject-button">
+            <FaEdit color="green" /> Update Project
+          </button>
+        </div>
+        <div className="myproject-details">
+          <p>
+            <FaPhone color="brown" /> <strong>Phone:</strong>{" "}
+            {project?.contactPhoneNumber}
+          </p>
+          <p>
+            <FaMoneyBill color="green" /> <strong>Current Amount:₹</strong>{" "}
+            {project?.currentAmount}
+          </p>
+          <p>
+            <FaBullseye color="blue" /> <strong>Target Amount:₹</strong>{" "}
+            {project?.goalAmount}
+          </p>
+          <p>
+            <FaUsers color="purple" /> <strong>Contributors:</strong>{" "}
+            {project?.contributors?.length}
+          </p>
+          <p>
+            <strong>Description:</strong> {project?.description}
+          </p>
+          <div className="wrap-span">
+            <span
+              className="generate"
+              onClick={() => setReportDialog(!isReportDialogOpen)}
+            >
+              Generate Report
+            </span>
+          </div>
+        </div>
+      </animated.div>
+      <div className="myproject-container">
+        {location && (
+          <div className="myproject-map-background">
+            <ProjectMap location={location} steps={steps} />
           </div>
         )}
-        
-        <div className="projects-list">
-          {projects.length === 0 ? (
-            <div className="no-projects">No projects found for this organization.</div>
-          ) : filteredProjects.length === 0 ? (
-            <div className="no-projects">No projects match the selected filter.</div>
-          ) : (
-            filteredProjects.map((project) => (
-              <div key={project._id} className="project-item" onClick={()=>handleProjectNavigation(project._id)}>
-                <div className="project-banner" style={{ backgroundImage: `url(${project?.bannerImage})` }}>
-                  <div className="project-overlay">
-                      <h3>{project?.title}</h3>
-                      <p>{project?.description}</p>
-                  </div>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
       </div>
+      {isReportDialogOpen && (
+        <div className="dialog">
+          <div className="modal">
+            <ReportTemplate projectData={project} ref={ref} />
+            <div className="dialog-buttons">
+              <button onClick={() => setReportDialog(!isReportDialogOpen)}>
+                Close
+              </button>
+              <button onClick={handleDownload}>Download PDF</button>
+            </div>
+          </div>
+        </div>
       )}
-      
-      <div className="add-project-button" 
-      onClick={() => { navigate('/add-project'); }}
-      onMouseEnter={() => setShowPopup(true)} 
-      onMouseLeave={() => setShowPopup(false)}>
-          <FaPlusCircle  size={40}/>
-        <div className="popup">
-          Add Project Here!
-        </div>
-      </div>
-      
-    </div>
+    </>
   );
-}
+};
+
+export default Myproject;

@@ -6,6 +6,7 @@ import ProtectedRoute from './utils/ProtectedRoute'
 import ProjectForm from './components/add-project-form/ProjectForm'
 import ReportTemplate from './components/fund-report-template/ReportTemplate'
 import Myproject from './components/myproject/Myproject'
+import Settings from './components/settings/Settings'
 
 function App() {
 
@@ -26,6 +27,8 @@ function App() {
           <Route path='/animal-tracking' element={<ReportTemplate/>}/>
           <Route path='/add-project' element={<ProjectForm/>}/>
           <Route path='/project/:projectId' element={<Myproject/>}/>
+          <Route path='/settings' element={<Settings/>}/>
+
 
         </Routes>
     </BrowserRouter>

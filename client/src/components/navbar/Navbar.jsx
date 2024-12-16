@@ -1,6 +1,6 @@
 // Navbar.js
 import React, { useState } from "react";
-import { FaUserGraduate, FaDonate, FaTimes, FaBars } from "react-icons/fa";
+import { FaUserGraduate, FaDonate, FaTimes, FaBars,FaGlobe } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import IconButton from "@mui/material/IconButton";

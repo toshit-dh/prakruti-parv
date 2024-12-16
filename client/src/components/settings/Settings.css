@@ -1,0 +1,175 @@
+
+  
+  .dark-mode {
+    background-color: #121212;
+    color: #fff;
+  }
+  
+  .settings-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin-top:120px;
+  }
+  
+  .settings-container {
+    padding: 20px;
+    margin: 20px auto;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 900px;
+    width: 100%;
+    border-radius: 5%;
+    border: 3px dotted var(--primary-color)
+  }
+  
+
+  .settings-header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .settings-title {
+    font-size: 32px;
+    font-weight: bold;
+    color: var(--primary-color);
+  }
+  
+  .settings-description {
+    font-size: 16px;
+    color: #555;
+  }
+  .div-for-border{
+    border-top: 2px solid var(--secondary-color);
+  }
+  
+
+  .settings-content {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+  }
+  
+
+  .settings-left {
+    flex: 1;
+  }
+  
+  .setting-item {
+    margin-bottom: 20px;
+  }
+  
+  .setting-item label {
+    display: block;
+    font-weight: 600;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .toggle-switch {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .toggle-switch span {
+    font-size: 16px;
+  }
+  
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+  }
+  
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 50px;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    border-radius: 50px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+  }
+  
+  input:checked + .slider {
+    background-color: #4caf50;
+  }
+  
+  input:checked + .slider:before {
+    transform: translateX(26px);
+  }
+  
+
+  .settings-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+
+  .language-selection {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .language-selection h3 {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--primary-color);
+  }
+  
+  .language-selection p {
+    font-size: 16px;
+    color: #777;
+  }
+  
+
+  @media (max-width: 768px) {
+    .settings-container {
+      padding: 15px;
+      margin: 10px;
+    }
+  
+    .settings-title {
+      font-size: 28px;
+    }
+  
+    .settings-description {
+      font-size: 14px;
+    }
+  
+    .language-selection h3 {
+      font-size: 20px;
+    }
+  
+    .settings-content {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+  
