@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react/display-name */
 import React from 'react';
 import './ReportTemplate.css'; 
 import stampImage from '../../assets/prakruti-parv-stamp.png';
