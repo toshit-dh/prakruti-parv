@@ -14,6 +14,7 @@ import cv2
 import random
 import base64
 from io import BytesIO
+import requests
 
 load_dotenv()
 
@@ -318,5 +319,45 @@ def certificate():
         )
     else:
         return jsonify({'error': 'Failed to create certificate.'}), 500
+    
+    
+def search_wildlife_videos(animal_name):
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    }
+    
+    url = f"https://www.youtube.com/results?search_query={animal_name}+wildlife"
+    
+    try:
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+        
+        # Extract video IDs using regex
+        video_ids = re.findall(r'watch\?v=(\S{11})', response.text)
+        
+        # Create unique video links
+        video_links = list(set(f"https://www.youtube.com/watch?v={video_id}" for video_id in video_ids))
+        
+        return video_links
+    
+    except requests.RequestException as e:
+        print(f"Error occurred: {e}")
+        return []
+
+@app.route('/get-youtube-videos', methods=['GET'])
+def get_youtube_videos():
+    animal_name = request.args.get('name') 
+    
+    if not animal_name:
+        return jsonify({"error": "Please provide an animal name in the 'name' query parameter"}), 400
+    
+    video_links = search_wildlife_videos(animal_name)
+    
+    if not video_links:
+        return jsonify({"error": "No videos found or failed to fetch data"}), 404
+    
+    return jsonify({"animal": animal_name, "videos": video_links})
+   
+
 if __name__ == '__main__':
     app.run(port=8081, debug=True)
