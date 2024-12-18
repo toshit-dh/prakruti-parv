@@ -2,7 +2,6 @@
 import React from 'react'
 import { Register,Login,Home,Education,AnimalTracking,Welcome,IdentifySpecies,Profile,AddProject,ViewProjects,Project, Poaching } from './components/index'
 import {BrowserRouter,Routes,Route} from 'react-router-dom'
-import ProtectedRoute from './utils/ProtectedRoute'
 import ProjectForm from './components/add-project-form/ProjectForm'
 import ReportTemplate from './components/fund-report-template/ReportTemplate'
 import Myproject from './components/myproject/Myproject'

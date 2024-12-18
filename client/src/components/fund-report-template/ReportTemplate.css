@@ -65,6 +65,14 @@
     color: #333333;
 }
 
+.fund-report-organization-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 10px 0;
+    color: green;
+}
+
 
 .fund-report-project-description {
     margin-bottom: 20px;

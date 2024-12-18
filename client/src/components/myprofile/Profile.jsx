@@ -139,7 +139,7 @@ export default function Profile() {
       navigate(`/project/${projectId}`);
   }
   return (
-    <div className="profile">
+    <di className="profile">
       <Navbar />
       <ToastContainer />
       <div className="content">
@@ -249,6 +249,7 @@ export default function Profile() {
         </div>
       </div>
       
-    </div>
+    </di
+  >
   );
 }

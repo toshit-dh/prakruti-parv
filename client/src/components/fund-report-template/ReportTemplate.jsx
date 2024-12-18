@@ -16,11 +16,14 @@ const ReportTemplate = React.forwardRef((props, ref) => {
         <h1 className="fund-report-title">FundRaising Report</h1>
       </div>
       <div className="fund-report-banner-container">
-        <img src={reportbg} alt="Banner" className="fund-report-banner" />
+        <img src={projectData.bannerImage} alt="Banner" className="fund-report-banner" />
       </div>
       <h2 className="fund-report-organization-name">
         {projectData.organizationName}
       </h2>
+      <h3 className='fund-report-organization-title'>
+        {projectData.title}
+      </h3>
       <p className="fund-report-project-description">
         {projectData.description}
       </p>
