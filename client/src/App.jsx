@@ -7,6 +7,7 @@ import ProjectForm from './components/add-project-form/ProjectForm'
 import ReportTemplate from './components/fund-report-template/ReportTemplate'
 import Myproject from './components/myproject/Myproject'
 import Settings from './components/settings/Settings'
+import Education2 from './components/education/Education2'
 
 function App() {
 
@@ -17,14 +18,13 @@ function App() {
           <Route path='/register' element={<Register/>}/>
           <Route path='/login' element={<Login/>}/>
           <Route  path='/' element={<Home/>}/>
-          <Route path='/education' element={<Education/>}/>
+          <Route path='/education' element={<Education2/>}/>
           <Route path='/welcome' element={<Welcome/>}/>
           <Route path='/identify' element={<IdentifySpecies/>}/>
           <Route path='/poaching-detection' element={<Poaching/>}/>
           <Route path='/profile' element={<Profile/>}/>
           <Route path='/addProject' element={<AddProject/>}/>
           <Route path='/viewProjects' element={<ViewProjects/>}/>
-          <Route path='/animal-tracking' element={<ReportTemplate/>}/>
           <Route path='/add-project' element={<ProjectForm/>}/>
           <Route path='/project/:projectId' element={<Myproject/>}/>
           <Route path='/settings' element={<Settings/>}/>

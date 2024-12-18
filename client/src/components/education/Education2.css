@@ -1,0 +1,514 @@
+.education2-container {
+  position: relative;
+  width: 100%;
+  height: auto;
+  overflow-y: auto;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: white;
+  
+  padding: 80px 20px 20px;
+  
+}
+
+.education2-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("https://media.istockphoto.com/id/1458215547/photo/brown-bear.jpg?s=612x612&w=0&k=20&c=MRQhtNC_-P0llLRwwA3wmbQL6iroSjUla1PmvvEWCZU="),
+      url("https://c4.wallpaperflare.com/wallpaper/279/283/739/deer-horns-wood-animals-wallpaper-preview.jpg"),
+      url("https://images.pexels.com/photos/10161799/pexels-photo-10161799.jpeg?cs=srgb&dl=pexels-vignesh-132622303-10161799.jpg&fm=jpg"),
+      url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEZaP2QDWXWQDg_0mUInkMaTrzGo_hFAntp21ExOkot2gCC31_1lLU9YLnBN0X716FdJU&usqp=CAU"),
+      url("https://media.istockphoto.com/id/1280388450/photo/female-giraffe-and-her-baby-standing-in-green-bush-in-the-morning-sunlight-in-moremi-okavango.jpg?s=612x612&w=0&k=20&c=7p4gjARn6tZF2V8Va6fq9KZSH585k-qyVetyAXG0exc="),
+      url("https://cdn.pixabay.com/photo/2019/09/15/04/23/rhinoceros-4477306_640.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  animation: slide 30s infinite;
+  filter: brightness(0.7);
+  z-index: -1;
+}
+
+/* Animation for Background */
+@keyframes slide {
+  0% { background-image: url("https://media.istockphoto.com/id/1458215547/photo/brown-bear.jpg?s=612x612&w=0&k=20&c=MRQhtNC_-P0llLRwwA3wmbQL6iroSjUla1PmvvEWCZU="); }
+  20% { background-image: url("https://c4.wallpaperflare.com/wallpaper/279/283/739/deer-horns-wood-animals-wallpaper-preview.jpg"); }
+  40% { background-image: url("https://images.pexels.com/photos/10161799/pexels-photo-10161799.jpeg?cs=srgb&dl=pexels-vignesh-132622303-10161799.jpg&fm=jpg"); }
+  60% { background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEZaP2QDWXWQDg_0mUInkMaTrzGo_hFAntp21ExOkot2gCC31_1lLU9YLnBN0X716FdJU&usqp=CAU"); }
+  80% { background-image: url("https://media.istockphoto.com/id/1280388450/photo/female-giraffe-and-her-baby-standing-in-green-bush-in-the-morning-sunlight-in-moremi-okavango.jpg?s=612x612&w=0&k=20&c=7p4gjARn6tZF2V8Va6fq9KZSH585k-qyVetyAXG0exc="); }
+  100% { background-image: url("https://cdn.pixabay.com/photo/2019/09/15/04/23/rhinoceros-4477306_640.jpg"); }
+}
+
+
+.education2-content h1 {
+  font-size: 5rem;
+  margin-bottom: 0.4rem;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+.education2-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.education2-content p {
+  font-size: 2rem;
+  margin-bottom: 3rem;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.get-started-btn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  width: 300px;
+}
+
+.get-started-btn:hover {
+  background-color: var(--secondary-color);
+}
+
+
+.education2-search-container {
+  text-align: center;
+  color: white;
+  font-size: 1.5rem;
+  z-index: 1;
+  border: 1px solid white;
+  padding: 50px;
+  border-radius: 30px;
+  background: linear-gradient(45deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5));
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  animation: fadeIn 1.5s ease-out;
+  margin-top:40px;
+}
+
+
+
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+
+.education2-search-container h2 {
+  color: white;
+  margin-bottom: 20px;
+  font-size: 2rem;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.education2-search-form {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
+  flex-direction: column;
+}
+
+.search-input {
+  padding: 12px;
+  font-size: 1.2rem;
+  width: 300px;
+  border-radius: 10px;
+  border: 2px solid #ddd;
+  margin-bottom: 20px;
+  transition: border 0.3s ease;
+}
+
+
+.search-input:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+.education2-search-btn {
+  padding: 12px 20px;
+  font-size: 1.2rem;
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 150px;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.education2-search-btn:hover {
+  background-color: var(--secondary-color);
+}
+
+.search-icon {
+  margin-right: 10px;
+  font-size: 1.5rem;
+}
+.education2-search-form input::placeholder{
+  color:white;
+
+}
+.loadingOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.386); 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999; 
+}
+.loadingIcon {
+  font-size: 3rem; 
+  color: #333; 
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.info-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.info-section {
+  margin-bottom: 20px;
+  font-size:20px !important;
+}
+.info-section h3{
+  font-size:20px !important;
+  text-align:center;
+}
+.info-section p{
+  font-size:15px !important;
+}
+
+.species-image {
+  max-width: 100%;
+  height: auto;
+  max-height: 300px;
+  border-radius: 10px;
+  display: block;
+  margin: 0 auto;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top:8px;
+}
+
+.clear-btn, .download-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.clear-btn {
+  background-color: #FF5722;
+  color: white;
+}
+
+.clear-btn:hover {
+  background-color: #E64A19;
+}
+
+.download-btn {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.download-btn:hover {
+  background-color: #45a049;
+}
+
+.education2-result-container {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid white;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.5);
+  text-align: left;
+  font-size: 0.9rem;
+  max-width:1000px;
+  overflow-y: auto;
+
+  
+}
+
+.image-section{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.leaves-animation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: url('https://i.pinimg.com/originals/55/da/c7/55dac724a4fa886a05253c6956ba1436.gif') repeat;
+  opacity: 0.5;
+  z-index: 0;
+}
+
+.education-welcome-section {
+  position: relative;
+  animation: float 3s ease-in-out infinite;
+}
+
+
+.leaf-icon, .bird-house-icon {
+  color: #6bd968;
+  margin-right: 10px;
+}
+
+.welcome-gif {
+  width: 200px;
+  border-radius: 10px;
+  margin-top: 2rem;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+}
+
+.education2-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.education2-input-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: white;
+  margin-right: 4px;
+  
+}
+
+.education2-search-input {
+  padding-left: 45px !important;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(5px);
+  border: 2px solid rgba(255,255,255,0.2);
+  color: white;
+  margin-left: 50px;
+  padding:10px;
+  width:400px;
+  border-radius: 30px;
+}
+
+.paw-print-loader {
+  display: flex;
+  gap: 10px;
+}
+
+.paw-print-loader svg {
+  font-size: 2rem;
+  color: #ff6b6b;
+  animation: pawAnimation 1s infinite;
+}
+
+.paw-print-loader svg:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.paw-print-loader svg:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes pawAnimation {
+  0% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-20px) rotate(10deg); }
+  100% { transform: translateY(0) rotate(0); }
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0); }
+}
+
+.education2-result-container {
+  position: relative;
+  overflow: hidden;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255,255,255,0.1);
+  transform: translateY(20px);
+  animation: slideUp 0.5s forwards;
+}
+
+.result-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 2rem;
+  color: #6bd968;
+  opacity: 0.5;
+}
+
+@keyframes slideUp {
+  to { transform: translateY(0); }
+}
+
+.actions button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 25px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+.actions button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.education2-search-container, .education2-result-container {
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+
+.species-search{
+  margin-right:4px;
+}
+.education2-result-container{
+
+  border:2px dashed white;
+}
+
+
+.videos-section {
+  margin: 2rem 0;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+}
+
+.videos-section h3 {
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.videos-swiper {
+  padding: 1rem;
+  height: 250px;
+}
+
+.video-card {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.video-card:hover {
+  transform: scale(1.02);
+}
+
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #ffffff !important;
+  background: rgba(0, 0, 0, 0.5);
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50%;
+}
+
+.swiper-button-next:after,
+.swiper-button-prev:after {
+  font-size: 20px !important;
+}
+
+
+.swiper-pagination-bullet {
+  background: #ffffff !important;
+}
+
+.swiper-pagination-bullet-active {
+  background: #4CAF50 !important;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .videos-swiper {
+    height: 220px;
+  }
+}
+
+@media (max-width: 768px) {
+  .swiper-slide {
+    width: 50% !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .swiper-slide {
+    width: 100% !important;
+  }
+  
+  .videos-swiper {
+    height: 200px;
+  }
+}
+.sound-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #4CAF50;
+  border: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  z-index: 10;
+}
+.sound-button:hover {
+  transform: scale(1.1);
+  background: #45a049;
+}

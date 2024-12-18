@@ -1,7 +1,7 @@
 import os
 import google.generativeai as genai
 from dotenv import load_dotenv
-from flask import Flask,request,jsonify,send_file
+from flask import Flask,request,jsonify,send_file,send_from_directory
 from flask_cors import CORS
 import torch
 import torchvision
@@ -332,10 +332,8 @@ def search_wildlife_videos(animal_name):
         response = requests.get(url, headers=headers)
         response.raise_for_status()
         
-        # Extract video IDs using regex
         video_ids = re.findall(r'watch\?v=(\S{11})', response.text)
-        
-        # Create unique video links
+    
         video_links = list(set(f"https://www.youtube.com/watch?v={video_id}" for video_id in video_ids))
         
         return video_links
@@ -357,6 +355,40 @@ def get_youtube_videos():
         return jsonify({"error": "No videos found or failed to fetch data"}), 404
     
     return jsonify({"animal": animal_name, "videos": video_links})
+
+
+@app.route('/get-animal-sound', methods=['GET'])
+def get_animal_sound():
+    animal_name = request.args.get('animal')
+    
+    if not animal_name:
+        return jsonify({'error': 'Animal name is required'}), 400
+    
+    animal_name = animal_name.lower()
+    
+    base_path = os.path.join(os.path.dirname(__file__), 'animal-sounds')
+    animal_folder = os.path.join(base_path, animal_name)
+    
+    if not os.path.exists(animal_folder):
+        return jsonify({'error': f'Sound not found for {animal_name}'}), 404
+    
+    audio_files = [f for f in os.listdir(animal_folder) 
+                   if f.endswith(('.mp3', '.wav', '.ogg'))]
+    
+    if not audio_files:
+        return jsonify({'error': f'No audio file found for {animal_name}'}), 404
+    
+    audio_file = audio_files[0]
+    try:
+        return send_from_directory(
+            animal_folder,
+            audio_file,
+            as_attachment=True,
+            download_name=f"{animal_name}_sound{os.path.splitext(audio_file)[1]}"
+        )
+    except Exception as e:
+        return jsonify({'error': f'Error sending file: {str(e)}'}), 500
+
    
 
 if __name__ == '__main__':
