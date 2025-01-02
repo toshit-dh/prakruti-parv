@@ -19,6 +19,7 @@ import { useDispatch } from "react-redux";
 import "./CustomDrawer.css";
 import { useSelector } from "react-redux";
 import { logoutUser } from "../../redux/slice/UserSlice";
+import InfoIcon from '@mui/icons-material/Info';
 
 const CustomDrawer = ({ isOpen, toggleDrawer }) => {
   const navigate = useNavigate();
@@ -55,6 +56,7 @@ const CustomDrawer = ({ isOpen, toggleDrawer }) => {
           { text: "Projects", icon: <PublicIcon className="drawerIcon" /> },
           { text: "Settings", icon: <SettingsIcon className="drawerIcon" /> },
           { text: "Explore", icon: <ExploreIcon className="drawerIcon" /> },
+          {text:"About",icon:<InfoIcon className="drawerIcon"/>},
           { text: "Logout", icon: <LogoutIcon className="drawerIcon" /> },
         ].map(({ text, icon }) => (
           <ListItem
@@ -66,6 +68,7 @@ const CustomDrawer = ({ isOpen, toggleDrawer }) => {
               if(text=='Logout') handleLogout();
               if(text=='Settings') navigate("/settings");
               if(text=='Explore') navigate("/explore");
+              if(text=='About') navigate("/about-preloader");
             }}
           >
             <ListItemIcon>{icon}</ListItemIcon>

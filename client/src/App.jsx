@@ -9,6 +9,8 @@ import Myproject from './components/myproject/Myproject'
 import Settings from './components/settings/Settings'
 import Education2 from './components/education/Education2'
 import Explore from './components/explore/Explore'
+import About from './components/about/About'
+import AboutPreLoader from './components/about/AboutPreLoader'
 
 function App() {
 
@@ -30,8 +32,8 @@ function App() {
           <Route path='/project/:projectId' element={<Myproject/>}/>
           <Route path='/settings' element={<Settings/>}/>
           <Route path='/explore' element={<Explore/>}/>
-
-
+          <Route path='/about' element={<About/>}/>
+          <Route path='/about-preloader' element={<AboutPreLoader/>}/>
         </Routes>
     </BrowserRouter>
   )

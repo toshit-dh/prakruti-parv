@@ -1,0 +1,60 @@
+@keyframes blink {
+    0% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.1); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+.preloader-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.background-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.button-container {
+    position: absolute;
+    bottom: 50px;
+    right: 50px;
+    display: flex;
+    gap: 20px;
+    z-index: 2;
+}
+
+.animate-button {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    backdrop-filter: blur(5px);
+    width: 80px !important;
+    height: 80px !important;
+    border-radius: 50% !important;
+    animation: blink 2s infinite ease-in-out !important;
+}
+
+.animate-button svg {
+    font-size: 35px;
+    color: white;
+}
+
+.skip-button {
+    animation-delay: 0s !important;
+    border:3px solid var(--primary-color);
+    background-color: var(--primary-color) !important;
+    color:white !important;
+}
+
+.home-button {
+    animation-delay: 1s !important;
+    border:3px solid var(--primary-color);
+    background-color: var(--primary-color) !important;
+    color:white !important;
+}
+
+.animate-button:hover {
+    background-color: rgba(255, 255, 255, 0.3) !important;
+    transform: scale(1.1);
+}

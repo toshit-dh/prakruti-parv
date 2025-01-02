@@ -1,0 +1,48 @@
+/* General Styles */
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #e6f7ff; /* Light blue background */
+}
+
+h1 {
+    color: #2e8b57; /* Green color for headings */
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* Button Styles */
+button {
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth button transitions */
+}
+
+button:hover {
+    background-color: #4caf50; /* Darker green on hover */
+}
+
+/* Feature Card Styles */
+.feature-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer Styles */
+footer {
+    background-color: #2e8b57; /* Dark green for footer */
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Responsive Design for Grid Items */
+@media (max-width: 600px) {
+    .feature-card {
+        margin-bottom: 20px; /* Spacing for smaller screens */
+    }
+}
