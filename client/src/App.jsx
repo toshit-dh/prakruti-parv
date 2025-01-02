@@ -8,6 +8,7 @@ import ReportTemplate from './components/fund-report-template/ReportTemplate'
 import Myproject from './components/myproject/Myproject'
 import Settings from './components/settings/Settings'
 import Education2 from './components/education/Education2'
+import Explore from './components/explore/Explore'
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
           <Route path='/add-project' element={<ProjectForm/>}/>
           <Route path='/project/:projectId' element={<Myproject/>}/>
           <Route path='/settings' element={<Settings/>}/>
+          <Route path='/explore' element={<Explore/>}/>
 
 
         </Routes>

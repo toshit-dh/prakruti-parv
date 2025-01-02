@@ -14,6 +14,7 @@ import ChatIcon from "@mui/icons-material/Chat";
 import PublicIcon from "@mui/icons-material/Public";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
+import ExploreIcon from '@mui/icons-material/Explore';
 import { useDispatch } from "react-redux";
 import "./CustomDrawer.css";
 import { useSelector } from "react-redux";
@@ -53,6 +54,7 @@ const CustomDrawer = ({ isOpen, toggleDrawer }) => {
           { text: "Connect", icon: <ChatIcon className="drawerIcon" /> },
           { text: "Projects", icon: <PublicIcon className="drawerIcon" /> },
           { text: "Settings", icon: <SettingsIcon className="drawerIcon" /> },
+          { text: "Explore", icon: <ExploreIcon className="drawerIcon" /> },
           { text: "Logout", icon: <LogoutIcon className="drawerIcon" /> },
         ].map(({ text, icon }) => (
           <ListItem
@@ -63,6 +65,7 @@ const CustomDrawer = ({ isOpen, toggleDrawer }) => {
               if(text == "Projects") navigate("/viewProjects");
               if(text=='Logout') handleLogout();
               if(text=='Settings') navigate("/settings");
+              if(text=='Explore') navigate("/explore");
             }}
           >
             <ListItemIcon>{icon}</ListItemIcon>
