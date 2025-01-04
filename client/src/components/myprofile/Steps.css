@@ -1,0 +1,57 @@
+.steps {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  h1 {
+    align-self: center;
+    color: lawngreen;
+  }
+}
+/* Example to make the date text stand out */
+.vertical-timeline-element-date {
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.step-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.vertical-timeline-element-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.vertical-timeline-element-description {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #7f8c8d;
+}
+@keyframes colorChange {
+  0% {
+    color: rgb(255, 255, 255); 
+  }
+  50% {
+    color: rgb(34, 139, 34); 
+  }
+  100% {
+    color: rgb(255, 255, 255); 
+  }
+}
+.date{
+  font: 100em sans-serif;
+  font-weight: bolder;
+  color: lawngreen;
+}

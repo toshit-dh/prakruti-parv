@@ -91,6 +91,9 @@ const projectSchema = new mongoose.Schema(
             type: String, 
             trim: true,
           },
+          date: {
+            type: String,
+          },
         },
       ],
       default: [],
@@ -111,12 +114,6 @@ const projectSchema = new mongoose.Schema(
         },
       ],
       default: [],
-    },
-
-    status: {
-      type: String,
-      enum: ["Active", "Completed", "Closed"],
-      default: "Active",
     },
   },
   { timestamps: true }

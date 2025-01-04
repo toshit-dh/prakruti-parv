@@ -123,7 +123,7 @@ exports.login = async (req, res) => {
       
       res.status(200).json(new APIResponse(await User.findById(id)).toJson())
     } catch (e) {
-      console.error('Edit Profile Error:', error);
+      console.error('Edit Profile Error:', e);
       res.status(500).json(new APIResponse(null, 'Internal server error').toJson());
     }
   }

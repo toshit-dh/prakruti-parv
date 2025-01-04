@@ -2,13 +2,17 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../navbar/Navbar";
 import "./Profile.css";
-import { FaEdit, FaUser, FaEnvelope, FaMedal, FaPlusCircle } from "react-icons/fa"; 
+import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-import { EDIT_PROFILE_ROUTE, GET_PROJECT_BY_ORGANIZATION_ROUTE } from "../../utils/Routes"; 
-import defaultAvatar from '../../assets/default.png';
+import {
+  EDIT_PROFILE_ROUTE,
+  GET_PROJECT_BY_ORGANIZATION_ROUTE,
+} from "../../utils/Routes";
+import defaultAvatar from "../../assets/default.png";
 import { useNavigate } from "react-router-dom";
+import MyProjects from "./MyProjects";
 
 const PROJECT_STATUSES = {
   ALL: "all",
@@ -23,14 +27,17 @@ export default function Profile() {
   const [isEdit, setIsEdit] = useState(false);
   const [avatar, setAvatar] = useState(null);
   const [isChanged, setIsChanged] = useState(false);
-  const [filter, setFilter] = useState(PROJECT_STATUSES.ALL); 
+  const [filter, setFilter] = useState(PROJECT_STATUSES.ALL);
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const { data } = await axios.get(EDIT_PROFILE_ROUTE, { withCredentials: true });
+        const { data } = await axios.get(EDIT_PROFILE_ROUTE, {
+          withCredentials: true,
+        });
         setUser({
           ...data.data.profile,
           username: data.data.username,
@@ -38,23 +45,29 @@ export default function Profile() {
           badges: data.data.badges,
           email: data.data.email,
         });
-        setAvatar(`https://res.cloudinary.com/djt5vw5aa/image/upload/v1727512495/user-profiles/${data.data._id || 'default'}.jpg`);
+        setAvatar(
+          `https://res.cloudinary.com/djt5vw5aa/image/upload/v1727512495/user-profiles/${
+            data.data._id || "default"
+          }.jpg`
+        );
       } catch (error) {
         console.error(error);
         toast.error("Failed to fetch user data. Please try again.");
       }
     };
     fetchUserData();
-  }, []); 
+  }, []);
 
   useEffect(() => {
     const fetchProjects = async () => {
       const userId = user?._id;
       if (userId && user.role.toLowerCase() === "organisation") {
         try {
-          const { data } = await axios.get(GET_PROJECT_BY_ORGANIZATION_ROUTE(userId), { withCredentials: true });
-          console.log(data)
-          setProjects(data.projects); 
+          const { data } = await axios.get(
+            GET_PROJECT_BY_ORGANIZATION_ROUTE(userId),
+            { withCredentials: true }
+          );
+          setProjects(data.projects);
         } catch (error) {
           console.error(error);
           toast.error("Failed to fetch projects. Please try again.");
@@ -65,8 +78,8 @@ export default function Profile() {
     if (user) {
       fetchProjects();
     }
-  }, [user]); 
-  
+  }, [user]);
+
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file && (file.type === "image/jpeg" || file.type === "image/png")) {
@@ -113,7 +126,10 @@ export default function Profile() {
       setIsEdit(false);
       setIsChanged(false);
     } catch (error) {
-      console.error("Error response:", error.response ? error.response.data : error.message);
+      console.error(
+        "Error response:",
+        error.response ? error.response.data : error.message
+      );
       toast.error(`Error updating profile: ${error.message}`);
     }
   };
@@ -129,127 +145,42 @@ export default function Profile() {
     }
   };
 
-  const filteredProjects = projects.filter(project => {
-    return filter === PROJECT_STATUSES.ALL || project.status === filter; 
-  });
+  const handleProjectNavigation = (project_id) => {
+    const projectId = project_id;
+    navigate(`/project/${projectId}`);
+  };
 
-  const handleProjectNavigation=(project_id)=>{
-
-      const projectId=project_id;
-      navigate(`/project/${projectId}`);
-  }
+  if (user == null) return;
   return (
-    <di className="profile">
+    <div className="content">
       <Navbar />
       <ToastContainer />
-      <div className="content">
-        <div className="profile-header">
-          <img className="avatar" src={avatar || defaultAvatar} alt="Profile" />
-          <div className="user-info">
-            <h2>{user?.username}</h2>
-            <div className="user-info-edit">
-              <button className="edit" onClick={() => setIsEdit(!isEdit)}>
-                <FaEdit />
-              </button>
+      <div className={`left ${!isProfileOpen && "close"}`}>
+        <div className={`profile  ${isProfileOpen && "closed"}`}>
+          {!isProfileOpen && (
+            <div className="details">
+              <img src={avatar} />
+              <h2>{user.username}</h2>
+              <h4>Badges: {user.badges}</h4>
+              <h4>{user.email}</h4>
             </div>
-            <p><FaUser className="icon" />{user?.role}</p>
-            <p><FaMedal className="icon" />{user?.badges.length ? user.badges.join(", ") : "No badges"}</p>
-            <p><FaEnvelope className="icon" />{user?.email}</p>
-          </div>
-        </div>
-        
-        {isEdit && (
-          <div className="edit-section">
-            <div className="input-row">
-              <label htmlFor="name">Name:</label>
-              <input
-                type="text"
-                id="name"
-                value={user.name || ""}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="input-row">
-              <label htmlFor="bio">Bio:</label>
-              <input
-                type="text"
-                id="bio"
-                value={user.bio || ""}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="input-row">
-              <label htmlFor="image-upload">Profile Image:</label>
-              <input
-                type="file"
-                id="image-upload"
-                onChange={handleImageChange}
-                accept=".jpg,.png"
-              />
-            </div>
-            <div className="button-group">
-              <button
-                className={`save-button ${!isChanged && 'no-change'}`}
-                onClick={handleSave}
-                disabled={!isChanged}
-              >
-                Save
-              </button>
-              <button className="cancel-button" onClick={handleCancel}>
-                Cancel
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {user?.role.toLowerCase() === "organisation" && (
-      <div className="projects-section">
-        <h2 className="myprojects">My Projects</h2>
-        
-        {projects.length > 0 && (
-          <div className="filter-buttons">
-            {Object.values(PROJECT_STATUSES).map((status) => (
-              <button key={status} onClick={() => setFilter(status)}>
-                {status.charAt(0).toUpperCase() + status.slice(1)}
-              </button>
-            ))}
-          </div>
-        )}
-        
-        <div className="projects-list">
-          {projects.length === 0 ? (
-            <div className="no-projects">No projects found for this organization.</div>
-          ) : filteredProjects.length === 0 ? (
-            <div className="no-projects">No projects match the selected filter.</div>
-          ) : (
-            filteredProjects.map((project) => (
-              <div key={project._id} className="project-item" onClick={()=>handleProjectNavigation(project._id)}>
-                <div className="project-banner" style={{ backgroundImage: `url(${project?.bannerImage})` }}>
-                  <div className="project-overlay">
-                      <h3>{project?.title}</h3>
-                      <p>{project?.description}</p>
-                  </div>
-                </div>
-              </div>
-            ))
           )}
+
+          <div
+            className="toggle-button"
+            onClick={() => setIsProfileOpen(!isProfileOpen)}
+          >
+            {!isProfileOpen ? (
+              <FaArrowAltCircleLeft />
+            ) : (
+              <FaArrowAltCircleRight />
+            )}
+          </div>
         </div>
       </div>
-      )}
-      
-      <div className="add-project-button" 
-      onClick={() => { navigate('/add-project'); }}
-      onMouseEnter={() => setShowPopup(true)} 
-      onMouseLeave={() => setShowPopup(false)}>
-          <FaPlusCircle  size={40}/>
-        <div className="popup">
-          Add Project Here!
-        </div>
+      <div className="right">
+        <MyProjects projects={projects}/>
       </div>
-      
-    </di
-  >
+    </div>
   );
 }

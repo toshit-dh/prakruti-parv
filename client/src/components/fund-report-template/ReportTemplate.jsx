@@ -4,7 +4,6 @@ import React from 'react';
 import './ReportTemplate.css'; 
 import stampImage from '../../assets/prakruti-parv-stamp.png';
 import logo from '../../assets/logo-no-background.png';
-import reportbg from "../../assets/reportbg.png";
 const ReportTemplate = React.forwardRef((props, ref) => {
   const { projectData } = props;
   if (projectData == null) return null;

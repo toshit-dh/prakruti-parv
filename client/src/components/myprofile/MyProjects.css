@@ -1,41 +1,72 @@
 .projects-container {
-    height: 100vh;
+    height: calc(100vh - 135px);
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 3px;
     padding: 20px;
     overflow: scroll;
   }
   
   .project-container {
-    padding: 20px;
-    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
     margin: auto;
     background-color: #f9f9f9;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
-  
-  .project-header {
-    text-align: center;
-    margin-bottom: 20px;
+  .project-row{
+    display: flex;
+    gap: 2rem;
   }
-  
+  .project-header {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+  }
+  .change-buttons{
+    display: flex;
+
+    align-items: center;
+    gap: 2rem;;
+  }
+  .change-buttons button{
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
   .project-header h2 {
-    font-size: 24px;
+    font-size: 20px;
     color: #333;
   }
-  
+
   .banner-image img {
-    width: 100%;
+    height: 75%;
     border-radius: 8px;
     object-fit: cover;
   }
   
   .project-description {
-    margin-bottom: 20px;
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    text-overflow: ellipsis;
+    margin-bottom: 10px;
   }
-  
+  .more-details{
+    display: flex;
+    flex-direction: column;
+    height: 50%;
+  }
+  .more-details p{
+    align-items: center;
+  }
+  .details{
+    display: flex;
+    align-items: start;
+  }
+
   .project-description h3 {
     font-size: 18px;
     color: #333;
@@ -53,8 +84,60 @@
     font-size: 14px;
     color: #555;
   }
-  
-  .project-dates div {
-    width: 45%;
+
+.project-buttons{
+  display: flex;
+  justify-content: space-between;
   }
-  
+  .generate{
+    color: green;
+  }
+  .generate:hover{
+    text-decoration: underline;
+  }
+  .span{
+    height: 100%;
+    font-weight: bold;
+    background-color: lightgrey;
+    padding: 3px;
+    border: 2px white solid;
+    border-radius: 20%;
+    cursor: pointer;
+  }
+  .span:hover{
+    border: 2px green solid;
+  }
+
+  .dialog{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: 1000px;
+  height: 90vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  overflow-y: scroll;
+  border: green solid 4px;
+  border-radius: 12px;
+}
+.modal{
+  min-height: 80vh;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+.dialog-buttons{
+  align-self: center;
+  width: 100%;
+  padding: 3px;
+  margin: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
