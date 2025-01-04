@@ -1,7 +1,7 @@
 import os
 import google.generativeai as genai
 from dotenv import load_dotenv
-from flask import Flask,request,jsonify,send_file
+from flask import Flask,request,jsonify,send_file,send_from_directory
 from flask_cors import CORS
 import torch
 import torchvision
@@ -15,10 +15,12 @@ import random
 import base64
 from io import BytesIO
 import requests
+from bs4 import BeautifulSoup
 
 load_dotenv()
 
 api_key = os.getenv('GOOGLE_API_KEY')
+NEWS_API_KEY=os.getenv('NEWS_API_KEY')
 
 if not api_key:
     raise ValueError("No API key found. Please set the GOOGLE_API_KEY environment variable.")
@@ -332,10 +334,8 @@ def search_wildlife_videos(animal_name):
         response = requests.get(url, headers=headers)
         response.raise_for_status()
         
-        # Extract video IDs using regex
         video_ids = re.findall(r'watch\?v=(\S{11})', response.text)
-        
-        # Create unique video links
+    
         video_links = list(set(f"https://www.youtube.com/watch?v={video_id}" for video_id in video_ids))
         
         return video_links
@@ -357,7 +357,148 @@ def get_youtube_videos():
         return jsonify({"error": "No videos found or failed to fetch data"}), 404
     
     return jsonify({"animal": animal_name, "videos": video_links})
-   
 
+
+@app.route('/get-animal-sound', methods=['GET'])
+def get_animal_sound():
+    animal_name = request.args.get('animal')
+    
+    if not animal_name:
+        return jsonify({'error': 'Animal name is required'}), 400
+    
+    animal_name = animal_name.lower()
+    
+    base_path = os.path.join(os.path.dirname(__file__), 'animal-sounds')
+    animal_folder = os.path.join(base_path, animal_name)
+    
+    if not os.path.exists(animal_folder):
+        return jsonify({'error': f'Sound not found for {animal_name}'}), 404
+    
+    audio_files = [f for f in os.listdir(animal_folder) 
+                   if f.endswith(('.mp3', '.wav', '.ogg'))]
+    
+    if not audio_files:
+        return jsonify({'error': f'No audio file found for {animal_name}'}), 404
+    
+    audio_file = audio_files[0]
+    try:
+        return send_from_directory(
+            animal_folder,
+            audio_file,
+            as_attachment=True,
+            download_name=f"{animal_name}_sound{os.path.splitext(audio_file)[1]}"
+        )
+    except Exception as e:
+        return jsonify({'error': f'Error sending file: {str(e)}'}), 500
+
+
+usernames = [
+    "IndiAves",
+    "indian_wildlife",
+    "WildlifeMoment",
+    "RanthamboreTig2",
+    "PugdundeeSafari"
+]
+
+def fetch_recent_tweet_links(usernames):
+    tweet_links = []
+
+    for username in usernames:
+        url = f'https://twitter.com/{username}'
+        response = requests.get(url)
+
+        if response.status_code != 200:
+            print(f"Failed to fetch {username}: {response.status_code}")
+            continue  
+
+        # Use regex to find all tweet links in the response text
+        tweet_ids = re.findall(r'/status/(\d+)', response.text)
+        print(response.text)
+        return []
+        for tweet_id in tweet_ids:
+            tweet_url = f"https://twitter.com/{username}/status/{tweet_id}"
+            tweet_links.append(tweet_url)
+
+    return tweet_links
+
+
+@app.route('/fetch_tweets', methods=['GET'])
+def fetch_tweets():
+    tweet_links = fetch_recent_tweet_links(usernames)
+    print(tweet_links)
+    
+    return jsonify({"tweet_links": tweet_links})
+
+@app.route('/fetch_indian_news', methods=['GET'])
+def fetch_indian_news_view():
+    url = "https://newsapi.org/v2/everything"
+    keywords = [
+        "wildlife conservation India",
+        "poaching India",
+        "endangered species India",
+        "wildlife protection laws India",
+        "Project Tiger India",
+        "Project Elephant India",
+        "wildlife sanctuaries India",
+        "national parks India",
+        "biodiversity India",
+        "illegal wildlife trade India",
+        "habitat loss India",
+        "wildlife trafficking India",
+        "forest conservation India",
+        "community-based conservation India",
+        "wildlife research India",
+        "human-wildlife conflict India"
+    ]
+
+    query = " OR ".join(keywords)
+    query="wildlife conservation India"
+    
+    params = {
+        "q": query,
+        "language": "en",  
+        "sortBy": "relevancy",  
+        "apiKey":  NEWS_API_KEY
+    }
+
+    response = requests.get(url, params=params)
+
+    if response.status_code == 200:
+        return jsonify(response.json())
+    else:
+        return jsonify({"error": response.json()}), response.status_code
+    
+
+@app.route('/fetch_default_tweets', methods=['GET'])
+def fetch_default_tweets():
+    tweets = [
+        {
+            "title": "Wildlife Conservation Efforts",
+            "link": "https://twitframe.com/show?url=https://twitter.com/WildlifeSOS/status/1522206982454743040"
+        },
+        {
+            "title": "Save Our Tigers",
+            "link": "https://twitframe.com/show?url=https://twitter.com/IndianTechGuide/status/1838526292880429405"
+        },
+        {
+            "title": "Endangered Species Awareness",
+            "link": "https://twitframe.com/show?url=https://twitter.com/ColoursOfBharat/status/1588782226350931968"
+        },
+        {
+            "title": "Project Tiger Updates",
+            "link": "https://twitframe.com/show?url=https://twitter.com/PMOIndia/status/1343070549711319040"
+        },
+        {
+            "title": "Wildlife Sanctuaries in India",
+            "link": "https://twitframe.com/show?url=https://twitter.com/the_wildindia/status/1288390989384577032"
+        },
+        {
+            "title": "Human-Wildlife Conflict Solutions",
+            "link": "https://twitframe.com/show?url=https://twitter.com/Rainmaker1973/status/1798680635479126503"
+        }
+    ]
+    
+    return jsonify(tweets)
+    
 if __name__ == '__main__':
     app.run(port=8081, debug=True)

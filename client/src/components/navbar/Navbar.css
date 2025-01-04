@@ -16,6 +16,7 @@ body {
   border-bottom: 3px solid rgb(229, 226, 226);
   box-shadow: 0 2px 2px var(--secondary-color);
   z-index: 1000;
+  font-weight: bold;
 }
 
 .navLogo {
