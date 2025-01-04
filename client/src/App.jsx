@@ -1,9 +1,8 @@
 /* eslint-disable no-unused-vars */
 import React from 'react'
-import { Register,Login,Home,Education,AnimalTracking,Welcome,IdentifySpecies,Profile,AddProject,ViewProjects,Project, Poaching } from './components/index'
+import { Register,Login,Home,Welcome,IdentifySpecies,Profile,AddProject,ViewProjects,Project, Poaching } from './components/index'
 import {BrowserRouter,Routes,Route} from 'react-router-dom'
 import ProjectForm from './components/add-project-form/ProjectForm'
-import ReportTemplate from './components/fund-report-template/ReportTemplate'
 import Myproject from './components/myproject/Myproject'
 import Settings from './components/settings/Settings'
 import Education2 from './components/education/Education2'

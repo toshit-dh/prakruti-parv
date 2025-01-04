@@ -46,6 +46,14 @@ const MyProjects = ({ projects }) => {
         <div key={index} className="project-container">
           <div className="project-header">
             <h2>{project.organizationName}</h2>
+            <div className="project-dates">
+              <div className="dates"> 
+                <strong>Start:</strong> {project.startDate.split("T")[0]}
+              </div>
+              <div className="dates"> 
+                <strong>End:</strong> {project.endDate.split("T")[0]}
+              </div>
+            </div>
             <div className="change-buttons">
               <button>
                 Update
@@ -83,15 +91,6 @@ const MyProjects = ({ projects }) => {
                   {project?.currentAmount}
                 </p>
               </div>
-            </div>
-          </div>
-
-          <div className="project-dates">
-            <div>
-              <strong>Start Date:</strong> {project.startDate.split("T")[0]}
-            </div>
-            <div>
-              <strong>End Date:</strong> {project.endDate.split("T")[0]}
             </div>
           </div>
           <div className="project-buttons">
@@ -157,16 +156,17 @@ const MyProjects = ({ projects }) => {
           {isStepsDialogOpen && (
             <div className="dialog">
               <div className="modal">
-                <Steps steps={project.steps}/>
+                <Steps steps={project.steps} />
                 <div className="dialog-buttons">
-                  <button onClick={() => setIsStepsDialogOpen(!isStepsDialogOpen)}>
+                  <button
+                    onClick={() => setIsStepsDialogOpen(!isStepsDialogOpen)}
+                  >
                     Close
                   </button>
                 </div>
               </div>
             </div>
-          )
-          }
+          )}
         </div>
       ))}
     </div>

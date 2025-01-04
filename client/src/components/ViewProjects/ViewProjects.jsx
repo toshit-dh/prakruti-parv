@@ -1,18 +1,23 @@
 import React, { useState, useEffect } from "react";
+import jspdf from "jspdf";
+import ReportTemplate from "../fund-report-template/ReportTemplate";
+import stamp from "../../assets/prakruti-parv-stamp.png";
+import Myproject from "../myproject/Myproject";
 import {
-  Button,
-  TextField,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-} from "@mui/material";
+  FaTrash,
+  FaTimes,
+  FaEdit,
+  FaMoneyBill,
+  FaBullseye,
+  FaLocationArrow,
+} from "react-icons/fa";
+import Steps from "../myprofile/Steps";
 import "./ViewProject.css";
 import Navbar from "../navbar/Navbar";
 import axios from "axios";
 import { GET_ALL_PROJECTS_ROUTE } from "../../utils/Routes";
 import { useNavigate } from "react-router-dom";
-const FilterBar = () => {
+const ViewProject = () => {
   const navigate = useNavigate()
   const [endDate, setEndDate] = useState("");
   const [status, setStatus] = useState("");
@@ -20,6 +25,10 @@ const FilterBar = () => {
   const [tags, setTags] = useState("");
   const [projects, setProjects] = useState([]);
   const [filteredProjects, setFilteredProjects] = useState(projects);
+  const [isReportDialogOpen, setReportDialog] = useState(false);
+    const [isMapDialogOpen, setIsMapDialogOpen] = useState(false);
+    const [isStepsDialogOpen, setIsStepsDialogOpen] = useState(false);
+    const [selectedProject,setSelectedProject] = useState(null)
 
   const handleFilter = () => {
     let filtered = projects;
@@ -57,75 +66,137 @@ const FilterBar = () => {
   return (
     <div className="content3">
       <Navbar />
-      <div className="filterBar">
-        <TextField
-          label="End Date"
-          type="date"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <FormControl>
-          <InputLabel>Status</InputLabel>
-          <Select value={status} onChange={(e) => setStatus(e.target.value)}>
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value="Active">Active</MenuItem>
-            <MenuItem value="Completed">Completed</MenuItem>
-            <MenuItem value="Closed">Closed</MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl>
-          <InputLabel>Type</InputLabel>
-          <Select value={type} onChange={(e) => setType(e.target.value)}>
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value="Tree">Tree</MenuItem>
-            <MenuItem value="Land">Land</MenuItem>
-            <MenuItem value="Water">Water</MenuItem>
-          </Select>
-        </FormControl>
-        <TextField
-          label="Tags"
-          value={tags}
-          onChange={(e) => setTags(e.target.value)}
-        />
-        <Button variant="contained" color="primary" onClick={handleFilter}>
-          Search
-        </Button>
-      </div>
-      <div className="projectList">
-        {filteredProjects.map((project, index) => (
-          <div
-            key={project.title}
-            className="projectItem"
-            style={{ backgroundColor: `hsl(${index * 30}, 70%, 80%)` }}
-            onClick={()=>navigate(`/project/${project._id}`)}
-          >
-            <div className="gridContainer">
-              <div className="gridItem projectTitle">{project.title}</div>
-              <div className="gridItem projectDescription">
-                {project.description}
+      <div className="projects-container">
+      {projects.map((project, index) => (
+        <div key={index} className="project-container">
+          <div className="project-header">
+            <h2>{project.organizationName}</h2>
+            <div className="project-dates">
+              <div className="dates"> 
+                <strong>Start:</strong> {project.startDate.split("T")[0]}
               </div>
-              <div className="gridItem projectStatus"> {project.status}</div>
-              <div className="gridItem projectType">{project.type}</div>
-              <div className="gridItem projectEndDate">
-                {project.endDate.split("T")[0]}
+              <div className="dates"> 
+                <strong>End:</strong> {project.endDate.split("T")[0]}
               </div>
-              <div className="gridItem projectLocation">{project.location}</div>
-              <div className="gridItem projectTags">
-                {project.tags.join(", ")}
+            </div>
+            <div className="change-buttons">
+              <button>
+                Update
+                <FaEdit />
+              </button>
+              <button>
+                Delete
+                <FaTrash />
+              </button>
+              <button>
+                Close
+                <FaTimes />
+              </button>
+            </div>
+          </div>
+          <div className="project-row">
+            <div className="banner-image">
+              <img src={project.bannerImage} alt="Banner" />
+            </div>
+            <div className="project-description">
+              <p>{project.description}</p>
+              <div className="more-details">
+                <p>
+                  <FaBullseye color="blue" /> <strong> Target Amount:₹</strong>{" "}
+                  {project?.goalAmount}
+                </p>
+                <p>
+                  <FaMoneyBill color="green" />{" "}
+                  <strong> Current Amount: ₹</strong>
+                  {project?.currentAmount}
+                </p>
+                <p>
+                  <FaLocationArrow color="red" />
+                  <strong> Current Amount: ₹</strong>
+                  {project?.currentAmount}
+                </p>
               </div>
             </div>
           </div>
-        ))}
+          <div className="project-buttons">
+            <div className="span">
+              <span
+                className="generate"
+                onClick={() => {
+                  let pro;
+                  if (setIsMapDialogOpen) {
+                    pro = null;
+                  } else {
+                    pro = project;
+                  }
+                  setSelectedProject(project);
+                  setIsMapDialogOpen(!isMapDialogOpen);
+                }}
+              >
+                View On Map
+              </span>
+            </div>
+            <div className="span">
+              <span
+                className="generate"
+                onClick={() => setIsStepsDialogOpen(!isStepsDialogOpen)}
+              >
+                View Steps
+              </span>
+            </div>
+            <div className="span">
+              <span
+                className="generate"
+                onClick={() => setReportDialog(!isReportDialogOpen)}
+              >
+                Generate Report
+              </span>
+            </div>
+          </div>
+          {isReportDialogOpen && (
+            <div className="dialog">
+              <div className="modal">
+                <ReportTemplate projectData={project} ref={ref} />
+                <div className="dialog-buttons">
+                  <button onClick={() => setReportDialog(!isReportDialogOpen)}>
+                    Close
+                  </button>
+                  <button onClick={handleDownload}>Download PDF</button>
+                </div>
+              </div>
+            </div>
+          )}
+          {isMapDialogOpen && (
+            <div className="dialog">
+              <div className="modal">
+                <Myproject project={selectedProject} />
+                <div className="dialog-buttons">
+                  <button onClick={() => setIsMapDialogOpen(!isMapDialogOpen)}>
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+          {isStepsDialogOpen && (
+            <div className="dialog">
+              <div className="modal">
+                <Steps steps={project.steps} />
+                <div className="dialog-buttons">
+                  <button
+                    onClick={() => setIsStepsDialogOpen(!isStepsDialogOpen)}
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      ))}
       </div>
     </div>
   );
 };
 
-export default FilterBar;
+export default ViewProject;
