@@ -30,6 +30,9 @@ const Navbar = () => {
   const handleEducate = () => {
     navigate("/education");
   };
+  const handleDonate=()=>{
+    navigate("/viewProjects")
+  }
 
   return (
     <nav className="navContainer">
@@ -76,7 +79,7 @@ const Navbar = () => {
         <button className="navEducateButton" onClick={handleEducate}>
           <FaUserGraduate className="navIcon" /> Educate
         </button>
-        <button className="navDonateButton">
+        <button className="navDonateButton" onClick={handleDonate}>
           <FaDonate className="navIcon" /> Donate
         </button>
       </div>
