@@ -10,6 +10,7 @@ const AboutContainer = styled(Container)`
   background-color: #f0f8ff;
   padding: 50px;
   border-radius: 10px;
+  color:black;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   margin-top: 120px;
 `;
