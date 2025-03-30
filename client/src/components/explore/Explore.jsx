@@ -18,6 +18,15 @@ const Explore = () => {
         setNews(response.data.articles || []);
       })
       .catch((error) => console.error("Error fetching news:", error));
+      const script = document.createElement('script');
+      script.src = 'https://platform.twitter.com/widgets.js';
+      script.async = true;
+      document.body.appendChild(script);
+
+      return () => {
+          
+          document.body.removeChild(script);
+      };
   }, []);
 
   const responsive = {
@@ -88,13 +97,17 @@ const Explore = () => {
                     <div className="tweetsContainer">
                     {tweetsData.tweets.map((tweet, index) => (
                         <div key={index} className="tweetItem">
-                        <iframe 
+                        {/* <iframe 
                             src={tweet.link} 
                             width="100%" 
                             height="300" 
                             frameBorder="0" 
                             title={`Tweet ${index + 1}`} 
-                        ></iframe>
+                        ></iframe> */}
+                        <div
+                            className="tweet-embed"
+                            dangerouslySetInnerHTML={{ __html: tweet.link }}
+                        ></div>
                         </div>
                     ))}
                     </div>
