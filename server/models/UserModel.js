@@ -29,12 +29,31 @@ const userSchema = new Schema({
   },
   role: {
     type: String,
-    enum: ["user", "admin", "conservationist", "photographer", "learner","Organisation"],
+    enum: [
+      "user",
+      "admin",
+      "conservationist",
+      "photographer",
+      "learner",
+      "Organisation",
+    ],
     default: "user",
   },
   badges: {
     type: Number,
     default: 0,
+  },
+  currency: {
+    type: Number,
+    default: 25,
+  },
+  imgUploads: {
+    type: [String],
+    default: [],
+  },
+  vidUploads: {
+    type: [String],
+    default: [],
   },
   createdAt: {
     type: Date,
@@ -64,7 +83,11 @@ const userSchema = new Schema({
     type: {
       name: { type: String, default: "" },
       bio: { type: String, default: "" },
-      avatarUrl: { type: String, default: "" },
+      avatarUrl: {
+        type: String,
+        default:
+          "https://res.cloudinary.com/djt5vw5aa/image/upload/v1727512495/user-profiles/default.jpg",
+      },
     },
     default: {},
   },

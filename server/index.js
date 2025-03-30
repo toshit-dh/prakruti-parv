@@ -11,6 +11,7 @@ require('dotenv').config()
 
 const userRoutes = require('./routes/UserRoutes')
 const projectRoutes = require('./routes/ProjectRoutes')
+const uploadRoutes = require('./routes/UserUploadRoutes')
 app.use(cors({
   origin: "http://localhost:5173",
   credentials: true
@@ -25,6 +26,7 @@ app.get('/', (_, res) => {
 app.use(express.static(path.join(__dirname,'data/projects/')))
 app.use('/api/users',userRoutes)
 app.use('/api/projects',projectRoutes)
+app.use('/api/uploads',uploadRoutes)
 
 mongoose
   .connect(

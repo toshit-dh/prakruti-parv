@@ -49,3 +49,88 @@
   border-radius: 10%; 
   cursor: pointer;
 }
+
+.fab {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.fab:hover {
+  background-color: #45a049;
+  transform: scale(1.1);
+}
+
+  .dialog{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: 1000px;
+  height: 90vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  overflow-y: scroll;
+  border: green solid 4px;
+  border-radius: 12px;
+}
+.modal{
+  min-height: 80vh;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+.dialog-buttons{
+  align-self: center;
+  width: 100%;
+  padding: 3px;
+  margin: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.upload-form label {
+  font-weight: bold;
+  display: block;
+  margin-top: 10px;
+}
+
+.upload-form input, .upload-form select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: white;
+  color: black; /* Set input text color to black */
+}
+
+.upload-form label {
+  font-weight: bold;
+  display: block;
+  margin-top: 10px;
+  color: white; /* Set label text color to white */
+}
+
+.modal h2{
+  color: white;
+}

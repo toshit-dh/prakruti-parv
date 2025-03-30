@@ -102,7 +102,6 @@ const ProjectForm = () => {
         },
         withCredentials: true, 
       });
-      console.log(response);
       if (response.status === 200) {
         toast.success("Project created successfully!",toastOptions);
         setTimeout(()=>{

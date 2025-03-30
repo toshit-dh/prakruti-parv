@@ -131,6 +131,19 @@
   justify-content: center;
 }
 
+.identifyButton:hover::after {
+  content: attr(title);
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  font-size: 12px;
+  border-radius: 5px;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
 .identifyButton .identifyIcon {
   margin-right: 8px;
 }

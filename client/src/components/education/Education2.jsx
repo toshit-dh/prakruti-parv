@@ -49,8 +49,6 @@ const Education2 = () => {
       const response = await axios.get(`http://127.0.0.1:8081/get-youtube-videos?name=${speciesName}`);
       setVideos(response.data.videos.slice(0,10));
       setEmbeddedVideos(extractVideoIDs(response.data.videos.slice(0,10)));
-      console.log(response.data);
-      console.log(embeddedVideos);
     } catch (error) {
       toast.error('Failed to fetch videos', toastOptions);
     }

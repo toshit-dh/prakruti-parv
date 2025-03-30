@@ -167,10 +167,11 @@ const Register = () => {
                   onChange={handleChange}
                   className="register-select"
                   required
-                >
-                  <option value="User">User</option>
-                  <option value="Admin">Admin</option>
-                  <option value="Organisation">Organisation</option>
+                >{
+                  ["User", "Admin", "Conservationist","Organisation"].map((role) => (
+                    <option key={role} value={role}>{role}</option>
+                  ))
+                }
                 </select>
               </div>
             </div>

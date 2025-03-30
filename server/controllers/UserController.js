@@ -45,7 +45,6 @@ exports.login = async (req, res) => {
       if (!user) return res.status(401).json(new APIResponse(null, 'Invalid username or password').toJson());
 
       const isMatch = await bcrypt.compare(password, user.password);
-      console.log(isMatch);
       
       if (!isMatch) return res.status(402).json(new APIResponse(null, 'Invalid username or password').toJson());
 
@@ -119,10 +118,7 @@ exports.login = async (req, res) => {
   exports.getProfile= async(req,res) => {
     try {
       const id = req.user.userId
-      console.log(id);
-      
-      console.log(await User.findById(id));
-      
+
       res.status(200).json(new APIResponse(await User.findById(id)).toJson())
     } catch (e) {
       console.error('Edit Profile Error:', e);

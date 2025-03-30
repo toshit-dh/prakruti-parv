@@ -1,43 +1,47 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { FaUpload, FaSearch} from 'react-icons/fa'; 
-import Navbar from '../navbar/Navbar';
-import './Poaching.css';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import axios from 'axios';
-import loadingGif from '../../assets/load4poach.gif';
-import { IDENTIFY_ROUTE, POACH_ROUTE } from '../../utils/Routes';
-import PoachingDialog from './PoachingDialog';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { FaUpload, FaSearch } from "react-icons/fa";
+import Navbar from "../navbar/Navbar";
+import "./Poaching.css";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import loadingGif from "../../assets/load4poach.gif";
+import {
+  IDENTIFY_ROUTE,
+  POACH_ROUTE,
+  REDUCE_CURRENCY_ROUTE,
+} from "../../utils/Routes";
+import PoachingDialog from "./PoachingDialog";
 
 const Poaching = () => {
   const [selectedVideo, setSelectedVideo] = useState(null);
-  const [videoUploaded, setVideoUploaded] = useState(false); 
+  const [videoUploaded, setVideoUploaded] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [poachInfo, setPoachInfo] = useState({});
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const toastOptions = {
-    position: 'bottom-left',
+    position: "bottom-left",
     autoClose: 5000,
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: true,
     draggable: true,
     progress: undefined,
-    theme: 'dark',
+    theme: "dark",
   };
 
   const handleVideoUpload = (event) => {
     const file = event.target.files[0];
-    if (file && file.type.startsWith('video/')) {
+    if (file && file.type.startsWith("video/")) {
       setSelectedVideo(URL.createObjectURL(file));
       setVideoUploaded(true);
       setSelectedFile(file);
     } else {
-      toast.error('Please upload a video file.', toastOptions);
+      toast.error("Please upload a video file.", toastOptions);
     }
   };
 
@@ -50,35 +54,41 @@ const Poaching = () => {
 
   const handleIdentifyClick = async () => {
     if (!selectedVideo) {
-      toast.error('Please upload a video first.', toastOptions);
+      toast.error("Please upload a video first.", toastOptions);
       return;
     }
 
-    setLoading(true); 
+    setLoading(true);
 
     const formData = new FormData();
-    formData.append('video', selectedFile);
-    
+    formData.append("video", selectedFile);
+
     try {
       const response = await axios.post(POACH_ROUTE, formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
         },
       });
       console.log(response);
       const result = response.data;
       if (response.status === 200) {
         setPoachInfo(result);
-        setDialogOpen(true)
-        setLoading(false)
-        console.log(result)
+        setDialogOpen(true);
+        setLoading(false);
+        console.log(result);
+        const response = await axios.get(REDUCE_CURRENCY_ROUTE(5), {
+          withCredentials: true,
+        });
+        if (response.status === 200) {
+          toast.success("2 Prakruti Mudra debited.", toastOptions);
+        }
       } else {
         toast.error(result.error, toastOptions);
       }
     } catch (error) {
       toast.error(error.message, toastOptions);
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
@@ -90,16 +100,16 @@ const Poaching = () => {
           <motion.h1
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: 'easeOut' }}
+            transition={{ duration: 1, ease: "easeOut" }}
           >
             Introducing the Guardian of the Wild: GarudaDrishti
           </motion.h1>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: 'easeOut', delay: 0.5 }}
+            transition={{ duration: 1, ease: "easeOut", delay: 0.5 }}
           >
-            <span className='tag'>Detect the Danger!!!</span>
+            <span className="tag">Detect the Danger!!!</span>
           </motion.h2>
         </div>
 
@@ -109,7 +119,7 @@ const Poaching = () => {
               className="uploadBox"
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, ease: 'easeOut', delay: 1 }}
+              transition={{ duration: 1, ease: "easeOut", delay: 1 }}
             >
               <label htmlFor="upload-input" className="uploadLabel">
                 <FaUpload className="uploadIcon" />
@@ -128,7 +138,7 @@ const Poaching = () => {
 
         {loading && (
           <div className="loadingContainer">
-            <img src={loadingGif} alt="Loading..." width={800}/>
+            <img src={loadingGif} alt="Loading..." width={800} />
             <p>Loading...</p>
           </div>
         )}
@@ -143,18 +153,18 @@ const Poaching = () => {
               className="videoPreview"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 1, ease: 'easeOut' }}
+              transition={{ duration: 1, ease: "easeOut" }}
             />
             <motion.div
-              className="buttonGroup" 
+              className="buttonGroup"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, ease: 'easeOut', delay: 0.5 }}
+              transition={{ duration: 1, ease: "easeOut", delay: 0.5 }}
             >
               <button className="backButton" onClick={handleBackClick}>
                 Back
               </button>
-              <button className="identifyButton" onClick={handleIdentifyClick}>
+              <button className="identifyButton" onClick={handleIdentifyClick} title="5 Prakruti Mudra will be debited">
                 <FaSearch className="identifyIcon" /> Identify
               </button>
             </motion.div>
@@ -162,9 +172,9 @@ const Poaching = () => {
         )}
       </div>
       <PoachingDialog
-        isOpen={dialogOpen} 
-        poachInfo={poachInfo} 
-        onClose={() => setDialogOpen(false)} 
+        isOpen={dialogOpen}
+        poachInfo={poachInfo}
+        onClose={() => setDialogOpen(false)}
       />
       <ToastContainer />
       <style>{`

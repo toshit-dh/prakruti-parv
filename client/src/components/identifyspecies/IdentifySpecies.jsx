@@ -9,7 +9,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import loadingGif from '../../assets/loading.gif'
-import { IDENTIFY_ROUTE } from '../../utils/Routes';
+import { IDENTIFY_ROUTE,REDUCE_CURRENCY_ROUTE } from '../../utils/Routes';
 
 const IdentifySpecies = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -64,10 +64,15 @@ const IdentifySpecies = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log(response);
       const result = response.data;
       if (response.status === 200) {
         setAnimalInfo(result);
+        const response = await axios.get(REDUCE_CURRENCY_ROUTE(2), {
+          withCredentials: true
+        })
+        if (response.status === 200) {
+          toast.success('2 Prakruti Mudra debited.', toastOptions);
+        }
       } else {
         toast.error(result.error, toastOptions);
       }
@@ -168,7 +173,7 @@ const IdentifySpecies = () => {
               <button className="backButton" onClick={handleBackClick}>
                 Back
               </button>
-              <button className="identifyButton" onClick={handleIdentifyClick}>
+              <button className="identifyButton" onClick={handleIdentifyClick} title='2 Prakruti Mudra will be debited'>
                 <FaSearch className="identifyIcon" /> Identify
               </button>
             </motion.div>
