@@ -21,7 +21,7 @@ exports.signup = async (req, res) => {
         username,
         email,
         password: hashedPassword,
-        role,
+        role: role.toLowerCase(),
         isVerified: false
       });
   
@@ -45,6 +45,8 @@ exports.login = async (req, res) => {
       if (!user) return res.status(401).json(new APIResponse(null, 'Invalid username or password').toJson());
 
       const isMatch = await bcrypt.compare(password, user.password);
+      console.log(isMatch);
+      
       if (!isMatch) return res.status(402).json(new APIResponse(null, 'Invalid username or password').toJson());
 
       if (!user.isVerified) return res.status(403).json(new APIResponse(null, 'Please verify your email before logging in').toJson());
