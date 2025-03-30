@@ -9,7 +9,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import loadingGif from '../../assets/loading.gif'
-import { IDENTIFY_ROUTE,REDUCE_CURRENCY_ROUTE } from '../../utils/Routes';
+import { IDENTIFY_ROUTE,REDUCE_CURRENCY_ROUTE,FETCH_BALANCE } from '../../utils/Routes';
 
 const IdentifySpecies = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -28,6 +28,30 @@ const IdentifySpecies = () => {
     progress: undefined,
     theme: 'dark',
   };
+
+  const fetchBalance = async () => {
+    try {
+      const response = await axios.get(FETCH_BALANCE, {
+        withCredentials: true,
+      });
+
+      if (response.status === 200) {
+        console.log("Balance fetched successfully:", response.data.data);
+        
+        return response.data.data; 
+
+      }else{
+        return -1;
+      }
+    } catch (error) {
+      toast.error(
+        "Unable to fetch balance. Please try again later.",
+        toastOptions
+      );
+      return -1;
+    }
+  };
+
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
@@ -57,30 +81,35 @@ const IdentifySpecies = () => {
 
     const formData = new FormData();
     formData.append('image', selectedFile);
-
-    try {
-      const response = await axios.post(IDENTIFY_ROUTE, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      const result = response.data;
-      if (response.status === 200) {
-        setAnimalInfo(result);
-        const response = await axios.get(REDUCE_CURRENCY_ROUTE(2), {
-          withCredentials: true
-        })
+    if(await fetchBalance() >=2){
+      try {
+        const response = await axios.post(IDENTIFY_ROUTE, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        const result = response.data;
         if (response.status === 200) {
-          toast.success('2 Prakruti Mudra debited.', toastOptions);
+          setAnimalInfo(result);
+          const response = await axios.get(REDUCE_CURRENCY_ROUTE(2), {
+            withCredentials: true,
+          });
+          if (response.status === 200) {
+            toast.success("2 Prakruti Mudra debited.", toastOptions);
+          }
+        } else {
+          toast.error(result.error, toastOptions);
         }
-      } else {
-        toast.error(result.error, toastOptions);
+      } catch (error) {
+        toast.error("An error occurred. Please try again.", toastOptions);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      toast.error('An error occurred. Please try again.', toastOptions);
-    } finally {
-      setLoading(false); 
+    }else{
+      toast.error("Not enough Prakruti Mudra. Please upload more images.", toastOptions);
+      setLoading(false);
     }
+    
   };
 
   return (

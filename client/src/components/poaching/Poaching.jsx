@@ -12,6 +12,7 @@ import {
   IDENTIFY_ROUTE,
   POACH_ROUTE,
   REDUCE_CURRENCY_ROUTE,
+  FETCH_BALANCE
 } from "../../utils/Routes";
 import PoachingDialog from "./PoachingDialog";
 
@@ -52,6 +53,28 @@ const Poaching = () => {
     setPoachInfo({});
   };
 
+  const fetchBalance = async () => {
+    try {
+      const response = await axios.get(FETCH_BALANCE, {
+        withCredentials: true,
+      });
+
+      if (response.status === 200) {
+        console.log("Balance fetched successfully:", response.data.data);
+
+        return response.data.data;
+      } else {
+        return -1;
+      }
+    } catch (error) {
+      toast.error(
+        "Unable to fetch balance. Please try again later.",
+        toastOptions
+      );
+      return -1;
+    }
+  };
+
   const handleIdentifyClick = async () => {
     if (!selectedVideo) {
       toast.error("Please upload a video first.", toastOptions);
@@ -62,7 +85,7 @@ const Poaching = () => {
 
     const formData = new FormData();
     formData.append("video", selectedFile);
-
+    if(fetchBalance() >= 5){
     try {
       const response = await axios.post(POACH_ROUTE, formData, {
         headers: {
@@ -80,7 +103,7 @@ const Poaching = () => {
           withCredentials: true,
         });
         if (response.status === 200) {
-          toast.success("2 Prakruti Mudra debited.", toastOptions);
+          toast.success("5 Prakruti Mudra debited.", toastOptions);
         }
       } else {
         toast.error(result.error, toastOptions);
@@ -90,7 +113,11 @@ const Poaching = () => {
     } finally {
       setLoading(false);
     }
+  }else{
+    toast.error("Not enough Prakruti Mudra. Please recharge.", toastOptions);
+    setLoading(false);
   };
+}
 
   return (
     <div className="poachPage">

@@ -26,4 +26,5 @@ export const DONATE_TO_PROJECT_ROUTE = (id) => `${PROJECT_BASE_URL}/${id}/donate
 
 export const UPLOAD_ROUTE = `${BASE_URL}/${ADD}/uploads/`;
 export const GET_UPLOAD_ROUTE = `${BASE_URL}/${ADD}/uploads/user`;
+export const FETCH_BALANCE = `${BASE_URL}/${ADD}/uploads/currency`;
 export const REDUCE_CURRENCY_ROUTE = (amount) => `${BASE_URL}/${ADD}/uploads/reduce?amount=${amount}`;

@@ -95,3 +95,20 @@ exports.reduceCurrency = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 }
+
+exports.fetchCurrency = async (req, res) => {
+  try {
+    const userId = req.user.userId; 
+    const user = await User.findById(userId); 
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    return res.status(200).json({
+      message: "Currency fetched successfully",
+      data: user.currency,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ error: error.message });
+  }
+}
