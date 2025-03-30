@@ -16,6 +16,9 @@ import base64
 from io import BytesIO
 import requests
 from bs4 import BeautifulSoup
+import torchaudio
+from torchaudio.transforms import MelSpectrogram, AmplitudeToDB
+import torch.nn.functional as F
 
 load_dotenv()
 
@@ -26,7 +29,7 @@ if not api_key:
     raise ValueError("No API key found. Please set the GOOGLE_API_KEY environment variable.")
 
 genai.configure(api_key=api_key)
-genai_model= genai.GenerativeModel('gemini-pro')
+genai_model= genai.GenerativeModel('gemini-1.5-flash')
 
 app = Flask(__name__)
 CORS(app)
@@ -500,5 +503,164 @@ def fetch_default_tweets():
     
     return jsonify(tweets)
     
+class Config:
+    sample_rate = 44100  
+    num_samples = 176400  
+    n_mels = 128  
+    n_fft = 2048  
+    hop_length = 512  
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    num_classes = 13  
+
+class AudioFeatureExtractor:
+    def __init__(self, sample_rate=44100, n_mels=128, n_fft=2048, hop_length=512):
+        self.mel_spectrogram = MelSpectrogram(
+            sample_rate=sample_rate,
+            n_fft=n_fft,
+            hop_length=hop_length,
+            n_mels=n_mels
+        )
+        self.amplitude_to_db = AmplitudeToDB()
+    
+    def __call__(self, waveform):
+        mel_spec = self.mel_spectrogram(waveform)
+        mel_spec_db = self.amplitude_to_db(mel_spec)
+        return mel_spec_db
+
+class AudioCNN(nn.Module):
+    def __init__(self, num_classes=13):
+        super(AudioCNN, self).__init__()
+        self.conv1 = nn.Conv2d(1, 32, kernel_size=3, stride=1, padding=1)
+        self.bn1 = nn.BatchNorm2d(32)
+        self.pool1 = nn.MaxPool2d(kernel_size=2, stride=2)
+        self.dropout1 = nn.Dropout(0.3)
+        
+        self.conv2 = nn.Conv2d(32, 64, kernel_size=3, stride=1, padding=1)
+        self.bn2 = nn.BatchNorm2d(64)
+        self.pool2 = nn.MaxPool2d(kernel_size=2, stride=2)
+        self.dropout2 = nn.Dropout(0.3)
+        self.conv3 = nn.Conv2d(64, 128, kernel_size=3, stride=1, padding=1)
+        self.bn3 = nn.BatchNorm2d(128)
+        self.pool3 = nn.MaxPool2d(kernel_size=2, stride=2)
+        self.dropout3 = nn.Dropout(0.3)
+        
+      
+        self.conv4 = nn.Conv2d(128, 256, kernel_size=3, stride=1, padding=1)
+        self.bn4 = nn.BatchNorm2d(256)
+        self.pool4 = nn.MaxPool2d(kernel_size=2, stride=2)
+        self.dropout4 = nn.Dropout(0.3)
+        
+        self.fc_input_size = 256 * 8 * 21
+        
+        self.fc1 = nn.Linear(self.fc_input_size, 512)
+        self.bn5 = nn.BatchNorm1d(512)
+        self.dropout5 = nn.Dropout(0.5)
+        self.fc2 = nn.Linear(512, num_classes)
+    
+    def forward(self, x):
+        x = self.dropout1(self.pool1(F.relu(self.bn1(self.conv1(x)))))
+        x = self.dropout2(self.pool2(F.relu(self.bn2(self.conv2(x)))))
+        x = self.dropout3(self.pool3(F.relu(self.bn3(self.conv3(x)))))
+        x = self.dropout4(self.pool4(F.relu(self.bn4(self.conv4(x)))))
+    
+        x = x.reshape(x.size(0), -1)
+        x = self.dropout5(F.relu(self.bn5(self.fc1(x))))
+        x = self.fc2(x)
+        return x
+
+def load_class_mapping(data_path):
+    class_dirs = [d for d in os.listdir(data_path) if os.path.isdir(os.path.join(data_path, d))]
+    class_mapping = {idx: class_name for idx, class_name in enumerate(sorted(class_dirs))}
+    return class_mapping
+
+def predict_animal_sound(audio_file_path, model_path, data_path):
+
+    cfg = Config()
+    class_mapping = load_class_mapping(data_path)
+    
+    feature_extractor = AudioFeatureExtractor(
+        sample_rate=cfg.sample_rate,
+        n_mels=cfg.n_mels,
+        n_fft=cfg.n_fft,
+        hop_length=cfg.hop_length
+    )
+    
+    model = AudioCNN(num_classes=cfg.num_classes).to(cfg.device)
+    model.load_state_dict(torch.load(model_path, map_location=cfg.device))
+    model.eval()
+  
+    try:
+        waveform, sample_rate = torchaudio.load(audio_file_path)
+        
+        if waveform.shape[0] > 1:
+            waveform = torch.mean(waveform, dim=0, keepdim=True)
+        
+        if sample_rate != cfg.sample_rate:
+            resampler = torchaudio.transforms.Resample(sample_rate, cfg.sample_rate)
+            waveform = resampler(waveform)
+        
+        if waveform.shape[1] < cfg.num_samples:
+            padding = cfg.num_samples - waveform.shape[1]
+            waveform = F.pad(waveform, (0, padding))
+        elif waveform.shape[1] > cfg.num_samples:
+            waveform = waveform[:, :cfg.num_samples]
+        features = feature_extractor(waveform).unsqueeze(0).to(cfg.device)
+        with torch.no_grad():
+            outputs = model(features)
+            probabilities = F.softmax(outputs, dim=1)[0]
+            predicted_idx = torch.argmax(probabilities).item()
+            predicted_animal = class_mapping[predicted_idx] # type: ignore
+            confidence = probabilities[predicted_idx].item() * 100 # type: ignore
+            top3_values, top3_indices = torch.topk(probabilities, 3)
+            top3_predictions = [
+                (class_mapping[idx.item()], prob.item() * 100) # type: ignore
+                for idx, prob in zip(top3_indices, top3_values)
+            ]
+                   
+        return predicted_animal, confidence, top3_predictions
+    except Exception as e:
+        print(f"Error processing audio file: {e}")
+        return None, 0, []
+    
+    
+@app.route('/predict-sound', methods=['POST', 'GET'])
+def predict_sound():
+    if request.method == 'GET':
+        return "<h1>Send a POST request with an audio file to identify the animal sound.</h1>"
+    else:
+        if 'audio' not in request.files:
+            return jsonify({'error': 'No audio file provided.'}), 400
+        
+        file = request.files['audio']
+        if file and file.filename != '':
+            try:
+                upload_folder = 'temp_audio'
+                os.makedirs(upload_folder, exist_ok=True)
+                audio_path = os.path.join(upload_folder, file.filename) # type: ignore
+                file.save(audio_path)
+                
+                model_path = 'best_animal_sound_model.pth'  
+                data_path = 'Animal-Sound'  
+                
+                predicted_animal, confidence, top3_predictions = predict_animal_sound(
+                    audio_path, model_path, data_path
+                )
+                
+                os.remove(audio_path)
+                
+                if predicted_animal:
+                    return jsonify({
+                        'animal': predicted_animal,
+                        'confidence': confidence,
+                        'top_predictions': top3_predictions
+                    }), 200
+                else:
+                    return jsonify({'error': 'Could not identify the animal sound.'}), 400
+                    
+            except Exception as e:
+                return jsonify({'error': f'Error processing audio file: {str(e)}'}), 500
+        else:
+            return jsonify({'error': 'No audio file found.'}), 400
+
 if __name__ == '__main__':
     app.run(port=8081, debug=True)

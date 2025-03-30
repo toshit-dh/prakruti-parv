@@ -9,6 +9,7 @@ import Education2 from './components/education/Education2'
 import Explore from './components/explore/Explore'
 import About from './components/about/About'
 import AboutPreLoader from './components/about/AboutPreLoader'
+import IdentifyAudio from './components/identify-audio/IdentifyAudio'
 
 function App() {
 
@@ -32,6 +33,7 @@ function App() {
           <Route path='/explore' element={<Explore/>}/>
           <Route path='/about' element={<About/>}/>
           <Route path='/about-preloader' element={<AboutPreLoader/>}/>
+          <Route path='/identify-audio' element={<IdentifyAudio/>}/>
         </Routes>
     </BrowserRouter>
   )
