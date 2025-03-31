@@ -23,6 +23,15 @@
   align-items: center;
   justify-content: center;
 }
+
+.avatar{
+  margin-top: 20px;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 5px solid green;
+}
+
 .closed{
   width: 5%;
 }

@@ -11,6 +11,7 @@ exports.verifyToken = (req, res,next) => {
     jwt.verify(token, JWT_SECRET, (err, decoded) => {
       if (err) return res.status(401).json(new APIResponse(null, 'Invalid token').toJson());
       req.user = decoded
+      console.log("Request user:", req.user);
       next()
     });
   } catch (error) {

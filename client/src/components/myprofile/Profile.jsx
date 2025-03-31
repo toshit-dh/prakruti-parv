@@ -246,7 +246,7 @@ export default function Profile() {
         <div className={`profile  ${isProfileOpen && "closed"}`}>
           {!isProfileOpen && (
             <div className="details">
-              <img src={avatar} alt="Avatar" />
+              <img src={avatar} alt="Avatar" className="avatar" />
               <h2>{user.username}</h2>
               <h4>{user.email}</h4>
               <div className="badge">
@@ -274,6 +274,7 @@ export default function Profile() {
       </div>
       <div className="right">
         {user.role.toLowerCase() === "user" ||
+        user.role.toLowerCase() === "admin" ||
         user.role.toLowerCase() === "photographer" ||
         user.role.toLowerCase() === "learner" ? (
           <MyUploads />
@@ -377,9 +378,11 @@ export default function Profile() {
           </div>
         </div>
       )}
-      <button className="fab" onClick={() => setUploadDialog(!uploadDialog)}>
-        <FaPlus />
-      </button>
+      {user.role != "admin" && (
+        <button className="fab" onClick={() => setUploadDialog(!uploadDialog)}>
+          <FaPlus />
+        </button>
+      )}
     </div>
   );
 }

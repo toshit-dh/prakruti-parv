@@ -168,7 +168,7 @@ const Register = () => {
                   className="register-select"
                   required
                 >{
-                  ["User", "Admin", "Conservationist","Organisation"].map((role) => (
+                  ["User", "Conservationist","Organisation"].map((role) => (
                     <option key={role} value={role}>{role}</option>
                   ))
                 }

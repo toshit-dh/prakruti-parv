@@ -52,25 +52,30 @@ exports.getAll = async (req, res) => {
 // Get all uploads for a specific user
 exports.getForUser = async (req, res) => {
   try {
-    const userId = req.user.userId; // Get the user ID from the authenticated user
+    const { userId } = req.user;
+    if (!userId) return res.status(400).json({ error: "User ID is required" });
 
-    // Find all uploads by the specific user
-    const uploads = await UserUpload.find({ userId })
-      .populate("userId", "username email") // Optionally populate user details
-      .sort({ createdAt: -1 }); // Sort by most recent uploads first
+    const user = await User.findById(userId).lean();
+    if (!user) return res.status(404).json({ error: "User not found" });
 
-    if (!uploads || uploads.length === 0) {
-      return res.status(404).json({ error: "No uploads found for this user" });
-    }
+    const query = user.role === "admin" ? {} : { userId };
+    const uploads = await UserUpload.find(query)
+      .populate("userId", "username email")
+      .sort({ createdAt: -1 });
 
-    return res
-      .status(200)
-      .json({ message: "User uploads fetched successfully", data: uploads });
+    if (!uploads.length) return res.status(404).json({ error: "No uploads found" });
+    
+    res.status(200).json(
+      { message: "Uploads fetched successfully",
+         data: uploads,
+         isAdmin: user.role === "admin"}
+    );
   } catch (error) {
     console.error(error);
-    res.status(400).json({ error: error.message });
+    res.status(500).json({ error: "Internal server error" });
   }
 };
+
 
 exports.reduceCurrency = async (req, res) => {
   try {
@@ -108,6 +113,34 @@ exports.fetchCurrency = async (req, res) => {
       data: user.currency,
     });
   } catch (error) {
+    console.error(error);
+    res.status(400).json({ error: error.message });
+  }
+}
+
+exports.awardHonour = async (req, res) => {
+  try{
+    const userId = req.user.userId; 
+    if (!userId) return res.status(400).json({ error: "User ID is required" });
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ error: "User not found" });
+    if (user.role != "admin") return res.status(403).json({ error: "Only admin can award honour" });
+    const {toUser,uploadId} = req.body;
+    if (!uploadId) return res.status(400).json({ error: "Upload ID is required" });
+    const upload = await UserUpload.findById(uploadId);
+    if (!upload) return res.status(404).json({ error: "Upload not found" });
+    if (!toUser) return res.status(400).json({ error: "User ID to award is required" });
+    const userToAward = await User.findById(toUser);
+    if (!userToAward) return res.status(404).json({ error: "User to award not found" });
+    upload.isHonoured = true;
+    await upload.save();
+    userToAward.badges += 1;
+    userToAward.currency += 10; 
+    await userToAward.save();
+    return res.status(200).json({
+      message: "Honour awarded successfully"
+    })
+  }catch(error){
     console.error(error);
     res.status(400).json({ error: error.message });
   }
