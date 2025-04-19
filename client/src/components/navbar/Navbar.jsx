@@ -64,13 +64,7 @@ const Navbar = () => {
         >
           Poaching-Detection
         </NavLink>
-        <NavLink
-          to="/animal-tracking"
-          className="navLink"
-          activeclassName="active"
-        >
-          Animal-Tracking
-        </NavLink>
+        
         <NavLink to="/profile" className="navLink" activeclassName="active">
           My-Profile
         </NavLink>

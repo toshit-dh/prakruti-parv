@@ -85,7 +85,9 @@ const Poaching = () => {
 
     const formData = new FormData();
     formData.append("video", selectedFile);
-    if(fetchBalance() >= 5){
+    const balance = await fetchBalance();
+
+    if(balance>= 5){
     try {
       const response = await axios.post(POACH_ROUTE, formData, {
         headers: {
@@ -116,7 +118,7 @@ const Poaching = () => {
   }else{
     toast.error("Not enough Prakruti Mudra. Please recharge.", toastOptions);
     setLoading(false);
-  };
+  }
 }
 
   return (
